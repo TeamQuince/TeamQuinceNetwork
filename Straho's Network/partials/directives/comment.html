@@ -1,0 +1,96 @@
+<<<<<<< HEAD
+<tr>
+    <td>
+        <img class="img-thumbnail" ng-src="{{comment.author.profileImageData || 'img/noavatar.jpg'}}" alt=""/>
+    </td>
+    <td>
+
+        <!-- Comment actions menu-->
+        <div class="btn-group btn-group-sm pull-right">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Edit <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a class="menu-item" href="" ng-click="open()">Edit comment</a></li>
+                <li><a class="menu-item" href="" ng-click="deleteComment()">Delete comment</a></li>
+            </ul>
+        </div>
+        <!-- End of Comment actions menu-->
+
+        <a href="#/users/{{comment.author.username}}" ng-mouseover="isUserPreviewVisible=true" click-anywhere="isUserPreviewVisible=false">{{comment.author.name}}</a>
+
+        <!-- User preview element-->
+        <div class="user-preview-container" ng-show="isUserPreviewVisible">
+            <img ng-src="{{commenterData.profileImageData || 'img/noavatar.jpg'}}" alt="{{commenterData.name}}"/><br/>
+            <p><span>{{commenterData.name}}</span><br/>
+                <span><img ng-src="{{commenterData.gender | gender}}"/></span></p>
+            <button class="btn btn-success btn-sm center-block" ng-show="commenterData.isFriend">Friend</button>
+            <button class="btn btn-danger btn-sm center-block" ng-click="inviteFriend()"
+                    ng-show="!commenterData.isFriend && !commenterData.hasPendingRequest">
+                Invite
+            </button>
+            <button class="btn btn-warning btn-sm center-block" ng-show="commenterData.hasPendingRequest">Pending
+            </button>
+=======
+<td>
+    <img class="img-thumbnail" ng-src="{{comment.author.profileImageData || 'img/noavatar.jpg'}}" alt=""/>
+</td>
+<td>
+
+    <!-- Comment actions menu-->
+    <div class="btn-group btn-group-sm pull-right">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Edit <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a class="menu-item" href="" ng-click="open()">Edit comment</a></li>
+            <li><a class="menu-item" href="" ng-click="deleteComment()">Delete comment</a></li>
+        </ul>
+    </div>
+    <!-- End of Comment actions menu-->
+
+    <a href="#/users/{{comment.author.username}}" ng-mouseover="isUserPreviewVisible=true"
+       click-anywhere="isUserPreviewVisible=false">{{comment.author.name}}</a>
+
+    <!-- User preview element-->
+    <div class="user-preview-container" ng-show="isUserPreviewVisible">
+        <img ng-src="{{commenterData.profileImageData || 'img/noavatar.jpg'}}" alt="{{commenterData.name}}"/><br/>
+
+        <p><span>{{commenterData.name}}</span><br/>
+            <span><img ng-src="{{commenterData.gender | gender}}"/></span></p>
+        <button class="btn btn-success btn-sm center-block" ng-show="commenterData.isFriend">Friend</button>
+        <button class="btn btn-danger btn-sm center-block" ng-click="inviteFriend()"
+                ng-show="!commenterData.isFriend && !commenterData.hasPendingRequest">
+            Invite
+        </button>
+        <button class="btn btn-warning btn-sm center-block" ng-show="commenterData.hasPendingRequest">Pending
+        </button>
+    </div>
+    <!-- End User preview element-->
+    <br/>
+
+    <p>{{comment.date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span></p>
+
+    <p>{{comment.commentContent}}</p>
+
+    <p>
+        <span><a href="">{{comment.likesCount}} people liked this</a></span> -
+        <span><a href="" ng-hide="comment.liked" ng-click="likeComment(comment)">Like</a></span>
+        <span><a href="" ng-show="comment.liked" ng-click="unlikeComment(comment)">Unlike</a></span>
+        <span class="pull-right"><a href="" ng-click="showReplyForm()">Reply</a></span>
+    </p>
+
+    <p>
+
+    <form class="form-horizontal" ng-show="replyFormVisible">
+        <div class="form-group-sm">
+            <label class="sr-only" for="exampleComment">Comment here</label>
+            <input type="text" class="form-control input-sm" id="exampleComment" ng-model="replyContent">
+>>>>>>> origin/master
+        </div>
+        <button type="submit" class="btn btn-default input-sm pull-right comment-button" ng-click="addComment()">
+            Comment
+        </button>
+    </form>
+    </p>
+</td>

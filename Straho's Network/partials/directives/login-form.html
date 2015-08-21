@@ -1,0 +1,16 @@
+<form class="forms" name="loginForm">
+    <div class="form-group" ng-class="{ 'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine }">
+        <label>Username:</label>
+        <input type="text" name="username" class="form-control input-sm" ng-model="user.username" required>
+        <p ng-show="loginForm.username.$invalid && !loginForm.username.$pristine" class="help-block">Username is required.</p>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+        <label>Password:</label>
+        <input type="password" required name="password" class="form-control input-sm" ng-model="user.password">
+        <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="help-block">Password is required.</p>
+    </div>
+
+    <input type="submit" class="btn btn-primary text-center" value="Login" ng-click="login(user, loginForm)"/>
+    <button class="btn btn-default" ng-click="cancelLogin()">Cancel</button>
+</form>

@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row">
+        <user-header></user-header>
+    </div>
+
+    <!-- Wall owner header-->
+    <div ng-cloak class="row page-title page-title-wall" style="background-image: url({{user.coverImageData}});">
+<<<<<<< HEAD
+        <div class="col-md-2" ng-cloak>
+            <img ng-src="{{user.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+        </div>
+        <div class="col-md-10" ng-cloak>
+=======
+        <div class="col-md-2 col-xs-4" ng-cloak>
+            <img ng-src="{{user.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+        </div>
+        <div class="col-md-10 col-xs-8" ng-cloak>
+>>>>>>> origin/master
+            <div class="row"><h1 class="pull-left" ng-cloak>{{user.name}}</h1></div>
+            <div class="row"><button ng-cloak class="btn btn-success btn-sm pull-left" ng-show="user.isFriend">Friend</button></div>
+            <div class="row"><button ng-cloak class="btn btn-danger btn-sm pull-left" ng-show="!user.isFriend && !user.hasPendingRequest && !isMe" ng-click="inviteFriend()">Invite</button></div>
+            <div class="row"><button ng-cloak class="btn btn-warning btn-sm pull-left" ng-show="user.hasPendingRequest && !isMe">Pending</button></div>
+            <div class="row"><button ng-cloak class="btn btn-info btn-sm pull-left" ng-show="isMe">Me</button></div>
+        </div>
+    </div>
+    <!-- End of wall owner header-->
+
+    <div class="row">
+        <!-- Posts column-->
+        <div class="col-md-6 col-sm-7">
+            <p></p>
+
+            <h3 ng-show="isNewsFeedEmpty">The news feed is empty.</h3>
+            <div infinite-scroll="nextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="nextPageBlocked">
+                <user-post ng-repeat="post in posts | orderBy: '-date'"></user-post>
+            </div>
+        </div>
+        <!-- End of posts-->
+
+        <div class="col-md-1"></div>
+
+        <!-- Friends aside-->
+        <div class="col-md-4 col-sm-5">
+            <div class="row">
+                <div ng-if="user.isFriend" post-to-user test2="{{friendUserName}}" friend="{{friend}}"></div>
+            </div>
+            <div ng-if="user.isFriend" class="row" user-friends-sidebar test="{{friendUserName}}"></div>
+            <friends-sidebar ng-if="isMe"></friends-sidebar>
+        </div>
+        <!-- End of friends-->
+    </div>
+
+</div>

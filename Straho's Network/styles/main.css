@@ -1,0 +1,218 @@
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #b0ea9c !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    margin-top: 6px;
+    margin-bottom: 3px;
+}
+
+a {
+    color: white !important;
+}
+
+.menu-icon {
+    color: white;
+    font-size: 1.3em;
+}
+
+.caption {
+    width: 100% !important;
+}
+
+table {
+    margin-top: 15px !important;
+}
+
+.forms {
+    border: 1px solid darkgreen;
+    border-radius: 5px;
+    box-shadow: 0 0 20px grey;
+    padding: 2%;
+    margin-right: 1%;
+}
+
+.page-title {
+    background-color: #479030;
+    margin-bottom: 10px;
+    margin-top: 0 !important;
+    padding: 3px;
+    background-size: 100% 100%;
+    color: white;
+
+}
+
+.page-title-wall {
+    height: 150px !important;
+}
+
+.page-title-wall h1 {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: white;
+    font-weight: 700;
+    color: black;
+}
+
+.angular {
+    font-family: "Helvetica Neue";
+    color: red;
+}
+
+.thumbnail {
+    margin-bottom: 3px !important;
+}
+
+.img-thumbnail {
+    width: 50px;
+}
+
+.img-thumbnail-small {
+    width: 35px;
+}
+
+.post-container {
+    display: block;
+}
+
+.posts-table tr {
+    background-color: #98cb87;
+}
+
+.posts-table th, .posts-table tr:nth-child(1), .posts-table tr:nth-child(2), .posts-table tr:nth-child(3){
+    background-color: #70B45A;
+}
+
+.posts-table td:nth-child(1) {
+    width: 10%;
+}
+
+.posts-table th:nth-child(1) {
+    width: 10%;
+}
+
+.user-preview-container {
+    width: 25%;
+    height: 10em;
+}
+
+.users-search-container {
+    width: 15%;
+}
+
+.profile-picture-preview {
+    display: block;
+    width: 100px;
+}
+
+.cover-picture-preview {
+    display: block;
+    width: 250px;
+    height: 150px !important;
+}
+
+.friend-preview-img {
+    display: block;
+    width: 75px !important;
+}
+
+.profile-picture-header {
+    display: block;
+    width: 50px;
+}
+
+.comment-button {
+    margin-top: 3px !important;
+}
+
+.friends-table th{
+    background-color: #479030;
+}
+
+.friends-table tr{
+    background-color: #98cb87;
+}
+
+.friends-table td:nth-child(1){
+    width: 20%;
+}
+
+.friend-container {
+    height: 170px;
+<<<<<<< HEAD
+=======
+    overflow: hidden;
+>>>>>>> origin/master
+}
+
+.user-preview-container {
+    display: block;
+    margin: 0;
+    padding: 2%;
+    background-color: #A2D890;
+    border: 1px solid #114800;
+    border-radius: 5px;
+    position: absolute;
+    width: auto !important;
+    height: auto !important;
+}
+
+.names {
+    color: #286C12 !important;
+}
+
+.friend-requests-container {
+    display: block;
+    margin: 0;
+    padding: 1%;
+    background-color: #A2D890;
+    border: 1px solid #114800;
+    border-radius: 5px;
+    position: absolute;
+    left: 33%
+    top: 10%
+    width: auto !important;
+    height: auto !important;
+    z-index: 999;
+}
+
+.friend-requests-container table {
+    width: 100%;
+}
+
+.friend-requests-container table td {
+    padding: 3px;
+    vertical-align: bottom;
+    border-bottom: 1px solid darkgreen;
+    border-top: 1px solid darkgreen;
+    opacity: 1;
+}
+
+.user-header {
+    background-color: #286C12 !important;
+}
+
+.badge {
+    background-color: #A2D890 !important;
+}
+
+.button {
+    background-color: #A2D890;
+}
+
+.menu-item {
+    color: black !important;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}

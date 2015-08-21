@@ -1,0 +1,19 @@
+<aside class="friends-aside">
+    <table class="table friends-table">
+        <thead>
+        <tr>
+            <th colspan="2"><a href="#/users/{{test}}/friends">Total friends: {{friendsCount}}</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="friend in friends | limitTo: 5">
+            <td>
+                <img ng-src="{{friend.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+            </td>
+            <td>
+                <a href="#/users/{{friend.username}}">{{friend.name}}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</aside>

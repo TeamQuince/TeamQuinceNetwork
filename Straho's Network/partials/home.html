@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="row">
+        <user-header></user-header>
+    </div>
+
+    <div class="row page-title">
+        <div class="col-md-12">
+            <h1>News feed</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Posts column-->
+        <div class="col-md-6 col-sm-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <post-form></post-form>
+                </div>
+            </div>
+            <p></p>
+
+            <h3 ng-show="isNewsFeedEmpty">Your news feed is empty.</h3>
+            <div infinite-scroll="nextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="nextPageBlocked">
+                <post ng-repeat="post in posts"></post>
+            </div>
+        </div>
+
+        <div class="col-md-1"></div>
+
+        <!-- Friends column-->
+        <div class="col-md-4 col-sm-5">
+            <friends-sidebar></friends-sidebar>
+        </div>
+    </div>
+
+</div>
+
+<!--| orderBy: '-date'-->

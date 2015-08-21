@@ -1,0 +1,71 @@
+<div class="row">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid user-header">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><img id="me-preview" class="img-thumbnail profile-picture-header" ng-src="{{profileImageData || 'img/noavatar.jpg'}}"></li>
+                        <li><a class="menu-icon ng-cloak" href="#/users/{{username}}"><span>{{name}}</span></a></li>
+                        <li><a href="#users/me"><span class="glyphicon glyphicon-comment menu-icon"></span></a></li>
+                        <li><a href="#" ng-click="showFriendRequests($event)" click-anywhere="areFriendRequestsVisible=false"><span class="glyphicon glyphicon-user menu-icon"></span><span ng-show="requestsCount" class="badge">{{requestsCount}}</span></a></li>
+
+                        <!-- Friend requests element-->
+                        <div class="friend-requests-container" id="friendRequestsContainer" ng-show="areFriendRequestsVisible" click-anywhere="areFriendRequestsVisible=false">
+                            <table>
+                                <tr ng-repeat="request in requests">
+                                    <td>
+                                        <img class="img-thumbnail img-thumbnail-small" ng-src="{{request.user.profileImageData || 'img/noavatar.jpg'}}"/>
+                                    </td>
+                                    <td>
+                                        <h6>{{request.user.name}}</h6>
+                                        <button class="btn btn-success btn-sm" ng-click="approveFriendRequest(request)">Accept</button>
+                                        <button class="btn btn-danger btn-sm" ng-click="rejectFriendRequest(request)">Reject</button>
+                                    </td>
+                                </tr>
+                                <tr>{{requestsCount}} request(s) total</tr>
+                            </table>
+                        </div>
+                        <!-- End of Friend requests element-->
+
+                        <li><a href="#/profile"><span class="glyphicon glyphicon-wrench menu-icon"></span></a></li>
+                        <li><a href="#/profile/password"><span class="glyphicon glyphicon-lock menu-icon"></span></a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-off menu-icon" ng-click="logout()"></span></a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" ng-model="keyword" ng-change="showSearchResults($event, keyword)" ng-focus="setCoordinates($event)">
+                        </div>
+                    </form>
+
+                    <!-- People search element-->
+                    <div class="friend-requests-container" id="peopleSearchContainer" ng-show="areSearchResultsVisible" click-anywhere="areSearchResultsVisible=false">
+                        <table>
+                            <tr ng-repeat="man in people">
+                                <td>
+                                    <img class="img-thumbnail img-thumbnail-small" ng-src="{{man.profileImageData || 'img/noavatar.jpg'}}"/>
+                                </td>
+                                <td>
+                                    <h6><a href="#/users/{{man.username}}">{{man.name}}</a></h6>
+                                </td>
+                            </tr>
+                            <tr>{{peopleCount}} people found</tr>
+                        </table>
+                    </div>
+                    <!-- End of Friend requests element-->
+
+                </div>
+            </div>
+        </nav>
+    </header>
+</div>
