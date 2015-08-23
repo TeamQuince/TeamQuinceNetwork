@@ -14,7 +14,7 @@
             this.Data = data;
         }
 
-        public ApplicationDbContext Data { get; set; }
+        protected ApplicationDbContext Data { get; set; }
     }
 }
 
