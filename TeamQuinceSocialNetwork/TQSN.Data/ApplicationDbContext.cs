@@ -23,5 +23,29 @@
         public IDbSet<Comment> Comments { get; set; }
         public IDbSet<Like> Likes { get; set; }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Posts)
+                .WithRequired(p => p.Author)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Comments)
+                .WithRequired(c => c.Author)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Comment>()
+                .HasMany(c => c.Likes)
+                .WithRequired(l => l.Comment)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Post>()
+                .HasMany(p => p.Likes)
+                .WithRequired(l => l.Post)
+                .WillCascadeOnDelete(false);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

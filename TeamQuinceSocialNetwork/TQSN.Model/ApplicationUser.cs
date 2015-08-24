@@ -1,6 +1,5 @@
 ﻿namespace TQSN.Model
 {
-    using System;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -59,8 +58,5 @@
             get { return this._likes; }
             set { this._likes = value; }
         }
-
-       
-
     }
 }
