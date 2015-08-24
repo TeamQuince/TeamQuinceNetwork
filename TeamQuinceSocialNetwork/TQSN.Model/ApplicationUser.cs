@@ -21,6 +21,7 @@
         private ICollection<Like> _likes;
         private ICollection<Post> _posts;
         private ICollection<Group> _groups;
+        private ICollection<ApplicationUser> _friends;
 
         public ApplicationUser()
         {
@@ -28,6 +29,7 @@
             this._comments = new HashSet<Comment>();
             this._groups = new HashSet<Group>();
             this._likes = new HashSet<Like>();
+            this._friends = new HashSet<ApplicationUser>();
         }
 
         // GROUPS - menberships
@@ -57,6 +59,16 @@
         {
             get { return this._likes; }
             set { this._likes = value; }
+        }
+
+        // FRIENDS
+        public string FriendId { get; set; }
+        public virtual ApplicationUser Friend { get; set; }
+
+        public virtual ICollection<ApplicationUser> Friends
+        {
+            get { return this._friends; }
+            set { this._friends = value; }
         }
     }
 }

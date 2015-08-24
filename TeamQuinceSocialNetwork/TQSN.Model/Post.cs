@@ -48,11 +48,11 @@
         }
 
         // USER ID
-        public int WallUserId { get; set; }
+        public string WallUserId { get; set; }
         public virtual ApplicationUser WallUser { get; set; }
 
         // GROUP ID
-        public int WallGroupId { get; set; }
+        public int? WallGroupId { get; set; }
         public virtual Group WallGroup { get; set; }
     }
     

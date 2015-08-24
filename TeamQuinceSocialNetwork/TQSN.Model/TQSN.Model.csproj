@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="Comment.cs" />
+    <Compile Include="FrendshipStatus.cs" />
+    <Compile Include="Friendship.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Like.cs" />
     <Compile Include="Post.cs" />

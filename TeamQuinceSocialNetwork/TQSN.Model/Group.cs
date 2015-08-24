@@ -28,12 +28,14 @@
         public string OwnerId { get; set; }
         public virtual ApplicationUser Owner { get; set; }
 
+        //COMMENTS
         public virtual ICollection<ApplicationUser> Comments
         {
             get { return this._members; }
             set { this._members = value; }
         }
 
+        // POSTS
         public virtual ICollection<Post> Posts
         {
             get { return this._posts; }
