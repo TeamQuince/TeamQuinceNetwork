@@ -1,9 +1,10 @@
 ﻿namespace SocialNetwork.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public abstract class Post
+    public abstract class Posting
     {
         [Key]
         public int Id { get; set; }

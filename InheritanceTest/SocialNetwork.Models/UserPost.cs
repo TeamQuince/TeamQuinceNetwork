@@ -4,20 +4,22 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class UserPost : Post
+    public class UserPost : Posting
     {
         private ICollection<UserPostComment> comments;
+        private ICollection<UserPostLike> likes;
 
         public UserPost()
         {
             this.comments = new HashSet<UserPostComment>();
+            this.likes = new HashSet<UserPostLike>();
         }
 
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int TargetUserId { get; set; }
+        public int UserId { get; set; }
 
         public virtual User User { get; set; }
 
@@ -31,6 +33,18 @@
             set
             {
                 this.comments = value;
+            }
+        }
+
+        public virtual ICollection<UserPostLike> Likes
+        {
+            get
+            {
+                return this.likes;
+            }
+            set
+            {
+                this.likes = value;
             }
         }
     }

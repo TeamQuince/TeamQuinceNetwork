@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class GroupPostComment : Comment
+    public class GroupPostLike : Like
     {
         [Key]
         public int Id { get; set; }
@@ -10,6 +10,6 @@
         [Required]
         public int GroupPostId { get; set; }
 
-        public virtual GroupPost GroupPost { get; set; }
+        public virtual GroupPost Post { get; set; }
     }
 }

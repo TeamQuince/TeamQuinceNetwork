@@ -17,7 +17,7 @@ namespace SocialNetwork.Data
 
         public IDbSet<User> Users { get; set; }
 
-        public IDbSet<Post> Posts { get; set; }
+        public IDbSet<Posting> Postings { get; set; }
 
         public IDbSet<UserPost> UserPosts { get; set; }
 
@@ -25,11 +25,19 @@ namespace SocialNetwork.Data
 
         public IDbSet<Group> Groups { get; set; }
 
-        public IDbSet<Comment> Comments { get; set; }
-
         public IDbSet<UserPostComment> UserPostComments { get; set; }
 
         public IDbSet<GroupPostComment> GroupPostComments { get; set; }
+
+        public IDbSet<Like> Likes { get; set; }
+
+        public IDbSet<UserPostLike> UserPostLikes { get; set; }
+
+        public IDbSet<GroupPostLike> GroupPostLikes { get; set; }
+
+        public IDbSet<UserPostCommentLike> UserPostCommentLikes { get; set; }
+
+        public IDbSet<GroupPostCommentLike> GroupPostCommentLikes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -51,6 +59,26 @@ namespace SocialNetwork.Data
             modelBuilder.Entity<GroupPostComment>()
                 .HasRequired(c => c.GroupPost)
                 .WithMany(up => up.Comments)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserPost>()
+                .HasMany(p => p.Likes)
+                .WithRequired(l => l.Post)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<GroupPost>()
+                .HasMany(p => p.Likes)
+                .WithRequired(l => l.Post)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserPostComment>()
+                .HasMany(p => p.Likes)
+                .WithRequired(l => l.Comment)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<GroupPostComment>()
+                .HasMany(p => p.Likes)
+                .WithRequired(l => l.Comment)
                 .WillCascadeOnDelete(false);
             
             base.OnModelCreating(modelBuilder);

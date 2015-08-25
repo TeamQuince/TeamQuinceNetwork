@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SocialNetwork.Models.Group" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAkAAAABAAAAAQAAAACAAQAAAAEAAAAAAA=</HashCode>
+      <FileName>Group.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.GroupPost" Collapsed="true">
+    <Position X="7" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAEAAAAAAAAAAAAACAAAAAAIAAAACAAAAAAAAIAA=</HashCode>
+      <FileName>GroupPost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.GroupPostComment" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EgACAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>GroupPostComment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.Posting" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Posting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.User" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAQAAAAAAAAAAAQAAAAQAAAAAAAAABIAgAACAIAA=</HashCode>
+      <FileName>User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.UserPost" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEjAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAIAA=</HashCode>
+      <FileName>UserPost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.UserPostComment" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAiAAAAAAA=</HashCode>
+      <FileName>UserPostComment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.GroupPostLike" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GroupPostLike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.Like" Collapsed="true">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Like.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.UserPostLike" Collapsed="true">
+    <Position X="7.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAACAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>UserPostLike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.UserPostCommentLike" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserPostCommentLike.cs</FileName>
+      <NewMemberFileName>UserPostLike.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SocialNetwork.Models.GroupPostCommentLike" Collapsed="true">
+    <Position X="5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GroupPostCommentLike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9.05" />
+</ClassDiagram>
