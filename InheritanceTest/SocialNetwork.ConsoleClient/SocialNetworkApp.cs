@@ -35,6 +35,7 @@
                 Name = "Plamena",
                 Username = "plami"
             };
+            context.Users.Add(straho);
             context.Users.Add(plamena);
             context.SaveChanges();
         }
