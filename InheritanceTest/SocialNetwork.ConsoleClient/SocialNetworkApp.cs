@@ -35,6 +35,12 @@
             {
                 Console.WriteLine("Member: {0}", member.Name);
             }
+            //PostToGroup(1, 1, "Ho ho ho");
+            //PostToGroup(2, 1, "Ha ha ha");
+            foreach (var post in context.Groups.Find(1).Posts)
+            {
+                Console.WriteLine("Content: {0}", post.Content);
+            }
         }
 
         public static void AddUsers()
@@ -134,6 +140,22 @@
             var user = context.Users.Find(userId);
             var group = context.Groups.Find(groupId);
             group.Members.Add(user);
+            context.SaveChanges();
+        }
+
+        public static void PostToGroup(int fromUserId, int toGroupId, string content)
+        {
+            var context = new SocialNetworkContext();
+
+            var sender = context.Users.Find(fromUserId);
+            var recipient = context.Groups.Find(toGroupId);
+            var post = new GroupPost()
+            {
+                Content = content,
+                Author = sender,
+                PostedOn = DateTime.Now,
+            };
+            recipient.Posts.Add(post);
             context.SaveChanges();
         }
     }
