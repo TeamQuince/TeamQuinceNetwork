@@ -12,10 +12,29 @@
         public static void Main()
         {
 
-            AddUsers();
-            PostToUser(1, 2, "Hi Plami, Hi are you?");
-            CommentToUserPost(2, 1, "I am fine, thank you.");
-            LikeUserPost(2, 1);
+            //AddUsers();
+            //PostToUser(1, 2, "Hi Plami, Hi are you?");
+            //CommentToUserPost(2, 1, "I am fine, thank you.");
+            //LikeUserPost(2, 1);
+            //AddGroups();
+            //AddUserToGroup(1, 1);
+            //AddUserToGroup(2, 1);
+            //AddUserToGroup(1, 2);
+
+            var context = new SocialNetworkContext();
+            //var posts = context.Users.Find(2).UserPosts;
+            //foreach (var post in posts)
+            //{
+            //    Console.WriteLine("User is: {0}", context.Users.Find(2).Name);
+            //    Console.WriteLine("Author: {0}, Target: {1}", post.Author.Name, post.User.Name);
+            //    Console.WriteLine(post.Content);
+            //}
+
+            var group = context.Groups.Find(1);
+            foreach (var member in group.Members)
+            {
+                Console.WriteLine("Member: {0}", member.Name);
+            }
         }
 
         public static void AddUsers()
@@ -87,6 +106,35 @@
             };
             context.UserPostLikes.Add(like);
             context.SaveChanges(); 
+        }
+
+        public static void AddGroups()
+        {
+            var context = new SocialNetworkContext();
+            var teamGroup = new Group() 
+            {
+                Name = "Team Quince",
+                Description = "A great team",
+                CreatedOn = DateTime.Now
+            };
+            var blagoGroup = new Group() 
+            {
+                Name = "Blagoevgrad",
+                Description = "A nice city",
+                CreatedOn = DateTime.Now
+            };
+            context.Groups.Add(teamGroup);
+            context.Groups.Add(blagoGroup);
+            context.SaveChanges();
+        }
+
+        public static void AddUserToGroup(int userId, int groupId)
+        {
+            var context = new SocialNetworkContext();
+            var user = context.Users.Find(userId);
+            var group = context.Groups.Find(groupId);
+            group.Members.Add(user);
+            context.SaveChanges();
         }
     }
 }

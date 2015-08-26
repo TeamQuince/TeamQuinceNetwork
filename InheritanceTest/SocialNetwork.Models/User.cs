@@ -7,11 +7,13 @@
     {
         private ICollection<UserPost> userPosts;
         private ICollection<GroupPost> groupPosts;
+        private ICollection<Group> groups;
 
         public User()
         {
             this.userPosts = new HashSet<UserPost>();
             this.groupPosts = new HashSet<GroupPost>();
+            this.groups = new HashSet<Group>();
         }
 
         [Key]
@@ -53,6 +55,19 @@
             set
             {
                 this.groupPosts = value;
+            }
+        }
+
+        public virtual ICollection<Group> Groups
+        {
+            get
+            {
+                return this.groups;
+            }
+
+            set
+            {
+                this.groups = value;
             }
         }
     }
