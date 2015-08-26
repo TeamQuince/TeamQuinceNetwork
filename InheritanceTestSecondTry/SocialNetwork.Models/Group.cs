@@ -7,11 +7,12 @@
     public class Group
     {
         private ICollection<User> members;
-        private ICollection<Posting> posts;
+        private ICollection<Posting> postings;
 
         public Group()
         {
             this.members = new HashSet<User>();
+            this.postings = new HashSet<Posting>();
         }
 
         [Key]
@@ -38,16 +39,16 @@
             }
         }
 
-        public virtual ICollection<Posting> Posts
+        public virtual ICollection<Posting> Postings
         {
             get
             {
-                return this.posts;
+                return this.postings;
             }
 
             set
             {
-                this.posts = value;
+                this.postings = value;
             }
         }
     }
