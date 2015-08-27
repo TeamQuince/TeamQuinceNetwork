@@ -25,7 +25,7 @@
         [Required]
         public DateTime PostedOn { get; set; }
 
-        public virtual User Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
 
         public virtual Wall Wall { get; set; }
 

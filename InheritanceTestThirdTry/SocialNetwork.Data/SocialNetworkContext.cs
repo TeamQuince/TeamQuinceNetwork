@@ -3,19 +3,24 @@ namespace SocialNetwork.Data
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     using SocialNetwork.Models;
     using SocialNetwork.Data.Migrations;
 
-    public class SocialNetworkContext : DbContext
+    public class SocialNetworkContext : IdentityDbContext<ApplicationUser>
     {
         public SocialNetworkContext()
-            : base("name=SocialNetworkContext")
+            : base("SocialNetworkContext", throwIfV1Schema: false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<SocialNetworkContext, Configuration>());
         }
 
-        public IDbSet<User> Users { get; set; }
+        public static SocialNetworkContext Create()
+        {
+            return new SocialNetworkContext();
+        }
 
         public IDbSet<Post> Posts { get; set; }
 
@@ -33,7 +38,7 @@ namespace SocialNetwork.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.Friends)
                 .WithMany()
                 .Map(m =>
@@ -42,6 +47,8 @@ namespace SocialNetwork.Data
                     m.MapRightKey("RightFriendId");
                     m.ToTable("Friends");
                 });
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

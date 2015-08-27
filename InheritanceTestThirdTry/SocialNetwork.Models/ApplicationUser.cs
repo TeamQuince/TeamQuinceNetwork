@@ -1,30 +1,32 @@
 ﻿namespace SocialNetwork.Models
 {
-    using SocialNetwork.Models.Enumerations;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Security.Claims;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using System.Threading.Tasks;
 
-    public class User
+    using SocialNetwork.Models.Enumerations;
+
+    public class ApplicationUser : IdentityUser
     {
         private ICollection<Post> posts;
         private ICollection<Comment> comments;
         private ICollection<Group> groups;
-        private ICollection<User> friends;
+        private ICollection<ApplicationUser> friends;
         private ICollection<FriendshipRequest> requests;
         private Wall wall;
 
-        public User()
+        public ApplicationUser()
         {
             this.posts = new HashSet<Post>();
             this.comments = new HashSet<Comment>();
             this.groups = new HashSet<Group>();
-            this.friends = new HashSet<User>();
+            this.friends = new HashSet<ApplicationUser>();
             this.requests = new HashSet<FriendshipRequest>();
             this.wall = new Wall();
         }
-
-        [Key]
-        public int Id { get; set; }
 
         [MinLength(3)]
         [MaxLength(100)]
@@ -35,11 +37,6 @@
         public string ProfilePicture { get; set; }
 
         public string WallPicture { get; set; }
-
-        [Required]
-        [MinLength(3)]
-        [MaxLength(50)]
-        public string Username { get; set; }
 
         public virtual ICollection<Post> Posts
         {
@@ -80,7 +77,7 @@
             }
         }
 
-        public virtual ICollection<User> Friends
+        public virtual ICollection<ApplicationUser> Friends
         {
             get
             {
@@ -117,6 +114,15 @@
             {
                 this.wall = value;
             }
+        }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+
+            // Add custom user claims here
+            return userIdentity;
         }
     }
 }

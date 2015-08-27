@@ -6,12 +6,12 @@
 
     public class Group
     {
-        private ICollection<User> members;
+        private ICollection<ApplicationUser> members;
         private ICollection<Post> posts;
 
         public Group()
         {
-            this.members = new HashSet<User>();
+            this.members = new HashSet<ApplicationUser>();
         }
 
         [Key]
@@ -25,7 +25,7 @@
 
         public DateTime CreatedOn { get; set; }
 
-        public virtual ICollection<User> Members 
+        public virtual ICollection<ApplicationUser> Members 
         {
             get
             {
