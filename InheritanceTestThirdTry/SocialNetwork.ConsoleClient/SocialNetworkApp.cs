@@ -12,60 +12,63 @@
         public static void Main()
         {
 
-            //AddUsers();
+            //AddUsers("Gogo", "goshkata");
+            //AddUsers("Strahil", "straho");
+            //AddUsers("Nadia", "nadeto");
+
             //PostToUser(1, 2, "Hi Plami, Hi are you?");
             //CommentToUserPost(2, 1, "I am fine, thank you.");
             //LikeUserPost(2, 1);
             //AddGroups();
-            //AddUserToGroup(1, 3);
-            //AddUserToGroup(2, 3);
-            //AddUserToGroup(1, 4);
+            //AddUserToGroup(1, 1);
+            //AddUserToGroup(2, 1);
+            //AddUserToGroup(1, 2);
 
             var context = new SocialNetworkContext();
-            var posts = context.Users.Find(1).Posts;
+            //var posts = context.Users.Find(1).Posts;
             //foreach (var post in posts)
             //{
             //    Console.WriteLine("Author: {0}, Content: {1}", post.Author.Name, post.Content);
             //    Console.WriteLine(post.Content);
             //}
 
-            var group = context.Groups.Find(3);
+            var group = context.Groups.Find(1);
             foreach (var member in group.Members)
             {
                 Console.WriteLine("Member: {0}", member.Name);
             }
-            PostToGroup(1, 3, "Ho ho ho");
-            PostToGroup(2, 3, "Ha ha ha");
+            //PostToGroup(1, 1, "Ho ho ho");
+            //PostToGroup(2, 1, "Ha ha ha");
             foreach (var post in group.Wall.Posts)
             {
                 Console.WriteLine("Content: {0}", post.Content);
             }
+
+            // Test adding friends
+            context.Users.Find(1).Friends.Add(context.Users.Find(2));
+            context.SaveChanges();
+
+            //Test friendship requests
+            context.Users.Find(2).Requests.Add(new FriendshipRequest()
+            {
+                Sender = context.Users.Find(1),
+                Recipient = context.Users.Find(2)
+            });
+
+            context.SaveChanges();
         }
 
-        public static void AddUsers()
+        public static void AddUsers(string name, string username)
         {
             var context = new SocialNetworkContext();
 
-            if (context.Users.Count() > 0)
+            var user = new User()
             {
-                return;
-            }
-
-            var straho = new User()
-            {
-                Name = "Strahil",
-                Username = "straho",
-                Wall = new Wall()
+                Name = name,
+                Username = username,
             };
 
-            var plamena = new User()
-            {
-                Name = "Plamena",
-                Username = "plami",
-                Wall = new Wall()
-            };
-            context.Users.Add(straho);
-            context.Users.Add(plamena);
+            context.Users.Add(user);
             context.SaveChanges();
         }
 

@@ -29,43 +29,19 @@ namespace SocialNetwork.Data
 
         public IDbSet<Wall> Walls { get; set; }
 
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<User>()
-        //        .HasMany(u => u.Posts)
-        //        .WithRequired(p => p.Author)
-        //        .WillCascadeOnDelete(false);
+        public IDbSet<FriendshipRequest> FriendshipRequests { get; set; }
 
-        //    modelBuilder.Entity<User>()
-        //        .HasMany(u => u.Comments)
-        //        .WithRequired(c => c.Author)
-        //        .WillCascadeOnDelete(false);
-
-        //    modelBuilder.Entity<User>()
-        //        .HasMany(u => u.Groups)
-        //        .WithMany(g => g.Members)
-        //        .Map(m =>
-        //        {
-        //            m.MapLeftKey("UserId");
-        //            m.MapRightKey("GroupId");
-        //            m.ToTable("UsersGroups");
-        //        });
-
-        //    modelBuilder.Entity<User>()
-        //        .HasRequired(u => u.Wall);
-
-        //    modelBuilder.Entity<Group>()
-        //        .HasRequired(u => u.Wall);
-
-        //    modelBuilder.Entity<Post>()
-        //        .HasMany(p => p.Likes)
-        //        .WithRequired(l => l.Post)
-        //        .WillCascadeOnDelete(false);
-
-        //    modelBuilder.Entity<Comment>()
-        //        .HasMany(p => p.Likes)
-        //        .WithRequired(l => l.Comment)
-        //        .WillCascadeOnDelete(false);
-        //}
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Friends)
+                .WithMany()
+                .Map(m =>
+                {
+                    m.MapLeftKey("LeftFriendId");
+                    m.MapRightKey("RightFriendId");
+                    m.ToTable("Friends");
+                });
+        }
     }
 }

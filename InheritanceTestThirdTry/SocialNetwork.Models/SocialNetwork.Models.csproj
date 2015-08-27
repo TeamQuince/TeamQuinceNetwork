@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="Comment.cs" />
     <Compile Include="CommentLike.cs" />
+    <Compile Include="Enumerations\FriendRequestStatus.cs" />
+    <Compile Include="Enumerations\UserGender.cs" />
+    <Compile Include="FriendshipRequest.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="PostLike.cs" />
