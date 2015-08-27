@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{88D91D1E-9299-4AB8-AA3A-91EF53EC7C46}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{FD65B9FE-8BF4-458F-B2E4-908051E24B80}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TQSN.Model</RootNamespace>
-    <AssemblyName>TQSN.Model</AssemblyName>
+    <RootNamespace>ConsoleClient</RootNamespace>
+    <AssemblyName>ConsoleClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -56,21 +58,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationUser.cs" />
-    <Compile Include="Comment.cs" />
-    <Compile Include="ICommentLikeReciver.cs" />
-    <Compile Include="FrendshipRequestStatus.cs" />
-    <Compile Include="FriendshipRequest.cs" />
-    <Compile Include="Group.cs" />
-    <Compile Include="Like.cs" />
-    <Compile Include="Post.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WallPosts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DbModels.cd" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TQSN.Data\TQSN.Data.csproj">
+      <Project>{af1f3c07-2fad-4803-8510-8ac8887aeefe}</Project>
+      <Name>TQSN.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TQSN.Model\TQSN.Model.csproj">
+      <Project>{88d91d1e-9299-4ab8-aa3a-91ef53ec7c46}</Project>
+      <Name>TQSN.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

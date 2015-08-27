@@ -1,6 +1,7 @@
 ﻿namespace TQSN.Model
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Like
     {
@@ -8,24 +9,28 @@
         [Key]
         public int Id { get; set; }
 
-        // POST ID
-        [Required]
-        public int? PostId { get; set; }
-
-        // POST
-        public virtual Post Post { get; set; }
-
-        // COMMENT ID
-        public int? CommentId { get; set; }
-
-        // COMMENT
-        public virtual Comment Comment { get; set; }
-
         // AUTHOR ID
         [Required]
+        [ForeignKey("Author")]
         public string AuthorId { get; set; }
-
-        // AUTHOR
+        [InverseProperty("LikesAuthoredCollection")]
         public virtual ApplicationUser Author { get; set; }
+
+        //Who is LIKE Receiver
+        public virtual ICommentLikeReceiver LikeReceiver
+        {
+            get
+            {
+                if (this.LikeReceiverPostId == null)
+                {
+                    return this.LikeReceiverComment;
+                }
+                return this.LikeReceiverPost;
+            }
+        }
+        public int? LikeReceiverPostId { get; set; }
+        public virtual Post LikeReceiverPost { get; set; }
+        public int? LikeReceiverCommentId { get; set; }
+        public virtual Comment LikeReceiverComment { get; set; }
     }
 }

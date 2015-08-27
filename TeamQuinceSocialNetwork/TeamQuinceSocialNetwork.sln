@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TQSN.Model", "TQSN.Model\TQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TQSN.Data", "TQSN.Data\TQSN.Data.csproj", "{AF1F3C07-2FAD-4803-8510-8AC8887AEEFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{FD65B9FE-8BF4-458F-B2E4-908051E24B80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AF1F3C07-2FAD-4803-8510-8AC8887AEEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF1F3C07-2FAD-4803-8510-8AC8887AEEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF1F3C07-2FAD-4803-8510-8AC8887AEEFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD65B9FE-8BF4-458F-B2E4-908051E24B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD65B9FE-8BF4-458F-B2E4-908051E24B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD65B9FE-8BF4-458F-B2E4-908051E24B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD65B9FE-8BF4-458F-B2E4-908051E24B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

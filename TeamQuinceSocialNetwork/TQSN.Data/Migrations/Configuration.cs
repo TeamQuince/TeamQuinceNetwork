@@ -8,7 +8,7 @@
          public Configuration()
         {
             this.AutomaticMigrationsEnabled = true;
-            this.AutomaticMigrationDataLossAllowed = false;
+            this.AutomaticMigrationDataLossAllowed = true;
             this.ContextKey = "TQSN.Data.ApplicationDbContext";
         }
          protected override void Seed(ApplicationDbContext context)

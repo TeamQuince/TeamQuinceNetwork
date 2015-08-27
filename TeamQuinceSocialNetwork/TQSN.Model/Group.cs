@@ -2,46 +2,47 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Group
+    public class Group : WallPosts
     {
+        
         private ICollection<ApplicationUser> _members;
-        private ICollection<Post> _posts;
+        private ICollection<Post> _wallPosts;
+      
 
         public Group()
         {
             this._members = new HashSet<ApplicationUser>();
-            this._posts = new HashSet<Post>();
+            this._wallPosts = new List<Post>();
         }
 	
         // ID
         [Key]
         public int Id { get; set; }
 
+        //WALL
+        public virtual ICollection<Post> Wall {
+            get { return this._wallPosts; }
+            set { this._wallPosts = value; }
+        }
+        public string Type { get { return "Group Wall"; }}
+     
+
+
         // NAME
         [Required]
         [MinLength(1)]
         public string Name { get; set; }
 
-        // OWNER
-        [Required]
-        public string OwnerId { get; set; }
-        public virtual ApplicationUser Owner { get; set; }
+        //DISCRIPTION 
+        public string Discription { get; set; }
 
-        //COMMENTS
-        public virtual ICollection<ApplicationUser> Comments
-        {
+        //MEMBERS
+        public virtual ICollection<ApplicationUser> Members {
             get { return this._members; }
             set { this._members = value; }
         }
-
-        // POSTS
-        public virtual ICollection<Post> Posts
-        {
-            get { return this._posts; }
-            set { this._posts = value; }
-        }
-
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace TQSN.Model
 {
-    public enum FrendshipStatus
+    public enum FrendshipRequestStatus
     {
         Pending,
         Accepted,
