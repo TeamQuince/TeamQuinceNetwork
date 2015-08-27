@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public abstract class CommentLike
+    public class CommentLike
     {
         [Key]
         public int Id { get; set; }

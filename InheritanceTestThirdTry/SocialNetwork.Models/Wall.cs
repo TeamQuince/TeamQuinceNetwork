@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public abstract class Wall
+    public class Wall
     {
         private ICollection<Post> posts;
 
@@ -16,7 +16,7 @@
         [Key]
         public int Id { get; set; }
 
-        public ICollection<Post> Posts
+        public virtual ICollection<Post> Posts
         {
             get
             {

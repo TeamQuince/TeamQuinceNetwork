@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public abstract class Post
+    public class Post
     {
         private ICollection<Comment> comments;
         private ICollection<PostLike> likes;

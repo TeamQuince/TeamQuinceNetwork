@@ -50,5 +50,7 @@
                 this.posts = value;
             }
         }
+
+        public virtual Wall Wall { get; set; }
     }
 }

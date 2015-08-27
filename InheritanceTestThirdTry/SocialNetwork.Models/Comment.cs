@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public abstract class Comment
+    public class Comment
     {
         private ICollection<CommentLike> likes;
 

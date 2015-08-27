@@ -17,71 +17,55 @@ namespace SocialNetwork.Data
 
         public IDbSet<User> Users { get; set; }
 
-        public IDbSet<Posting> Postings { get; set; }
-
-        public IDbSet<UserPost> UserPosts { get; set; }
-
-        public IDbSet<GroupPost> GroupPosts { get; set; }
+        public IDbSet<Post> Posts { get; set; }
 
         public IDbSet<Group> Groups { get; set; }
 
-        public IDbSet<UserPostComment> UserPostComments { get; set; }
+        public IDbSet<Comment> Comments { get; set; }
 
-        public IDbSet<GroupPostComment> GroupPostComments { get; set; }
+        public IDbSet<PostLike> PostLikes { get; set; }
 
-        public IDbSet<Like> Likes { get; set; }
+        public IDbSet<CommentLike> CommentLikes { get; set; }
 
-        public IDbSet<UserPostLike> UserPostLikes { get; set; }
+        public IDbSet<Wall> Walls { get; set; }
 
-        public IDbSet<GroupPostLike> GroupPostLikes { get; set; }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<User>()
+        //        .HasMany(u => u.Posts)
+        //        .WithRequired(p => p.Author)
+        //        .WillCascadeOnDelete(false);
 
-        public IDbSet<UserPostCommentLike> UserPostCommentLikes { get; set; }
+        //    modelBuilder.Entity<User>()
+        //        .HasMany(u => u.Comments)
+        //        .WithRequired(c => c.Author)
+        //        .WillCascadeOnDelete(false);
 
-        public IDbSet<GroupPostCommentLike> GroupPostCommentLikes { get; set; }
+        //    modelBuilder.Entity<User>()
+        //        .HasMany(u => u.Groups)
+        //        .WithMany(g => g.Members)
+        //        .Map(m =>
+        //        {
+        //            m.MapLeftKey("UserId");
+        //            m.MapRightKey("GroupId");
+        //            m.ToTable("UsersGroups");
+        //        });
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserPost>()
-                .HasRequired(up => up.Author)
-                .WithMany(a => a.UserPosts)
-                .WillCascadeOnDelete(false);
+        //    modelBuilder.Entity<User>()
+        //        .HasRequired(u => u.Wall);
 
-            modelBuilder.Entity<GroupPost>()
-                .HasRequired(up => up.Author)
-                .WithMany(a => a.GroupPosts)
-                .WillCascadeOnDelete(false);
+        //    modelBuilder.Entity<Group>()
+        //        .HasRequired(u => u.Wall);
 
-            modelBuilder.Entity<UserPostComment>()
-                .HasRequired(c => c.UserPost)
-                .WithMany(up => up.Comments)
-                .WillCascadeOnDelete(false);
+        //    modelBuilder.Entity<Post>()
+        //        .HasMany(p => p.Likes)
+        //        .WithRequired(l => l.Post)
+        //        .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<GroupPostComment>()
-                .HasRequired(c => c.GroupPost)
-                .WithMany(up => up.Comments)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<UserPost>()
-                .HasMany(p => p.Likes)
-                .WithRequired(l => l.Post)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<GroupPost>()
-                .HasMany(p => p.Likes)
-                .WithRequired(l => l.Post)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<UserPostComment>()
-                .HasMany(p => p.Likes)
-                .WithRequired(l => l.Comment)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<GroupPostComment>()
-                .HasMany(p => p.Likes)
-                .WithRequired(l => l.Comment)
-                .WillCascadeOnDelete(false);
-            
-            base.OnModelCreating(modelBuilder);
-        }
+        //    modelBuilder.Entity<Comment>()
+        //        .HasMany(p => p.Likes)
+        //        .WithRequired(l => l.Comment)
+        //        .WillCascadeOnDelete(false);
+        //}
     }
 }

@@ -70,5 +70,7 @@
                 this.groups = value;
             }
         }
+
+        public virtual Wall Wall { get; set; }
     }
 }
