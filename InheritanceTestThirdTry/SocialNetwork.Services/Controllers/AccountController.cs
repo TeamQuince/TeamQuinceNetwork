@@ -331,7 +331,13 @@ namespace SocialNetwork.Services.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Username, Email = model.Email };
+            var user = new ApplicationUser() 
+            { 
+                UserName = model.Username,
+                Name = model.Name,
+                Gender = model.Gender,
+                Email = model.Email 
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

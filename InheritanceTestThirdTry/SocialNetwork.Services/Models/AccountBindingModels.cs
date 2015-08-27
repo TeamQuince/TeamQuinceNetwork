@@ -2,6 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
+using SocialNetwork.Models;
+using SocialNetwork.Models.Enumerations;
+
 namespace SocialNetwork.Services.Models
 {
     // Models used as parameters to AccountController actions.
@@ -35,12 +38,18 @@ namespace SocialNetwork.Services.Models
     public class RegisterBindingModel
     {
         [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 5)]
+        public string Name { get; set; }
+
+        [Required]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 5)]
         public string Username{ get; set; }
 
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public UserGender Gender { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
