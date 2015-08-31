@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Post
+    public class GroupPost
     {
         private ICollection<Comment> comments;
         private ICollection<PostLike> likes;
 
-        public Post()
+        public GroupPost()
         {
             this.comments = new HashSet<Comment>();
             this.likes = new HashSet<PostLike>();
@@ -27,7 +27,7 @@
 
         public virtual ApplicationUser Author { get; set; }
 
-        public virtual ApplicationUser Owner { get; set; }
+        public virtual Group Owner { get; set; }
 
         public virtual ICollection<Comment> Comments
         {

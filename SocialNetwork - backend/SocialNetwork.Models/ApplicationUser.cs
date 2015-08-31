@@ -16,7 +16,6 @@
         private ICollection<Group> groups;
         private ICollection<ApplicationUser> friends;
         private ICollection<FriendshipRequest> requests;
-        private Wall wall;
 
         public ApplicationUser()
         {
@@ -25,7 +24,6 @@
             this.groups = new HashSet<Group>();
             this.friends = new HashSet<ApplicationUser>();
             this.requests = new HashSet<FriendshipRequest>();
-            this.wall = new Wall();
         }
 
         [MinLength(3)]
@@ -100,19 +98,6 @@
             set
             {
                 this.requests = value;
-            }
-        }
-
-        public virtual Wall Wall
-        {
-            get
-            {
-                return this.wall;
-            }
-
-            set
-            {
-                this.wall = value;
             }
         }
 

@@ -7,7 +7,7 @@
     public class Group
     {
         private ICollection<ApplicationUser> members;
-        private ICollection<Post> posts;
+        private ICollection<GroupPost> posts;
 
         public Group()
         {
@@ -38,7 +38,7 @@
             }
         }
 
-        public virtual ICollection<Post> Posts
+        public virtual ICollection<GroupPost> Posts
         {
             get
             {
@@ -50,7 +50,5 @@
                 this.posts = value;
             }
         }
-
-        public virtual Wall Wall { get; set; }
     }
 }

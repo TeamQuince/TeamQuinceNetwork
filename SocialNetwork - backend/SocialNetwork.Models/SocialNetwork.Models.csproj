@@ -70,6 +70,7 @@
     <Compile Include="Enumerations\FriendRequestStatus.cs" />
     <Compile Include="Enumerations\UserGender.cs" />
     <Compile Include="FriendshipRequest.cs" />
+    <Compile Include="GroupPost.cs" />
     <Compile Include="Post.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="PostLike.cs" />
