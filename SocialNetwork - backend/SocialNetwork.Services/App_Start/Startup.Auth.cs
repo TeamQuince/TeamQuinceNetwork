@@ -34,16 +34,29 @@ namespace SocialNetwork.Services
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            // Configure the application for OAuth based flow
-            PublicClientId = "self";
-            OAuthOptions = new OAuthAuthorizationServerOptions
+            // Configure the application for OAuth based flow. Do it only once!
+            if (OAuthOptions == null)
             {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                AllowInsecureHttp = true
-            };
+                PublicClientId = "self";
+                OAuthOptions = new OAuthAuthorizationServerOptions
+                {
+                    TokenEndpointPath = new PathString("/Token"),
+                    Provider = new ApplicationOAuthProvider(PublicClientId),
+                    AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                    AllowInsecureHttp = true
+                };
+            }
+
+            // Configure the application for OAuth based flow
+            //PublicClientId = "self";
+            //OAuthOptions = new OAuthAuthorizationServerOptions
+            //{
+            //    TokenEndpointPath = new PathString("/Token"),
+            //    Provider = new ApplicationOAuthProvider(PublicClientId),
+            //    AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+            //    AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+            //    AllowInsecureHttp = true
+            //};
 
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
