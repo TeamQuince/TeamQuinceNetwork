@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
 
 namespace SocialNetwork.Services
 {
@@ -28,6 +29,9 @@ namespace SocialNetwork.Services
 
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
                 new CamelCasePropertyNamesContractResolver();
+
+            var corsAttr = new EnableCorsAttribute("http://localhost:63342", "*", "*");
+            config.EnableCors(corsAttr);
         }
     }
 }
