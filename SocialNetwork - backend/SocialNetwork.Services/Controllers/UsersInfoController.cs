@@ -11,11 +11,10 @@ namespace SocialNetwork.Services.Controllers
     using Models.ViewModels;
 
     [Authorize]
-    [RoutePrefix("api/users")]
-    public class UserController : BaseApiController
+    [RoutePrefix("api/usersinfo")]
+    public class UsersInfoController : BaseApiController
     {
-
-        //Endpoint: GET =>/api/users/{name} => returns full info abt user.
+        //Endpoint: GET =>/api/usersinfo/{name} => returns full info about user.
         [HttpGet]
         [Route("{name}")]
         public IHttpActionResult UserFullData(string name)
