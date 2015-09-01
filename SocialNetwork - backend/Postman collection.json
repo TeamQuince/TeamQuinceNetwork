@@ -7,7 +7,15 @@
 		"379873ef-39fd-389b-c48e-58964a870861",
 		"24579feb-02f9-88fd-0b87-03b245a8df34",
 		"b48501dd-6ca0-6d43-62ac-8bf7c9470d03",
-		"a28c4046-eecc-7556-30a6-6b9cf26a4326"
+		"a28c4046-eecc-7556-30a6-6b9cf26a4326",
+		"5c25ceb6-af8d-3574-e024-362c8c9261a3",
+		"8dd55ef2-1f01-b28d-4f1d-1d9589ca78ef",
+		"632745a1-0c75-6b6e-40b1-4f9ceed4acfe",
+		"d97032a0-bc92-00a9-b27f-6cc06b9bbc85",
+		"06d0de91-4a2d-6a91-84b6-e785fda82de1",
+		"3cc0b83a-15a2-ca4b-742d-70fddaac1cfd",
+		"e7865e86-8146-ca15-b696-b00c1f63bef9",
+		"1ce12e85-6318-311c-dd4b-a5bcdba9c636"
 	],
 	"folders": [],
 	"timestamp": 1440679285158,
@@ -15,6 +23,44 @@
 	"remoteLink": "",
 	"public": false,
 	"requests": [
+		{
+			"id": "06d0de91-4a2d-6a91-84b6-e785fda82de1",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/posts/1/likes",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441081579854,
+			"name": "Like Post",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "1ce12e85-6318-311c-dd4b-a5bcdba9c636",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/Posts/3/likes",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441083116855,
+			"name": "Gets Post Detailed Likes",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
 		{
 			"id": "24579feb-02f9-88fd-0b87-03b245a8df34",
 			"headers": "Authorization: Bearer -B8YC7zWTsjUyRc9VWpoL349TCMgSlG7tvX2ad90JRHag2YQggk2ftW2Dv2mHZgDyaAg8B6JKzfL4zWHqhBXpYNy01jScNgRBgnki3Ka_p7gJy7au4Vh7Xw9Zuflz0pI9ZIs1CitTuTsfMjB-9g3lml-uvUJxRKbhb8wm0pghd0CG5ZdwGozt4XiWzdQjK7xJbWrlhY4Ng8mA_O1PevbqFl_aguHfbehhk5tSFtrk2OaA7LjKydqwh57h2Hse1fxk6Q_pFl-pB5XnYtXNCP7m13_QXybbxX6pOcFZffDW11Z2v2Os1njv9MBMaEBU1unQa7MaYXNc5XmLCYpAls78YSJ-1vImgTFqIrrHQ7HpaQQn83Q_Xh0_Qq9_W3hcW7zKxqLAszk6sUQkLQZlI6VYcI6NyEkHitL4eL0Im9tnlbvjyV4mviY4g2toPFoEm-GktdKHD7w5tk4cgLgtIHoEGiarwU1ZUkJncYDZG9UCz4\n",
@@ -44,7 +90,7 @@
 			"data": [
 				{
 					"key": "username",
-					"value": "straho5",
+					"value": "straho1",
 					"type": "text",
 					"enabled": true
 				},
@@ -60,8 +106,27 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1441009481047,
+			"time": 1441042266366,
 			"name": "User Login",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "3cc0b83a-15a2-ca4b-742d-70fddaac1cfd",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/posts/2/likes",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441080279197,
+			"name": "Unlike Post",
 			"description": "",
 			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
 			"responses": []
@@ -76,7 +141,7 @@
 			"data": [
 				{
 					"key": "username",
-					"value": "straho5",
+					"value": "straho2",
 					"type": "text",
 					"enabled": true
 				},
@@ -94,19 +159,19 @@
 				},
 				{
 					"key": "name",
-					"value": "Kaloyan",
+					"value": "Strahil",
 					"type": "text",
 					"enabled": true
 				},
 				{
 					"key": "email",
-					"value": "straho5@abv.bg",
+					"value": "straho2@abv.bg",
 					"type": "text",
 					"enabled": true
 				},
 				{
 					"key": "gender",
-					"value": "2",
+					"value": "1",
 					"type": "text",
 					"enabled": true
 				}
@@ -116,8 +181,78 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1441009234005,
+			"time": 1441046068377,
 			"name": "User Register",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "5c25ceb6-af8d-3574-e024-362c8c9261a3",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/posts",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "postContent",
+					"value": "Test post 1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "straho1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441079547532,
+			"name": "Add Post to user",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "632745a1-0c75-6b6e-40b1-4f9ceed4acfe",
+			"headers": "Authorization: Bearer 1BuOt2uNYBwQ8JYQEWEQk6uOP7QGtwwU_ZDtUZELed0knozUDueANa_oB7jp9_zFxwx3gff5LN2HK88ArpdInuRWU2FWvaXp9ze3rUoIINKPWOhYy_aDUyvEMjldTj6Nku_xLD76EcsawjdpSN72DDLYRgXz7u4BwkTutLKDS3LwKjHT68fy16ffvji89aGvEwLUw_yyjLUgT6QRjpSNka6lTCyLLN7e6nJyGpGnmtvVULJ0qEsz6P33VkmysgWW-7LUtKrVg7zB3ntc8mTZHIuKT7BErqemNY1M6xKmHos0OTXgzzTedl0iIJ36sSYaBu8KlvDHuYhW7sInbiTsp1sOkm4M1Z4slT7vUbbisq1QatqNFXcWfWxURxYN2J4w-04FK2fMsA44DstBAg2PWbsjjcS4rQRYFsGxMB53nbZuKAJ2hNJVnmdTz5pIi0JBxSQgsbj4xoACCpA02Jki6qgWqN3xmOt3siN6XIz8FSY\n",
+			"url": "http://localhost:51477/api/posts/6",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441036798948,
+			"name": "Delete Post By Id",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "8dd55ef2-1f01-b28d-4f1d-1d9589ca78ef",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/posts/1",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441079584863,
+			"name": "Get Post By Id",
 			"description": "",
 			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
 			"responses": []
@@ -207,6 +342,51 @@
 			"time": 1441010674855,
 			"name": "Change Password",
 			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "d97032a0-bc92-00a9-b27f-6cc06b9bbc85",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/posts/1",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [
+				{
+					"key": "postContent",
+					"value": "new text",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441079689140,
+			"name": "Edit Post By Id",
+			"description": "",
+			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
+			"responses": []
+		},
+		{
+			"id": "e7865e86-8146-ca15-b696-b00c1f63bef9",
+			"headers": "Authorization: Bearer 16bAdfpU2m7rb_tqmduTY4mIL9Rz2taOEq_FSg0KN485z7l6GslxF_qAkXwLHwxllcD-W4iu7UlZO-Zf8cHZMDL1HM6nZTmsYYuupS6Tnwa2Swcee4YZkNT66dftwCefVlCsBu8xtLFH2Bkvqdow0p2_9-LM3S0Jn61x10qSoAP5rRwI1Ya-Kv8tryuc4XifU0Sut3oPion8IcM9dsA5VbtGF4VbGjGzgevUbxyqWZ3F_3h0tTqPFvzwBeXo-y7e_BtHMIJ1cX8iO8PKngINBrj1r3MDOld5YO9l7TUXBTYvWgRsmG_o20zqnYRwfwBFQJj4pfKf5L11pJ69BQ-YQ8DPtFh5QFgnlGAKDRAB_XmOygriB-W8rv5p7ijfE5xpXn7qR9vlD0AQCrqZcOWPI3dcLqah3q9Pf58A1kHoiaKYSLH-mXmn92ok8qgjma8CZ3dwrhOnCqv4eXYWol1XpCve3qca9DuxHb7X6Wk2S9Q\n",
+			"url": "http://localhost:51477/api/posts/2/likes/preview",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1441080453279,
+			"name": "Gets Post Preview Likes",
+			"description": "Returns total count + top 10 likes",
 			"collectionId": "b4fdfa85-34f0-a40c-d3b8-7631694d6d9a",
 			"responses": []
 		}

@@ -32,12 +32,6 @@ namespace SocialNetwork.Data
 
         public IDbSet<CommentLike> CommentLikes { get; set; }
 
-        //public IDbSet<Wall> Walls { get; set; }
-
-        //public IDbSet<UserWall> UserWalls { get; set; }
-
-        //public IDbSet<GroupWall> GroupWalls { get; set; }
-
         public IDbSet<FriendshipRequest> FriendshipRequests { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Net;
     using System.Net.Http;
     using System.Text;
@@ -16,7 +17,6 @@
     using SocialNetwork.Models;
     using SocialNetwork.Services.Models.BindingModels;
     using SocialNetwork.Services.Models.ViewModels;
-
 
     [Authorize]
     [RoutePrefix("api/posts")]
@@ -116,10 +116,10 @@
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
 
-            //if (post.Author != currentUser && currentUser.Wall.Id != post.Wall.Id)
-            //{
-            //    return await this.Unauthorized().ExecuteAsync(new CancellationToken());
-            //}
+            if (post.Author != currentUser && currentUser != post.Owner)
+            {
+                return await this.Unauthorized().ExecuteAsync(new CancellationToken());
+            }
 
             this.Data.Posts.Remove(post);
             this.Data.SaveChanges();
@@ -180,15 +180,13 @@
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
 
-            //var wallOwner = this.Data.Users
-            //    .Where(u => u.Wall.Id == post.Wall.Id)
-            //    .FirstOrDefault();
-
-            //if (!currentUser.Friends.Contains(post.Author) && !currentUser.Friends.Contains(wallOwner))
-            //{
-            //    return await this.BadRequest("Not allowed. Post author and/or wall-owner must be a friend.")
-            //        .ExecuteAsync(new CancellationToken());
-            //}
+            if (!currentUser.Friends.Contains(post.Author) && 
+                !currentUser.Friends.Contains(post.Owner) &&
+                currentUser != post.Author)
+            {
+                return await this.BadRequest("Not allowed. Post author and/or wall-owner must be a friend.")
+                    .ExecuteAsync(new CancellationToken());
+            }
 
             post.Likes.Add(new PostLike()
             {
@@ -198,6 +196,83 @@
             var dbPost = this.Data.Posts.Find(post.Id);
 
             return await this.Ok(new { postId = dbPost.Id, likesCount = dbPost.Likes.Count, liked = "true" })
+                .ExecuteAsync(new CancellationToken());
+        }
+
+        [HttpDelete]
+        [Route("{postId}/likes")]
+        public async Task<HttpResponseMessage> UnlikePostById([FromUri] int postId)
+        {
+            var post = this.Data.Posts.Find(postId);
+
+            if (post == null)
+            {
+                return await this.NotFound().ExecuteAsync(new CancellationToken());
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+            if (!currentUser.Friends.Contains(post.Author) &&
+                !currentUser.Friends.Contains(post.Owner) &&
+                currentUser != post.Author)
+            {
+                return await this.BadRequest("Not allowed. Post author and/or wall-owner must be a friend.")
+                    .ExecuteAsync(new CancellationToken());
+            }
+
+            var like = post.Likes.FirstOrDefault(l => l.Author == currentUser);
+            if (like == null)
+            {
+                return await this.BadRequest("Not allowed. You must like the post first.")
+                    .ExecuteAsync(new CancellationToken());
+            }
+
+            post.Likes.Remove(like);
+            this.Data.SaveChanges();
+
+            var dbPost = this.Data.Posts.Find(post.Id);
+            return await this.Ok(new { postId = dbPost.Id, likesCount = dbPost.Likes.Count, liked = "false" })
+                .ExecuteAsync(new CancellationToken());
+        }
+
+        [HttpGet]
+        [Route("{postId}/likes/preview")]
+        public async Task<HttpResponseMessage> GetPostPreviewLikes([FromUri] int postId)
+        {
+            var post = this.Data.Posts.Find(postId);
+
+            if (post == null)
+            {
+                return await this.NotFound().ExecuteAsync(new CancellationToken());
+            }
+
+            var likesPreview = post.Likes
+                .Take(10)
+                .Select(l => new { userId = l.Author.Id, postId = post.Id })
+                .ToList();
+
+            return await this.Ok(new { totalLikeCount = post.Likes.Count, postLikes = likesPreview })
+                .ExecuteAsync(new CancellationToken());
+        }
+
+        [HttpGet]
+        [Route("{postId}/likes")]
+        public async Task<HttpResponseMessage> GetPostDetailedLikes([FromUri] int postId)
+        {
+            var post = this.Data.Posts.Find(postId);
+
+            if (post == null)
+            {
+                return await this.NotFound().ExecuteAsync(new CancellationToken());
+            }
+
+            var likes = post.Likes
+                .AsQueryable()
+                .Select(LikeViewModel.Create)
+                .ToList();
+
+            return await this.Ok(likes)
                 .ExecuteAsync(new CancellationToken());
         }
     }

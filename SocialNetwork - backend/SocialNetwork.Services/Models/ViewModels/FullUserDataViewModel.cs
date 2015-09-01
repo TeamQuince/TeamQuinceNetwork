@@ -25,6 +25,5 @@
             this.profileImage = user.ProfilePicture;
             this.isFriend = user.Friends.Contains(currentUser);
         }
-
     }
 }

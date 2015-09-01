@@ -41,6 +41,7 @@
                     AuthorId = post.Author.Id,
                     AuthorUsername = post.Author.UserName,
                     AuthorProfileImage = post.Author.ProfilePicture,
+                    WallOwnerId = post.Owner.Id,
                     PostContent = post.Content,
                     Date = post.PostedOn,
                     LikesCount = post.Likes.Count,
