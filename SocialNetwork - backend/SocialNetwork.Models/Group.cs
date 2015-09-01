@@ -23,7 +23,14 @@
 
         public string Description { get; set; }
 
+        public string WallPicture { get; set; }
+
         public DateTime CreatedOn { get; set; }
+
+        [Required]
+        public string OwnerId { get; set; }
+
+        public virtual ApplicationUser Owner { get; set; }
 
         public virtual ICollection<ApplicationUser> Members 
         {
