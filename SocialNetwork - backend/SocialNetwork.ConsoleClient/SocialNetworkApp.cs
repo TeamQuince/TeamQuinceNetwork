@@ -24,19 +24,19 @@
             //AddUserToGroup(2, 1);
             //AddUserToGroup(1, 2);
 
-            var context = new SocialNetworkContext();
-            var sender = context.Users.FirstOrDefault(u => u.UserName == "straho1");
-            var recipient = context.Users.FirstOrDefault(u => u.UserName == "straho2");
+            //var context = new SocialNetworkContext();
+            //var sender = context.Users.FirstOrDefault(u => u.UserName == "straho1");
+            //var recipient = context.Users.FirstOrDefault(u => u.UserName == "straho2");
 
-            recipient.Wall.Posts.Add(new Post() 
-            { 
-                Content = "Console post 1",
-                Author = sender,
-                PostedOn = DateTime.Now
-            });
-            context.SaveChanges();
+            //recipient.Wall.Posts.Add(new Post() 
+            //{ 
+            //    Content = "Console post 1",
+            //    Author = sender,
+            //    PostedOn = DateTime.Now
+            //});
+            //context.SaveChanges();
 
-            //var posts = context.Users.Find(1).Posts;
+            ////var posts = context.Users.Find(1).Posts;
             //foreach (var post in posts)
             //{
             //    Console.WriteLine("Author: {0}, Content: {1}", post.Author.Name, post.Content);
