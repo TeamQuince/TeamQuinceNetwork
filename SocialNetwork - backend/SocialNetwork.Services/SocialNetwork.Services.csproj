@@ -218,25 +218,36 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthorizationController.cs" />
+    <Compile Include="Controllers\GroupPostsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\UsersInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BindingModels\AddCommentBindingModel.cs" />
+    <Compile Include="Models\BindingModels\AddGroupPostBindingModel.cs" />
     <Compile Include="Models\BindingModels\AddPostBindingModel.cs" />
     <Compile Include="Models\BindingModels\ChangePasswordBindingModel.cs" />
     <Compile Include="Models\BindingModels\CreateGroupBindingModel.cs" />
+    <Compile Include="Models\BindingModels\EditGroupBindingModel.cs" />
     <Compile Include="Models\BindingModels\EditPostBindingModel.cs" />
     <Compile Include="Models\BindingModels\EditUserProfileBindingModel.cs" />
+    <Compile Include="Models\BindingModels\GetNewsFeedBindingModel.cs" />
     <Compile Include="Models\BindingModels\LoginUserBindingModel.cs" />
     <Compile Include="Models\BindingModels\RegisterBindingModel.cs" />
     <Compile Include="Models\BindingModels\SetPasswordBindingModel.cs" />
+    <Compile Include="Models\ViewModels\AddCommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\CommentLikeViewModel.cs" />
     <Compile Include="Models\ViewModels\CommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\DataAboutMeViewModel.cs" />
+    <Compile Include="Models\ViewModels\GroupPostViewModel.cs" />
     <Compile Include="Models\ViewModels\GroupViewModel.cs" />
     <Compile Include="Models\ViewModels\LikeViewModel.cs" />
     <Compile Include="Models\ViewModels\PostViewModel.cs" />

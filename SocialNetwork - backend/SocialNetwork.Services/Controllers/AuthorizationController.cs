@@ -171,8 +171,10 @@
 
             currentUser.Name = model.Name;
             currentUser.Email = model.Email;
-            currentUser.ProfilePicture = model.ProfileImageData;
-            currentUser.WallPicture = model.CoverImageData;
+            currentUser.ProfilePicture = this.ValidateProfilePictureSize(model.ProfileImageData) ?
+                model.ProfileImageData : null;
+            currentUser.WallPicture = this.ValidateWallPictureSize(model.CoverImageData) ? 
+                model.CoverImageData : null;
             currentUser.Gender = model.Gender;
 
             this.Data.SaveChanges();

@@ -19,62 +19,53 @@
     using SocialNetwork.Services.Models.ViewModels;
 
     [Authorize]
-    [RoutePrefix("api/posts")]
-    public class PostsController : BaseApiController
+    [RoutePrefix("api/groupposts")]
+    public class GroupPostsController : BaseApiController
     {
         [HttpPost]
-        [Route("")]
-        public async Task<HttpResponseMessage> AddPostToUser(AddPostBindingModel model)
+        public async Task<HttpResponseMessage> PostToGroupById([FromUri] int groupId, AddGroupPostBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return await this.BadRequest(this.ModelState).ExecuteAsync(new CancellationToken());
             }
 
-            if (model == null)
-            {
-                return await this.BadRequest("Post cannot be empty.").ExecuteAsync(new CancellationToken());
-            }
+            var group = this.Data.Groups.Find(model.GroupId);
 
-            var user = this.Data.Users.FirstOrDefault(u => u.UserName == model.username);
-            if (user == null)
+            if (group == null)
             {
                 return await this.NotFound().ExecuteAsync(new CancellationToken());
             }
 
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
-            if (currentUser == null)
+
+            if (!group.Members.Contains(currentUser))
             {
-                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
+                return await this.BadRequest("Not allowed. User is not member of group.")
+                    .ExecuteAsync(new CancellationToken());
             }
 
-            //if (!user.Friends.Contains(currentUser))
-            //{
-            //    return await this.BadRequest("Not allowed. Wall-owner must be a friend or user.").ExecuteAsync(new CancellationToken());
-            //}
-
-            var newPost = new Post()
+            var newPost = new GroupPost()
             {
                 Content = model.postContent,
                 Author = currentUser,
                 PostedOn = DateTime.Now
             };
 
-            user.Posts.Add(newPost);
+            group.Posts.Add(newPost);
             this.Data.SaveChanges();
 
-            var dbPost = this.Data.Posts.FirstOrDefault(p => p.Id == newPost.Id);
-            var postReturnView = new PostViewModel()
+            var dbPost = this.Data.GroupPosts.FirstOrDefault(p => p.Id == newPost.Id);
+            var postReturnView = new
             {
                 Id = dbPost.Id,
                 AuthorId = dbPost.Author.Id,
                 AuthorUsername = dbPost.Author.UserName,
-                AuthorProfileImage = dbPost.Author.ProfilePicture,
-                WallOwnerId = user.Id,
+                GroupId = group.Id,
                 PostContent = dbPost.Content,
                 Date = dbPost.PostedOn,
-                LikesCount = dbPost.Likes.Count,
+                LikesCount = 0,
                 Liked = false,
                 TotalCommentsCount = 0,
                 Comments = new List<CommentViewModel>()
@@ -91,8 +82,8 @@
         [Route("{id}")]
         public async Task<HttpResponseMessage> GetPostById([FromUri] int id)
         {
-            var post = this.Data.Posts.Where(p => p.Id == id)
-                .Select(PostViewModel.Create)
+            var post = this.Data.GroupPosts.Where(p => p.Id == id)
+                .Select(GroupPostViewModel.Create)
                 .FirstOrDefault();
 
             if (post == null)
@@ -107,7 +98,7 @@
         [Route("{id}")]
         public async Task<HttpResponseMessage> DeletePost([FromUri] int id)
         {
-            var post = this.Data.Posts.FirstOrDefault(p => p.Id == id);
+            var post = this.Data.GroupPosts.FirstOrDefault(p => p.Id == id);
 
             if (post == null)
             {
@@ -116,17 +107,13 @@
 
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
-            if (currentUser == null)
-            {
-                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
-            }
 
-            if (post.Author != currentUser && currentUser != post.Owner)
+            if (post.Author != currentUser && currentUser != post.Owner.Owner)
             {
                 return await this.Unauthorized().ExecuteAsync(new CancellationToken());
             }
 
-            this.Data.Posts.Remove(post);
+            this.Data.GroupPosts.Remove(post);
             this.Data.SaveChanges();
 
             return await this.Ok().ExecuteAsync(new CancellationToken());
@@ -146,7 +133,7 @@
                 return await this.BadRequest(this.ModelState).ExecuteAsync(new CancellationToken());
             }
 
-            var post = this.Data.Posts.FirstOrDefault(p => p.Id == id);
+            var post = this.Data.GroupPosts.FirstOrDefault(p => p.Id == id);
 
             if (post == null)
             {
@@ -155,10 +142,6 @@
 
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
-            if (currentUser == null)
-            {
-                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
-            }
 
             if (post.Author != currentUser)
             {
@@ -168,18 +151,18 @@
             post.Content = model.postContent;
             this.Data.SaveChanges();
 
-            var dbPost = this.Data.Posts.Where(p => p.Id == post.Id)
-                .Select(PostViewModel.Create)
+            var postPreview = this.Data.GroupPosts.Where(p => p.Id == post.Id)
+                .Select(GroupPostViewModel.Create)
                 .FirstOrDefault();
 
-            return await this.Ok(dbPost).ExecuteAsync(new CancellationToken());
+            return await this.Ok(postPreview).ExecuteAsync(new CancellationToken());
         }
 
         [HttpPost]
         [Route("{postId}/likes")]
         public async Task<HttpResponseMessage> LikePostById([FromUri] int postId)
         {
-            var post = this.Data.Posts.Find(postId);
+            var post = this.Data.GroupPosts.Find(postId);
 
             if (post == null)
             {
@@ -188,16 +171,12 @@
 
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
-            if (currentUser == null)
-            {
-                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
-            }
 
             if (!currentUser.Friends.Contains(post.Author) && 
-                !currentUser.Friends.Contains(post.Owner) &&
+                !currentUser.Friends.Contains(post.Owner.Owner) &&
                 currentUser != post.Author)
             {
-                return await this.BadRequest("Not allowed. Post author and/or wall-owner must be a friend.")
+                return await this.BadRequest("Not allowed. Post author and/or group-owner must be a friend.")
                     .ExecuteAsync(new CancellationToken());
             }
 
@@ -206,7 +185,7 @@
                 Author = currentUser
             });
             this.Data.SaveChanges();
-            var dbPost = this.Data.Posts.Find(post.Id);
+            var dbPost = this.Data.GroupPosts.Find(post.Id);
 
             return await this.Ok(new { postId = dbPost.Id, likesCount = dbPost.Likes.Count, liked = "true" })
                 .ExecuteAsync(new CancellationToken());
@@ -216,7 +195,7 @@
         [Route("{postId}/likes")]
         public async Task<HttpResponseMessage> UnlikePostById([FromUri] int postId)
         {
-            var post = this.Data.Posts.Find(postId);
+            var post = this.Data.GroupPosts.Find(postId);
 
             if (post == null)
             {
@@ -225,16 +204,12 @@
 
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
-            if (currentUser == null)
-            {
-                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
-            }
 
             if (!currentUser.Friends.Contains(post.Author) &&
-                !currentUser.Friends.Contains(post.Owner) &&
+                !currentUser.Friends.Contains(post.Owner.Owner) &&
                 currentUser != post.Author)
             {
-                return await this.BadRequest("Not allowed. Post author and/or wall-owner must be a friend.")
+                return await this.BadRequest("Not allowed. Post author and/or group-owner must be a friend.")
                     .ExecuteAsync(new CancellationToken());
             }
 
@@ -248,7 +223,7 @@
             post.Likes.Remove(like);
             this.Data.SaveChanges();
 
-            var dbPost = this.Data.Posts.Find(post.Id);
+            var dbPost = this.Data.GroupPosts.Find(post.Id);
             return await this.Ok(new { postId = dbPost.Id, likesCount = dbPost.Likes.Count, liked = "false" })
                 .ExecuteAsync(new CancellationToken());
         }
@@ -257,7 +232,7 @@
         [Route("{postId}/likes/preview")]
         public async Task<HttpResponseMessage> GetPostPreviewLikes([FromUri] int postId)
         {
-            var post = this.Data.Posts.Find(postId);
+            var post = this.Data.GroupPosts.Find(postId);
 
             if (post == null)
             {
@@ -277,7 +252,7 @@
         [Route("{postId}/likes")]
         public async Task<HttpResponseMessage> GetPostDetailedLikes([FromUri] int postId)
         {
-            var post = this.Data.Posts.Find(postId);
+            var post = this.Data.GroupPosts.Find(postId);
 
             if (post == null)
             {

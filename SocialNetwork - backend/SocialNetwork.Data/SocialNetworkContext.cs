@@ -8,6 +8,7 @@ namespace SocialNetwork.Data
 
     using SocialNetwork.Models;
     using SocialNetwork.Data.Migrations;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     public class SocialNetworkContext : IdentityDbContext<ApplicationUser>
     {
@@ -24,6 +25,8 @@ namespace SocialNetwork.Data
 
         public IDbSet<Post> Posts { get; set; }
 
+        public IDbSet<GroupPost> GroupPosts { get; set; }
+
         public IDbSet<Group> Groups { get; set; }
 
         public IDbSet<Comment> Comments { get; set; }
@@ -36,6 +39,8 @@ namespace SocialNetwork.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.Friends)
                 .WithMany()
@@ -47,6 +52,16 @@ namespace SocialNetwork.Data
                 });
 
             modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Groups)
+                .WithMany(g => g.Members)
+                .Map(m =>
+                {
+                    m.MapLeftKey("UserId");
+                    m.MapRightKey("GroupId");
+                    m.ToTable("UsersGroups");
+                });
+
+            modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.Posts)
                 .WithRequired(p => p.Author)
                 .WillCascadeOnDelete(false);
@@ -55,16 +70,6 @@ namespace SocialNetwork.Data
                 .HasMany(u => u.Posts)
                 .WithRequired(p => p.Owner)
                 .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<ApplicationUser>()
-            //    .HasRequired(u => u.Wall)
-            //    .WithRequiredPrincipal(w => w.Owner)
-            //    .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Group>()
-            //    .HasRequired(u => u.Wall)
-            //    .WithRequiredPrincipal(w => w.Owner)
-            //    .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }
