@@ -322,7 +322,7 @@
                     UserId = l.Author.Id,
                     Name = l.Author.Name,
                     Username = l.Author.UserName,
-                    ProfileImage = l.Author.ProfilePicture
+                    ProfileImageData = l.Author.ProfilePicture
                 })
                 .ToList();
 

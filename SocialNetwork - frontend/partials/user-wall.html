@@ -3,19 +3,14 @@
         <user-header></user-header>
     </div>
 
+    <div class="row">
     <!-- Wall owner header-->
     <div ng-cloak class="row page-title page-title-wall" style="background-image: url({{user.coverImageData}});">
-<<<<<<< HEAD
         <div class="col-md-2" ng-cloak>
             <img ng-src="{{user.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
         </div>
         <div class="col-md-10" ng-cloak>
-=======
-        <div class="col-md-2 col-xs-4" ng-cloak>
-            <img ng-src="{{user.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
-        </div>
         <div class="col-md-10 col-xs-8" ng-cloak>
->>>>>>> origin/master
             <div class="row"><h1 class="pull-left" ng-cloak>{{user.name}}</h1></div>
             <div class="row"><button ng-cloak class="btn btn-success btn-sm pull-left" ng-show="user.isFriend">Friend</button></div>
             <div class="row"><button ng-cloak class="btn btn-danger btn-sm pull-left" ng-show="!user.isFriend && !user.hasPendingRequest && !isMe" ng-click="inviteFriend()">Invite</button></div>
@@ -24,16 +19,13 @@
         </div>
     </div>
     <!-- End of wall owner header-->
+    </div>
 
     <div class="row">
         <!-- Posts column-->
         <div class="col-md-6 col-sm-7">
-            <p></p>
-
-            <h3 ng-show="isNewsFeedEmpty">The news feed is empty.</h3>
-            <div infinite-scroll="nextPage()" infinite-scroll-distance="1" infinite-scroll-disabled="nextPageBlocked">
-                <user-post ng-repeat="post in posts | orderBy: '-date'"></user-post>
-            </div>
+            <h3 ng-show="isNewsFeedEmpty">The user's wall is empty.</h3>
+            <user-post ng-repeat="post in posts | orderBy: '-date'"></user-post>
         </div>
         <!-- End of posts-->
 
@@ -49,5 +41,4 @@
         </div>
         <!-- End of friends-->
     </div>
-
 </div>

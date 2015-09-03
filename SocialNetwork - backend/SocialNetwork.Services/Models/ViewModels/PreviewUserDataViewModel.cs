@@ -13,7 +13,7 @@
 
         public string name { get; set; }
 
-        public string profileImage { get; set; }
+        public string profileImageData { get; set; }
 
         public string IsFriend { get; set; }
 
@@ -27,7 +27,7 @@
                 userName = user.UserName,
                 name = user.Name,
                 IsFriend = user.Friends.Contains(currentUser).ToString(),
-                profileImage = user.ProfilePicture,
+                profileImageData = user.ProfilePicture,
                 hasPendingRequest = user.Requests
                     .Any(r => r.Sender == currentUser && r.Status == FriendRequestStatus.Pending)
                     .ToString()

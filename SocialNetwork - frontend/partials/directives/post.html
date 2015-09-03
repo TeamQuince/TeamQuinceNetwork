@@ -17,53 +17,38 @@
             </div>
             <!-- End of Posts actions menu-->
 
-            <a href="#/users/{{post.author.username}}" ng-mouseover="previewUser()"
-               click-anywhere="isUserPreviewVisible=false">{{post.author.name}}</a>
+            <a href="#/users/{{post.AuthorUsername}}" ng-mouseover="previewUser()"
+               click-anywhere="isUserPreviewVisible=false">{{post.AuthorUsername}}</a>
 
             <!-- User preview element-->
             <div class="user-preview-container" ng-show="isUserPreviewVisible">
-                <img ng-src="{{posterData.profileImageData || 'img/noavatar.jpg'}}" alt="{{posterData.name}}"/><br/>
-
+                <img ng-src="{{posterData.profileImageData || 'img/noavatar.jpg'}}" alt="{{posterData.name}}" class="friend-preview-img" />
                 <p><span>{{posterData.name}}</span><br/>
                     <span><img ng-src="{{posterData.gender | gender}}"/></span></p>
-<<<<<<< HEAD
-                    <button class="btn btn-success btn-sm center-block" ng-show="posterData.isFriend">Friend</button>
-                    <button class="btn btn-danger btn-sm center-block" ng-click="inviteFriend()"
-                            ng-show="!posterData.isFriend && !posterData.hasPendingRequest && !isMe">
-                        Invite
-                    </button>
-                    <button class="btn btn-warning btn-sm center-block" ng-show="posterData.hasPendingRequest">Pending
-                    </button>
-                    <button ng-cloak class="btn btn-info btn-sm center-block" ng-show="isMe">Me</button>
-=======
-                    <button class="btn btn-success btn-sm center-block ng-cloak" ng-show="posterData.isFriend">Friend</button>
-                    <button class="btn btn-danger btn-sm center-block ng-cloak" ng-click="inviteFriend()" ng-show="!posterData.isFriend && !posterData.hasPendingRequest">Invite</button>
-                    <button class="btn btn-warning btn-sm center-block ng-cloak" ng-show="posterData.hasPendingRequest && !isMe">Pending</button>
-                    <button class="btn btn-info btn-sm center-block ng-cloak" ng-show="isMe">Me</button>
->>>>>>> origin/master
-            </div>
+                <div class="row button-container"><button ng-cloak class="btn btn-success btn-sm" ng-show="posterData.isFriend">Friend</button></div>
+                <div class="row button-container"><button ng-cloak class="btn btn-danger btn-sm" ng-show="!posterData.isFriend && !posterData.hasPendingRequest && !isMe" ng-click="inviteFriend()">Invite</button></div>
+                <div class="row button-container"><button ng-cloak class="btn btn-warning btn-sm" ng-show="posterData.hasPendingRequest && !isMe">Pending</button></div>
+                <div class="row button-container"><button ng-cloak class="btn btn-info btn-sm" ng-show="isMe">Me</button></div>
+                </div>
             <!-- End User preview element-->
             <br/>
-
-            <span>{{post.date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span>
+            <span>{{post.Date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span>
         </th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td colspan="2">{{post.postContent}}</td>
+        <td colspan="2">{{post.PostContent}}</td>
     </tr>
     <tr>
         <td colspan="2">
-            <a href=""> {{post.likesCount}} people liked this</a> -
+            <a href=""> {{post.LikesCount}} people liked this</a> -
             <a href="" ng-hide="post.liked" ng-click="likePost()">Like</a>
             <a href="" ng-show="post.liked" ng-click="unlikePost()">Unlike</a>
             <span class="pull-right">
-                <a href="" ng-click="toggleComments()">{{post.comments.length}} comment(s)</a>&nbsp;
+                <a href="" ng-click="toggleComments()">{{post.Comments.length}} comment(s)</a>&nbsp;
                 <a href="" ng-click="showCommentForm()">Comment</a>
             </span>
-
-
         </td>
     </tr>
 

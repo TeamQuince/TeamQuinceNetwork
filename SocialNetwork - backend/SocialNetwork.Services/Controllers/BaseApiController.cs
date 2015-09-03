@@ -11,8 +11,8 @@
 
     public class BaseApiController : ApiController
     {
-        protected const int ProfilePictureKilobytesLimit = 50;
-        protected const int WallPictureKilobytesLimit = 50;
+        protected const int ProfilePictureKilobytesLimit = 128;
+        protected const int WallPictureKilobytesLimit = 1024;
 
         public BaseApiController()
             : this(new SocialNetworkContext())

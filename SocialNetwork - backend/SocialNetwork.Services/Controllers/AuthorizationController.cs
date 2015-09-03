@@ -18,6 +18,7 @@
     using Microsoft.Owin.Security.OAuth;
 
     using SocialNetwork.Models;
+    using SocialNetwork.Models.Enumerations;
     using SocialNetwork.Services.Models.BindingModels;
     using System.Threading;
     using System.Text;
@@ -86,8 +87,8 @@
                 return await this.BadRequest(this.ModelState).ExecuteAsync(new CancellationToken());
             }
 
-            var user = new ApplicationUser() 
-            { 
+            var user = new ApplicationUser()
+            {
                 UserName = model.Username,
                 Name = model.Name,
                 Gender = model.Gender,
@@ -163,26 +164,39 @@
                 return this.BadRequest("Invalid user token! Please login again!");
             }
 
-            var isEmailTaken = this.Data.Users.Any(x => x.Email == model.Email);
-            if (isEmailTaken)
+            var gender = 0;
+            if (model.Gender == "1")
             {
-                return this.BadRequest("Invalid email. The email is already taken!");
+                gender = 1;
             }
+            else if (model.Gender == "2")
+            {
+                gender = 2;
+            }
+
+            string profilePicture = this.ValidateProfilePictureSize(model.ProfileImageData) ?
+                model.ProfileImageData : null;
+
+            string wallPicture = this.ValidateWallPictureSize(model.CoverImageData) ?
+                model.CoverImageData : null;
 
             currentUser.Name = model.Name;
             currentUser.Email = model.Email;
-            currentUser.ProfilePicture = this.ValidateProfilePictureSize(model.ProfileImageData) ?
-                model.ProfileImageData : null;
-            currentUser.WallPicture = this.ValidateWallPictureSize(model.CoverImageData) ? 
-                model.CoverImageData : null;
-            currentUser.Gender = model.Gender;
+            currentUser.ProfilePicture = profilePicture;
+            currentUser.WallPicture = wallPicture;
+            currentUser.Gender = (UserGender)gender;
 
             this.Data.SaveChanges();
+
+            currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
 
             return this.Ok(
                 new
                 {
-                    message = "User profile edited successfully.",
+                    name = currentUser.Name,
+                    userName = currentUser.UserName,
+                    profileImageData = currentUser.ProfilePicture,
+                    coverImageData = currentUser.WallPicture
                 });
         }
 

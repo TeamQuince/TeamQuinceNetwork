@@ -19,6 +19,6 @@
 
         public string CoverImageData { get; set; }
 
-        public UserGender Gender { get; set; }
+        public string Gender { get; set; }
     }
 }

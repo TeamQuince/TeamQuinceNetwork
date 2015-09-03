@@ -12,11 +12,13 @@
 
         public string name { get; set; }
 
-        public string gender { get; set; }
+        public int gender { get; set; }
 
         public string email { get; set; }
 
-        public string profileImage { get; set; }
+        public string profileImageData { get; set; }
+
+        public string coverImageData { get; set; }
 
         public int friendsCount { get; set; }
 
@@ -28,9 +30,10 @@
                 {
                     userName = user.UserName,
                     name = user.Name,
-                    gender = user.Gender.ToString(),
+                    gender = (int)user.Gender,
                     email = user.Email,
-                    profileImage = user.ProfilePicture,
+                    profileImageData = user.ProfilePicture,
+                    coverImageData = user.WallPicture,
                     friendsCount = user.Friends.Count
                 };
             }

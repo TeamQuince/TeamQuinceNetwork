@@ -17,7 +17,7 @@
 
         public int CommentId { get; set; }
 
-        public string ProfileImage { get; set; }
+        public string ProfileImageData { get; set; }
 
         public static Expression<Func<CommentLike, CommentLikeViewModel>> Create
         {
@@ -29,7 +29,7 @@
                     Name = like.Author.Name,
                     Username = like.Author.UserName,
                     CommentId = like.Comment.Id,
-                    ProfileImage = like.Author.ProfilePicture
+                    ProfileImageData = like.Author.ProfilePicture
                 };
             }
         }

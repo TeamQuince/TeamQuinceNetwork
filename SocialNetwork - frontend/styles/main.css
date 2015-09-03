@@ -148,10 +148,7 @@ table {
 
 .friend-container {
     height: 170px;
-<<<<<<< HEAD
-=======
     overflow: hidden;
->>>>>>> origin/master
 }
 
 .user-preview-container {
@@ -164,6 +161,7 @@ table {
     position: absolute;
     width: auto !important;
     height: auto !important;
+    padding: 5px;
 }
 
 .names {
@@ -213,6 +211,9 @@ table {
     color: black !important;
 }
 
+.button-container {
+    text-align: center;
+}
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }

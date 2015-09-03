@@ -1,35 +1,32 @@
 ﻿namespace SocialNetwork.Services.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Web.OData;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Data.Entity;
 
     using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
 
     using SocialNetwork.Models;
     using SocialNetwork.Services.Models.BindingModels;
     using SocialNetwork.Services.Models.ViewModels;
     using System.Threading;
     using SocialNetwork.Models.Enumerations;
-    using System.Data.Entity.Infrastructure;
-    using SocialNetwork.Data;
 
     [Authorize]
     [RoutePrefix("api/me")]
     public class ProfileController : BaseApiController
     {
         [HttpGet]
-        [Route]
+        [Route("")]
         public async Task<HttpResponseMessage> GetDataAboutMeAsync()
         {
-            var me = GetMeh();
+            var me = GetCurrentUser();
+            if (me == null)
+            {
+                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
+            }
 
             return await this.Ok(new ProfileViewModel(me)).ExecuteAsync(new CancellationToken());
         }
@@ -39,7 +36,12 @@
         [Route("friends")]
         public async Task<HttpResponseMessage> GetOwnFriendsAsync()
         {
-            var me = GetMeh();
+            var me = GetCurrentUser();
+            if (me == null)
+            {
+                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
+            }
+
             var friends = me.Friends.AsQueryable().Select(FriendViewModel.Create).ToList();
 
             return await this.Ok(friends).ExecuteAsync(new CancellationToken());
@@ -50,7 +52,11 @@
         [Route("requests")]
         public IHttpActionResult GetFrindReqeusts()
         {
-            var me = GetMeh();
+            var me = GetCurrentUser();
+            if (me == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
             var requests = me.Requests.AsQueryable().Select(FriendshipRequestViewModel.Create).ToList();
 
@@ -62,7 +68,12 @@
         [Route("requests/{username}")]
         public IHttpActionResult SendFriendRequest(string username)
         {
-            var me = GetMeh();
+            var me = GetCurrentUser();
+            if (me == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
             var otherUser = this.Data.Users.FirstOrDefault(u => u.UserName == username);
             if (otherUser == null)
             {
@@ -105,7 +116,11 @@
         [Route("requests/{id}")]
         public IHttpActionResult ApproveFrindRequest(int id, [FromUri]string status)
         {
-            var me = GetMeh();
+            var me = GetCurrentUser();
+            if (me == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
             var request = me.Requests.AsQueryable().FirstOrDefault(r => r.Id == id);
             if (request == null)
@@ -143,7 +158,11 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            var me = GetMeh();
+            var me = GetCurrentUser();
+            if (me == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
             var postsFromToFriends = this.Data.Posts.AsQueryable()
                     .Where(p => p.Author.Friends.Any(fr => fr.Id == me.Id) ||
@@ -210,7 +229,7 @@
             return new MessageViewModel("Friend request successfully approved.");
         }
 
-        private ApplicationUser GetMeh()
+        private ApplicationUser GetCurrentUser()
         {
             var myUserId = User.Identity.GetUserId();
             return this.Data.Users.Find(myUserId);

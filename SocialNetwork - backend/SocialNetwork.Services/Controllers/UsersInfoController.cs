@@ -13,6 +13,8 @@
     using Models.ViewModels;
 
     using SocialNetwork.Models;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     [Authorize]
     [RoutePrefix("api/usersinfo")]
@@ -29,7 +31,7 @@
             {
                 return this.BadRequest("Invalid user token! Please login again!");
             }
-            
+
             var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
             if (searchedUser == null)
             {
@@ -87,30 +89,31 @@
 
         [HttpGet]
         [Route("{username}/wall")]
-        public IHttpActionResult GetWall([FromUri] string username, [FromUri] WallBindingModel model)
+        public async Task<HttpResponseMessage> GetWall([FromUri] string username, [FromUri] WallBindingModel model)
         {
             if (model == null)
             {
-                return this.BadRequest("Missing pagination parameters.");
+                return await this.BadRequest("Missing pagination parameters.").ExecuteAsync(new CancellationToken());
             }
 
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return await this.BadRequest(this.ModelState).ExecuteAsync(new CancellationToken());
             }
 
             var currentUserId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
             if (currentUser == null)
             {
-                return this.BadRequest("Invalid user token! Please login again!");
+                return await this.BadRequest("Invalid user token! Please login again!")
+                    .ExecuteAsync(new CancellationToken());
             }
 
-            
+
             var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
             if (searchedUser == null)
             {
-                return this.NotFound();
+                return await this.NotFound().ExecuteAsync(new CancellationToken());
             }
 
             //if (!currentUser.Friends.Contains(searchedUser))
@@ -149,7 +152,7 @@
                         .Select(CommentViewModel.Create).ToList()
                 });
 
-            return this.Ok(postsPreview);
+            return await this.Ok(postsPreview).ExecuteAsync(new CancellationToken());
         }
 
 

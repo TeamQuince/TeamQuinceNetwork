@@ -10,25 +10,29 @@
 
     public class ProfileViewModel
     {
-        public string Username { get; set; }
+        public string userName { get; set; }
 
-        public string Name { get; set; }
+        public string name { get; set; }
 
-        public UserGender Gender { get; set; }
+        public int gender { get; set; }
 
-        public string Email { get; set; }
+        public string email { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public string profileImageData { get; set; }
 
-        public int FriendsCount { get; set; }
+        public string coverImageData { get; set; }
+
+        public int friendsCount { get; set; }
+
         public ProfileViewModel(ApplicationUser appUser)
         {
-            Username = appUser.UserName;
-            Name = appUser.Name;
-            Gender = appUser.Gender;
-            Email = appUser.Email;
-            ProfilePicture = appUser.ProfilePicture;
-            FriendsCount = appUser.Friends.Count;
+            userName = appUser.UserName;
+            name = appUser.Name;
+            gender = (int)appUser.Gender;
+            email = appUser.Email;
+            profileImageData = appUser.ProfilePicture;
+            coverImageData = appUser.WallPicture;
+            friendsCount = appUser.Friends.Count;
         }
     }
 }

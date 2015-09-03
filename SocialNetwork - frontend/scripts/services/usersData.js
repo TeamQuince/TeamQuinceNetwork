@@ -2,7 +2,7 @@
 
 socialNetwork.factory('usersData', function usersData($http, requester, authentication, baseServiceUrl) {
     var service = {},
-        serviceUrl = baseServiceUrl + 'users';
+        serviceUrl = baseServiceUrl + 'usersinfo';
 
     service.getUserPreviewData = function (username) {
         return requester('GET', serviceUrl + '/' + username + '/preview', authentication.getHeaders());

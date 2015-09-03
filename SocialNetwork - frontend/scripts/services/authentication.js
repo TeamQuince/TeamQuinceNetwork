@@ -19,7 +19,7 @@ socialNetwork.factory('authentication', function authentication($http, baseServi
     };
 
     service.editUserProfile = function (profile) {
-        return requester('PUT', baseServiceUrl + 'me', this.getHeaders(), profile);
+        return requester('PUT', serviceUrl + '/profile', this.getHeaders(), profile);
     };
 
     service.setCredentials = function (serverData) {

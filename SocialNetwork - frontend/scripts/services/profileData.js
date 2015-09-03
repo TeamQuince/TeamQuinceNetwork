@@ -33,7 +33,7 @@ socialNetwork.factory('profileData', function profileData($http, requester, auth
     };
 
     service.changePassword = function (passwordData) {
-        return requester('PUT', serviceUrl + '/changepassword', authentication.getHeaders(), passwordData);
+        return requester('PUT', baseServiceUrl + 'users/changepassword', authentication.getHeaders(), passwordData);
     };
 
     return service;
