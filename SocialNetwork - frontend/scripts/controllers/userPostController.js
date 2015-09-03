@@ -23,20 +23,23 @@ socialNetwork.controller('UserPostController',
 
         $scope.addComment = function() {
 
-            if (!verifyCommentOperation()) {
-                notify.error("You can only comment on posts of your friends or posts on friends' walls.");
-                return;
-            }
+            // if (!verifyCommentOperation()) {
+            //     notify.error("You can only comment on posts of your friends or posts on friends' walls.");
+            //     return;
+            // }
 
-            commentsData.addCommentToPost($scope.post.id, $scope.commentContent)
+            commentsData.addCommentToPost($scope.post.Id, $scope.commentContent)
                 .then(
                     function successHandler(data) {
+
+                        console.log(data);
+
                         notify.info("Commented successfully.");
                         $scope.commentContent = '';
-                        $scope.post.comments.push(data);
+                        $scope.post.Comments.push(data);
                     },
                     function errorHandler(error) {
-                        notify.error("Comment failed.");
+                        notify.error(error.Message);
                     }
                 );
             $scope.commentFormVisible = false;
@@ -44,50 +47,50 @@ socialNetwork.controller('UserPostController',
 
         $scope.likePost = function() {
 
-            if (!verifyLikePostOperation($scope.post)) {
-                notify.error("You can only like/unlike posts of your friends and posts on your wall.");
-                return;
-            }
+            // if (!verifyLikePostOperation($scope.post)) {
+            //     notify.error("You can only like/unlike posts of your friends and posts on your wall.");
+            //     return;
+            // }
 
-            postsData.likePostById($scope.post.id)
+            postsData.likePostById($scope.post.Id)
                 .then(
                     function successHandler(data) {
                         notify.info('Post liked.');
                         $scope.post.liked = true;
-                        postsData.getPostPreviewLikes($scope.post.id)
+                        postsData.getPostPreviewLikes($scope.post.Id)
                             .then(
                                 function successHandler(likesData) {
-                                    $scope.post.likesCount = likesData.totalLikeCount;
+                                    $scope.post.LikesCount = likesData.totalLikeCount;
                                 }
                             );
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.Message);
                     }
                 );
         };
 
         $scope.unlikePost = function() {
 
-            if (!verifyLikePostOperation($scope.post)) {
-                notify.error("You can only like/unlike posts of your friends and posts on your wall.");
-                return;
-            }
+            // if (!verifyLikePostOperation($scope.post)) {
+            //     notify.error("You can only like/unlike posts of your friends and posts on your wall.");
+            //     return;
+            // }
 
-            postsData.unlikePostById($scope.post.id)
+            postsData.unlikePostById($scope.post.Id)
                 .then(
                     function successHandler(data) {
                         notify.info('Post unliked');
                         $scope.post.liked = false;
-                        postsData.getPostPreviewLikes($scope.post.id)
+                        postsData.getPostPreviewLikes($scope.post.Id)
                             .then(
                                 function successHandler(likesData) {
-                                    $scope.post.likesCount = likesData.totalLikeCount;
+                                    $scope.post.LikesCount = likesData.totalLikeCount;
                                 }
                             );
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.Message);
                     }
                 );
         };
@@ -100,7 +103,7 @@ socialNetwork.controller('UserPostController',
                         console.log(data);
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.Message);
                     }
                 );
         };

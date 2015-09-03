@@ -72,7 +72,7 @@ namespace SocialNetwork.Services.Controllers
             var newCommentViewModel = this.Data.Comments.Where(c => c.Id == newCommentToAdd.Id)
                 .Select(CommentViewModel.Create);
 
-            return this.Created("AddComment", newCommentViewModel);
+            return this.Ok(newCommentViewModel);
         }
 
         // EDIT COMMENT => PUT => api/posts/id/comments/id

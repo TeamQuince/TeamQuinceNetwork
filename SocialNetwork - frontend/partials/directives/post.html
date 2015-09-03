@@ -1,8 +1,8 @@
-<table class="table posts-table" post-id="{{post.id}}">
+<table class="table posts-table" post-id="{{post.Id}}">
     <thead>
     <tr>
         <th>
-            <img ng-src="{{post.author.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail"/>
+            <img ng-src="{{post.AuthorProfileImage || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail"/>
         </th>
         <th>
             <!-- Post actions menu-->
@@ -70,7 +70,7 @@
     <!-- End of comment form-->
 
     <!-- Comments part-->
-    <tr class="comment" ng-repeat="comment in post.comments | orderBy: 'date'" ng-cloak ng-show="showComments"></tr>
+    <tr class="comment" ng-repeat="comment in post.Comments | orderBy: 'date'" ng-cloak ng-show="showComments"></tr>
     <!-- End of comments part-->
     </tbody>
 </table>
