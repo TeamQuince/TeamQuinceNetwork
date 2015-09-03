@@ -1,23 +1,22 @@
-﻿//namespace SocialNetwork.Services.Models.ViewModels
-//{
-//    using System;
-//    using System.Collections.Generic;
-//    using System.Linq;
-//    using System.Linq.Expressions;
+﻿namespace SocialNetwork.Services.Models.ViewModels
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
 
-//    using SocialNetwork.Models;
+    using SocialNetwork.Models;
 
-//    public class CommentLikeViewModel
-//    {
-//        public string UserId { get; set; }
+    public class CommentLikeViewModel
+    {
+        public string UserId { get; set; }
 
-//        public string Name { get; set; }
+        public string Name { get; set; }
 
-//        public string Username { get; set; }
+        public string Username { get; set; }
 
-//        public int CommentId { get; set; }
+        public int CommentId { get; set; }
 
-<<<<<<< HEAD
         public string ProfileImageData { get; set; }
 
         public static Expression<Func<CommentLike, CommentLikeViewModel>> Create
@@ -36,23 +35,3 @@
         }
     }
 }
-=======
-//        public string ProfileImage { get; set; }
-
-//        public static Expression<Func<CommentLike, CommentLikeViewModel>> Create
-//        {
-//            get
-//            {
-//                return like => new CommentLikeViewModel()
-//                {
-//                    UserId = like.Author.Id,
-//                    Name = like.Author.Name,
-//                    Username = like.Author.UserName,
-//                    CommentId = like.Comment.Id,
-//                    ProfileImage = like.Author.ProfilePicture
-//                };
-//            }
-//        }
-//    }
-//}
->>>>>>> origin/master

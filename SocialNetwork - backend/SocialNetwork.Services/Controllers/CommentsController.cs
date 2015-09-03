@@ -244,7 +244,7 @@ namespace SocialNetwork.Services.Controllers
 
             // COMMENT LIKES
             var postCommentlikes = this.Data.CommentLikes.Where(cl => cl.Comment.Id == commentId)
-                .Select(CommentLikeViewModel.Create);
+                .Select(Models.ViewModels.Comment.CommentLikeViewModel.Create);
 
             return this.Ok(postCommentlikes);
         }
