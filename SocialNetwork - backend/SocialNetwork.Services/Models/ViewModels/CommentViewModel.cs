@@ -1,6 +1,7 @@
 ﻿namespace SocialNetwork.Services.Models.ViewModels
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
 
     using SocialNetwork.Models;
@@ -35,9 +36,24 @@
                     AuthorProfileImage = comment.Author.ProfilePicture,
                     CommentContent = comment.Content,
                     Date = comment.PostedOn,
-                    LikesCount = comment.Likes.Count
+                    LikesCount = comment.Likes.Count,
                 };
             }
+        }
+
+        public static object CreatePreview(ApplicationUser user, Comment comment)
+        {
+            return new
+            {
+                Id = comment.Id,
+                AuthorId = comment.Author.Id,
+                AuthorUsername = comment.Author.UserName,
+                AuthorProfileImage = comment.Author.ProfilePicture,
+                CommentContent = comment.Content,
+                Date = comment.PostedOn,
+                LikesCount = comment.Likes.Count,
+                Liked = comment.Likes.Any(l => l.Author.Id == user.Id)
+            };
         }
     }
 }

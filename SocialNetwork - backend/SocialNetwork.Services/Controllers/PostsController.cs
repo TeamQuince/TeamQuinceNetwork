@@ -91,16 +91,23 @@
         [Route("{id}")]
         public async Task<HttpResponseMessage> GetPostById([FromUri] int id)
         {
-            var post = this.Data.Posts.Where(p => p.Id == id)
-                .Select(PostViewModel.Create)
-                .FirstOrDefault();
+            var post = this.Data.Posts.FirstOrDefault(p => p.Id == id);
 
             if (post == null)
             {
                 return await this.NotFound().ExecuteAsync(new CancellationToken());
             }
 
-            return await this.Ok(post).ExecuteAsync(new CancellationToken());
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
+            }
+
+            var postPreview = PostViewModel.CreatePostPreview(currentUser, post);
+
+            return await this.Ok(postPreview).ExecuteAsync(new CancellationToken());
         }
 
         [HttpDelete]
@@ -125,6 +132,28 @@
             {
                 return await this.Unauthorized().ExecuteAsync(new CancellationToken());
             }
+
+            // Now delete the post: 1) Delete all likes of all post comments, 2) Delete all comments, 
+            // 3) Delete all post likes, 4) Delete post
+            var postComments = post.Comments.ToList();
+            foreach (var comment in postComments)
+            {
+                var likes = comment.Likes.ToList();
+                foreach (var like in likes)
+                {
+                    this.Data.CommentLikes.Remove(like);
+                }
+                comment.Likes.Clear();
+                post.Comments.Remove(comment);
+                this.Data.Comments.Remove(comment);
+            }
+
+            var postLikes = post.Likes.ToList();
+            foreach (var like in postLikes)
+            {
+                this.Data.PostLikes.Remove(like);
+            }
+            post.Likes.Clear();
 
             this.Data.Posts.Remove(post);
             this.Data.SaveChanges();

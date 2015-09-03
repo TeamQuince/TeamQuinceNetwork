@@ -53,5 +53,47 @@
                 };
             }
         }
+
+        public static object CreatePostPreview(ApplicationUser currentUser, Post post)
+        {
+            return new 
+            {
+                Id = post.Id,
+                AuthorId = post.Author.Id,
+                AuthorUsername = post.Author.UserName,
+                AuthorProfileImage = post.Author.ProfilePicture,
+                WallOwnerId = post.Owner.Id,
+                PostContent = post.Content,
+                Date = post.PostedOn,
+                LikesCount = post.Likes.Count,
+                Liked = post.Likes.Any(l => l.Author == currentUser),
+                TotalCommentsCount = post.Comments.Count,
+                Comments = post.Comments
+                    .OrderByDescending(c => c.PostedOn)
+                    .AsQueryable()
+                    .Select(c => CommentViewModel.CreatePreview(currentUser, c)).ToList()
+            };
+        }
+
+        public static object CreateGroupPostPreview(ApplicationUser currentUser, GroupPost post)
+        {
+            return new
+            {
+                Id = post.Id,
+                AuthorId = post.Author.Id,
+                AuthorUsername = post.Author.UserName,
+                AuthorProfileImage = post.Author.ProfilePicture,
+                WallOwnerId = post.Owner.Id,
+                PostContent = post.Content,
+                Date = post.PostedOn,
+                LikesCount = post.Likes.Count,
+                Liked = post.Likes.Any(l => l.Author == currentUser),
+                TotalCommentsCount = post.Comments.Count,
+                Comments = post.Comments
+                    .OrderByDescending(c => c.PostedOn)
+                    .AsQueryable()
+                    .Select(c=> CommentViewModel.CreatePreview(currentUser, c)).ToList()
+            };
+        }
     }
 }
