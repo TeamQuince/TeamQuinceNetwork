@@ -13,7 +13,7 @@
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-
+    using Models.ViewModels.Comment;
     using SocialNetwork.Models;
     using SocialNetwork.Services.Models.BindingModels;
     using SocialNetwork.Services.Models.ViewModels;

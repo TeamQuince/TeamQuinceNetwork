@@ -234,18 +234,20 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthorizationController.cs" />
     <Compile Include="Controllers\GroupPostsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\UsersInfoController.cs" />
+    <Compile Include="Filters\ValidateModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\BindingModels\AddCommentBindingModel.cs" />
+    <Compile Include="Models\BindingModels\Comment\AddCommentBindingModel.cs" />
     <Compile Include="Models\BindingModels\AddGroupPostBindingModel.cs" />
     <Compile Include="Models\BindingModels\AddPostBindingModel.cs" />
     <Compile Include="Models\BindingModels\ChangePasswordBindingModel.cs" />
@@ -262,6 +264,11 @@
     <Compile Include="Models\ViewModels\AddCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\CommentLikeViewModel.cs" />
     <Compile Include="Models\ViewModels\CommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\Comment\CommentLikeViewModel.cs" />
+    <Compile Include="Models\ViewModels\Comment\CommentLikePreviewViewModel.cs" />
+    <Compile Include="Models\ViewModels\Comment\UnlikedCommendViewModel.cs" />
+    <Compile Include="Models\ViewModels\Comment\LikedCommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\Comment\CommentViewModel.cs" />
     <Compile Include="Models\ViewModels\DataAboutMeViewModel.cs" />
     <Compile Include="Models\ViewModels\FriendsFullDataViewModel.cs" />
     <Compile Include="Models\ViewModels\FriendshipRequestViewModel.cs" />

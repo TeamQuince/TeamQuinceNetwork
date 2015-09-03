@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
+    using Comment;
     using SocialNetwork.Models;
 
     public class PostViewModel
@@ -71,7 +71,8 @@
                 Comments = post.Comments
                     .OrderByDescending(c => c.PostedOn)
                     .AsQueryable()
-                    .Select(c => CommentViewModel.CreatePreview(currentUser, c)).ToList()
+                    //.Select(c => CommentViewModel.CreatePreview(currentUser, c)).ToList()
+                    .Select(CommentLikePreviewViewModel.Create)
             };
         }
 
@@ -92,7 +93,8 @@
                 Comments = post.Comments
                     .OrderByDescending(c => c.PostedOn)
                     .AsQueryable()
-                    .Select(c=> CommentViewModel.CreatePreview(currentUser, c)).ToList()
+                    //.Select(c=> CommentViewModel.CreatePreview(currentUser, c)).ToList()
+                    .Select(CommentLikePreviewViewModel.Create)
             };
         }
     }

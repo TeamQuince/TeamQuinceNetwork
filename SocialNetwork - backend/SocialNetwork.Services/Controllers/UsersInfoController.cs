@@ -11,7 +11,7 @@
 
     using Models.BindingModels;
     using Models.ViewModels;
-
+    using Models.ViewModels.Comment;
     using SocialNetwork.Models;
     using System.Threading;
     using System.Threading.Tasks;
