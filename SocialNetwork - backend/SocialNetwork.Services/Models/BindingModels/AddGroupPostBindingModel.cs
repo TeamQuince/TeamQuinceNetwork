@@ -14,6 +14,6 @@
         public string postContent { get; set; }
 
         [Required]
-        public int GroupId { get; set; }
+        public int groupId { get; set; }
     }
 }

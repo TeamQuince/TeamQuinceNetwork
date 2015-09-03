@@ -45,7 +45,7 @@
         // POST api/users/login
         [HttpPost]
         [AllowAnonymous]
-        [Route("Login")]
+        [Route("login")]
         public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
         {
             // Invoke the "token" OWIN service to perform the login: /api/token
@@ -78,7 +78,7 @@
         // POST api/users/register
         [HttpPost]
         [AllowAnonymous]
-        [Route("Register")]
+        [Route("register")]
         public async Task<HttpResponseMessage> RegisterUser(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -147,7 +147,7 @@
 
         // PUT api/users/profile
         [HttpPut]
-        [Route("Profile")]
+        [Route("profile")]
         public IHttpActionResult EditUserProfile(EditUserProfileBindingModel model)
         {
             if (!ModelState.IsValid)

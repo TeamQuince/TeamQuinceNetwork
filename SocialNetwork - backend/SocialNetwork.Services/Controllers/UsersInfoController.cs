@@ -1,5 +1,4 @@
-﻿
-namespace SocialNetwork.Services.Controllers
+﻿namespace SocialNetwork.Services.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -7,9 +6,12 @@ namespace SocialNetwork.Services.Controllers
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+
     using Microsoft.AspNet.Identity;
+
     using Models.BindingModels;
     using Models.ViewModels;
+
     using SocialNetwork.Models;
 
     [Authorize]
@@ -19,21 +21,23 @@ namespace SocialNetwork.Services.Controllers
         //Endpoint: GET =>/api/usersinfo/{username} => returns full info about user.
         [HttpGet]
         [Route("{username}")]
-        public IHttpActionResult UserFullData(string username)
+        public IHttpActionResult UserFullData([FromUri] string username)
         {
             var currentUserId = User.Identity.GetUserId();
-            if (currentUserId == null)
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("login to retrieve the data");
+                return this.BadRequest("Invalid user token! Please login again!");
             }
-            var currentUser = Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+            
             var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
             if (searchedUser == null)
             {
-                return this.BadRequest("no such user");
+                return this.NotFound();
             }
-            var resultUser = FullUserDataViewModel.GetFullUserData(searchedUser, currentUser);
-            return this.Ok(resultUser);
+
+            var userPreview = FullUserDataViewModel.GetFullUserData(searchedUser, currentUser);
+            return this.Ok(userPreview);
         }
 
         //Endpoint: GET =>/api/usersinfo/{username}/preview => returns short info about user.
@@ -42,15 +46,16 @@ namespace SocialNetwork.Services.Controllers
         public IHttpActionResult UserPreviewData(string username)
         {
             var currentUserId = User.Identity.GetUserId();
-            if (currentUserId == null)
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("login to retrieve the data");
+                return this.BadRequest("Invalid user token! Please login again!");
             }
-            var currentUser = Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+
             var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
             if (searchedUser == null)
             {
-                return this.BadRequest("no such user");
+                return this.NotFound();
             }
             var resultUser = PreviewUserDataViewModel.GetPreviewUserData(searchedUser, currentUser);
             return this.Ok(resultUser);
@@ -62,17 +67,18 @@ namespace SocialNetwork.Services.Controllers
         public IHttpActionResult SearchUserByName([FromUri] string searchTerm)
         {
             var currentUserId = User.Identity.GetUserId();
-            if (currentUserId == null)
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("login to retrieve the data");
+                return this.BadRequest("Invalid user token! Please login again!");
             }
-            var currentUser = Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+
             string searchName = searchTerm.ToUpper();
 
-            var users =
-                Data.Users.Where(u => u.Name.ToUpper().Contains(searchName))
-                    .ToList()
-                    .Select(u => PreviewUserDataViewModel.GetPreviewUserData(u, currentUser));
+            var users = this.Data.Users
+                .Where(u => u.Name.ToUpper().Contains(searchName) || u.UserName.ToUpper().Contains(searchName))
+                .ToList()
+                .Select(u => PreviewUserDataViewModel.GetPreviewUserData(u, currentUser));
 
             return this.Ok(users);
         }
@@ -81,80 +87,96 @@ namespace SocialNetwork.Services.Controllers
 
         [HttpGet]
         [Route("{username}/wall")]
-        public IHttpActionResult GetWall(string username, [FromUri]WallBindingModel wall)
+        public IHttpActionResult GetWall([FromUri] string username, [FromUri] WallBindingModel model)
         {
+            if (model == null)
+            {
+                return this.BadRequest("Missing pagination parameters.");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
+
             var currentUserId = User.Identity.GetUserId();
-            if (currentUserId == null)
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("login to retrieve the data");
+                return this.BadRequest("Invalid user token! Please login again!");
             }
-            var currentUser = Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+
+            
             var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
             if (searchedUser == null)
             {
-                return this.BadRequest("no such user");
-            }
-            if (currentUser.Friends.Contains(searchedUser) == false)
-            {
-                return this.BadRequest("you can not retrieve non friend data");
+                return this.NotFound();
             }
 
-            //TO DO check if current user and searched user are the same -> redirect to view my own wall
+            //if (!currentUser.Friends.Contains(searchedUser))
+            //{
+            //    return this.BadRequest("you can not retrieve non friend data");
+            //}
 
-            IQueryable<Post> postCollection = searchedUser.Posts.AsQueryable().OrderByDescending(p => p.PostedOn);
-            if (wall.StartPostId != null)
+            var posts = searchedUser.Posts
+                .OrderByDescending(p => p.PostedOn)
+                .AsQueryable();
+
+            if (model.StartPostId.HasValue)
             {
-                postCollection = postCollection.SkipWhile(p => p.Id != wall.StartPostId).Skip(1).AsQueryable();
+                posts = posts
+                    .SkipWhile(p => p.Id != (int)model.StartPostId)
+                    .Skip(1)
+                    .AsQueryable();
             }
 
-            var postPage = postCollection.Take(wall.PageSize).Select(post => new PostViewModel()
-            {
-                Id = post.Id,
-                AuthorId = post.Author.Id,
-                AuthorUsername = post.Author.UserName,
-                AuthorProfileImage = post.Author.ProfilePicture,
-                WallOwnerId = post.Owner.Id,
-                PostContent = post.Content,
-                Date = post.PostedOn,
-                LikesCount = post.Likes.Count,
-                TotalCommentsCount = post.Comments.Count,
-                Comments = post.Comments
-                    .OrderByDescending(c => c.PostedOn)
-                    .AsQueryable()
-                    .Select(CommentViewModel.Create).ToList()
-            });
+            var postsPreview = posts
+                .Take(model.PageSize)
+                .Select(post => new PostViewModel()
+                {
+                    Id = post.Id,
+                    AuthorId = post.Author.Id,
+                    AuthorUsername = post.Author.UserName,
+                    AuthorProfileImage = post.Author.ProfilePicture,
+                    WallOwnerId = post.Owner.Id,
+                    PostContent = post.Content,
+                    Date = post.PostedOn,
+                    LikesCount = post.Likes.Count,
+                    TotalCommentsCount = post.Comments.Count,
+                    Comments = post.Comments
+                        .OrderByDescending(c => c.PostedOn)
+                        .AsQueryable()
+                        .Select(CommentViewModel.Create).ToList()
+                });
 
-
-            return this.Ok(postPage);
+            return this.Ok(postsPreview);
         }
 
 
         //Endpoint: GET =>/api/usersinfo/{username}/friends => return FriendCollection of user (byUsername) preview data. Can be seen only friend's friends.
         [HttpGet]
         [Route("{username}/friends")]
-        public IHttpActionResult FriendsData(string username)
+        public IHttpActionResult GetFriendsFullData([FromUri] string username)
         {
             var currentUserId = User.Identity.GetUserId();
-            if (currentUserId == null)
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("login to retrieve the data");
-            }
-            var currentUser = Data.Users.FirstOrDefault(u => u.Id == currentUserId);
-            var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
-            if (searchedUser == null)
-            {
-                return this.BadRequest("no such user");
-            }
-            if (currentUser.Friends.Contains(searchedUser) == false)
-            {
-                return this.BadRequest("you can not retrieve non friend data");
+                return this.BadRequest("Invalid user token! Please login again!");
             }
 
-            var friends = FriendsCollectionViewModel.Create(searchedUser);
+            var searchedUser = this.Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
+            if (searchedUser == null)
+            {
+                return this.NotFound();
+            }
+
+            if (!currentUser.Friends.Contains(searchedUser) && currentUser != searchedUser)
+            {
+                return this.BadRequest("Not alllowed. You must be friends.");
+            }
+
+            var friends = FriendsFullDataViewModel.Create(searchedUser);
             return this.Ok(friends);
         }
 
@@ -162,29 +184,28 @@ namespace SocialNetwork.Services.Controllers
         //Endpoint: GET =>/api/users/{username}/friends/preview => return short FriendCollection(6 priends) of  user (byUsername) preview data. Can be seen only friend's friends.
         [HttpGet]
         [Route("{username}/friends/preview")]
-        public IHttpActionResult FriendsPreviewData(string username)
+        public IHttpActionResult GetFriendsPreviewData([FromUri] string username)
         {
             var currentUserId = User.Identity.GetUserId();
-            if (currentUserId == null)
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("login to retrieve the data");
+                return this.BadRequest("Invalid user token! Please login again!");
             }
-            var currentUser = Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+
             var searchedUser = Data.Users.FirstOrDefault(u => u.UserName.Equals(username));
             if (searchedUser == null)
             {
-                return this.BadRequest("no such user");
-            }
-            if (currentUser.Friends.Contains(searchedUser) == false)
-            {
-                return this.BadRequest("you can not retrieve non friend data");
+                return this.NotFound();
             }
 
-            var friends = ShortFriendsCollectionViewModel.Create(searchedUser);
+            if (!currentUser.Friends.Contains(searchedUser) && currentUser != searchedUser)
+            {
+                return this.BadRequest("Not alllowed. You must be friends.");
+            }
+
+            var friends = FriendsPreviewDataViewModel.Create(searchedUser);
             return this.Ok(friends);
         }
-
-
-
     }
 }

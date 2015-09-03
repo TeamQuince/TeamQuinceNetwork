@@ -1,35 +1,36 @@
 ﻿namespace SocialNetwork.Services.Models.ViewModels
 {
+    using System.Linq;
+
     using SocialNetwork.Models;
+    using SocialNetwork.Models.Enumerations;
 
     public class PreviewUserDataViewModel
     {
-        public string Id { get; set; }
-        public string UserName { get; set; }
-        //   public string Name { get; set; }
-        public string ProfileImage { get; set; }
-        //   public bool IsFriend { get; set; }
-        //  public UserGender Gender { get; set; }
-        //   public string WallPicture { get; set; }
-        //  public bool HasPendingRequest { get; set; }
-        //  public List<Group> Groups { get; set; }
+        public string id { get; set; }
+
+        public string userName { get; set; }
+
+        public string name { get; set; }
+
+        public string profileImage { get; set; }
+
+        public string IsFriend { get; set; }
+
+        public string hasPendingRequest { get; set; }
 
         public static PreviewUserDataViewModel GetPreviewUserData(ApplicationUser user, ApplicationUser currentUser)
         {
             return new PreviewUserDataViewModel()
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                //  Name = user.Name,
-                //  IsFriend = user.Friends.Contains(currentUser),
-                ProfileImage = user.ProfilePicture,
-                //Gener = user.Gender,
-                //WallPicture = user.WallPicture,
-                //HasPendingRequest = user.Requests
-                //    .Any(r => r.Status == FriendRequestStatus.Pending && 
-                //        (r.Sender.Id == currentUser.Id || r.Recipient.Id == currentUser.Id)),
-                //GROUPS TO DO WITH GROUPS VIEW MODEL
-
+                id = user.Id,
+                userName = user.UserName,
+                name = user.Name,
+                IsFriend = user.Friends.Contains(currentUser).ToString(),
+                profileImage = user.ProfilePicture,
+                hasPendingRequest = user.Requests
+                    .Any(r => r.Sender == currentUser && r.Status == FriendRequestStatus.Pending)
+                    .ToString()
             };
         }
     }

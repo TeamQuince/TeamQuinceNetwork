@@ -201,6 +201,13 @@
                     .ExecuteAsync(new CancellationToken());
             }
 
+            var like = post.Likes.FirstOrDefault(l => l.Author == currentUser);
+            if (like != null)
+            {
+                return await this.BadRequest("Post is already liked by user.")
+                    .ExecuteAsync(new CancellationToken());
+            }
+
             post.Likes.Add(new PostLike()
             {
                 Author = currentUser
