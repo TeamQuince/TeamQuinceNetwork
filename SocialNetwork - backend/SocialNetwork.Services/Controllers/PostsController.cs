@@ -120,12 +120,14 @@
             var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
             if (currentUser == null)
             {
-                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
+                return await this.BadRequest("Invalid user token! Please login again!")
+                    .ExecuteAsync(new CancellationToken());
             }
 
             if (post.Author != currentUser && currentUser != post.Owner)
             {
-                return await this.Unauthorized().ExecuteAsync(new CancellationToken());
+                return await this.BadRequest("Not allowed. Delete allowed for post author and/or wall owner.")
+                    .ExecuteAsync(new CancellationToken());
             }
 
             // Now delete the post: 1) Delete all likes of all post comments, 2) Delete all comments, 

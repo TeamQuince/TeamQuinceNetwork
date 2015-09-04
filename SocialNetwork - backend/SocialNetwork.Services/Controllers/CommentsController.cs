@@ -184,8 +184,8 @@
                 return this.NotFound();
             }
 
-            var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
-            if (postComment == null)
+            var comment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
             {
                 return this.NotFound();
             }
@@ -198,9 +198,11 @@
             }
 
             var postCommentLikes = this.Data.CommentLikes
-                .Where(cl => cl.Comment.Id == postComment.Id);
+                .Where(cl => cl.Comment.Id == comment.Id);
 
-            if (!postComment.Author.Friends.Contains(currentUser) && !post.Owner.Friends.Contains(currentUser))
+            if (!comment.Author.Friends.Contains(currentUser) && 
+                !post.Owner.Friends.Contains(currentUser) &&
+                comment.Author != currentUser)
             {
                 return this.BadRequest("Not allowed. Either wall-owner or author must be friends.");
             }
@@ -215,7 +217,7 @@
                 Author = currentUser
             };
 
-            postComment.Likes.Add(newLikeToAdd);
+            comment.Likes.Add(newLikeToAdd);
             this.Data.SaveChanges();
 
             var commentLikeViewModel = this.Data.Comments.Where(c => c.Id == commentId)

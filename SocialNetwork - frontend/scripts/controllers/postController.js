@@ -26,7 +26,7 @@ socialNetwork.controller('PostController',
 
                 },
                 function errorHandler(error) {
-                    console.log(error);
+                    notify.error(error.message);
                 }
             );
 
@@ -43,19 +43,13 @@ socialNetwork.controller('PostController',
                         $scope.post.comments.push(data);
                     },
                     function errorHandler(error) {
-                        notify.error("Comment failed.");
+                        notify.error(error.message);
                     }
                 );
             $scope.commentFormVisible = false;
         };
 
         $scope.likePost = function() {
-
-            if (!verifyLikePostOperation($scope.post)) {
-                notify.error("You can only like/unlike posts of your friends and posts on your wall.");
-                return;
-            }
-
             postsData.likePostById($scope.post.id)
                 .then(
                     function successHandler(data) {
@@ -69,18 +63,12 @@ socialNetwork.controller('PostController',
                             );
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
 
         $scope.unlikePost = function() {
-
-            if (!verifyLikePostOperation($scope.post)) {
-                notify.error("You can only like/unlike posts of your friends and posts on your wall.");
-                return;
-            }
-
             postsData.unlikePostById($scope.post.id)
                 .then(
                     function successHandler(data) {
@@ -94,7 +82,7 @@ socialNetwork.controller('PostController',
                             );
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
@@ -105,15 +93,14 @@ socialNetwork.controller('PostController',
         };
 
         $scope.inviteFriend = function() {
-            profileData.sendFriendRequest($scope.post.author.username)
+            profileData.sendFriendRequest($scope.post.authorUsername)
                 .then(
                     function successHandler(data) {
                         $scope.posterData.hasPendingRequest = true;
                         notify.info("Invitation sent.");
-                        console.log(data);
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
@@ -123,12 +110,6 @@ socialNetwork.controller('PostController',
         };
 
         $scope.deletePost = function() {
-
-            if (!verifyDeleteOperation($scope.post)) {
-                notify.error("Delete allowed for own posts and posts on own wall.");
-                return;
-            }
-
             postsData.deletePostById($scope.post.id)
                 .then(
                     function successHandler(data) {
@@ -136,7 +117,7 @@ socialNetwork.controller('PostController',
                         $scope.$emit('deletePost', $scope.post);
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
@@ -206,7 +187,7 @@ socialNetwork.controller('PostController',
             var currentUser = authentication.getUserName();
 
             //If it is an own post:
-            if (currentUser === posting.author.username) {
+            if (currentUser === posting.authorUsername) {
                 return true;
             }
 

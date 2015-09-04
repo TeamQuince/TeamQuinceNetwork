@@ -45,7 +45,7 @@ socialNetwork.controller('CommentController',
                         commentsData.getCommentPreviewLikes($scope.post.id, commentObject.id)
                             .then(
                                 function successHandler(likesData) {
-                                    $scope.comment.likesCount = likesData.totalLikeCount;
+                                    $scope.comment.likesCount = likesData[0].totalLikesCount;
                                 }
                             );
                     },
@@ -64,7 +64,7 @@ socialNetwork.controller('CommentController',
                         commentsData.getCommentPreviewLikes($scope.post.id, commentObject.id)
                             .then(
                                 function successHandler(likesData) {
-                                    $scope.comment.likesCount = likesData.totalLikeCount;
+                                    $scope.comment.likesCount = likesData[0].totalLikesCount;
                                 }
                             );
                     },
