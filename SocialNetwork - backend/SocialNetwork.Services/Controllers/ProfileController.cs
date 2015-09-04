@@ -48,99 +48,123 @@
         }
 
         [HttpGet]
-        [EnableQuery]
         [Route("requests")]
-        public IHttpActionResult GetFrindReqeusts()
+        public async Task<HttpResponseMessage> GetFriendRequests()
         {
-            var me = GetCurrentUser();
-            if (me == null)
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("Invalid user token! Please login again!");
+                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
             }
 
-            var requests = me.Requests.AsQueryable().Select(FriendshipRequestViewModel.Create).ToList();
+            var requests = currentUser.Requests
+                .Where(r => r.Status == FriendRequestStatus.Pending)
+                .Select(r => new
+                {
+                    id = r.Id,
+                    status = r.Status.ToString(),
+                    user = new
+                    {
+                        id = r.Sender.Id,
+                        userName = r.Sender.UserName,
+                        name = r.Sender.Name,
+                        image = r.Sender.ProfilePicture
+                    }
+                })
+                .ToList();
 
-            return this.Ok(requests);
+            return await this.Ok(requests).ExecuteAsync(new CancellationToken());
+
         }
 
         [HttpPost]
-        [EnableQuery]
         [Route("requests/{username}")]
-        public IHttpActionResult SendFriendRequest(string username)
+        public async Task<HttpResponseMessage> SendFriendRequest([FromUri] string username)
         {
-            var me = GetCurrentUser();
-            if (me == null)
+            var targetUser = this.Data.Users.FirstOrDefault(u => u.UserName == username);
+
+            if (targetUser == null)
             {
-                return this.BadRequest("Invalid user token! Please login again!");
+                return await this.NotFound().ExecuteAsync(new CancellationToken());
             }
 
-            var otherUser = this.Data.Users.FirstOrDefault(u => u.UserName == username);
-            if (otherUser == null)
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("Records of User " + username + " do not exist in the database.");
+                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
             }
 
-            var requestFromMe = otherUser.Requests.AsQueryable().FirstOrDefault(r => r.Recipient.Id == otherUser.Id);
-            if (requestFromMe != null)
+            if (currentUser == targetUser)
             {
-                return this.BadRequest("You have already sent a frind request. Request's status is " + requestFromMe.Status.ToString());
+                return await this.BadRequest("You cannot send friendship request to yourself.").ExecuteAsync(new CancellationToken());
             }
-            else
+
+            if (targetUser.Friends.Contains(currentUser))
             {
-                var requestToMe = me.Requests.AsQueryable().FirstOrDefault(r => r.Sender.Id == me.Id);
-                if (requestToMe != null)
-                {
-                    return this.BadRequest("A " + requestToMe.Status.ToString().ToLower() + " request already exists.");
-                }
+                return await this.BadRequest("User is already a friend.").ExecuteAsync(new CancellationToken());
+            }
+
+            if (targetUser.Requests.Any(r => r.Sender == currentUser))
+            {
+                return await this.BadRequest("A request already exists.").ExecuteAsync(new CancellationToken());
             }
 
             var request = new FriendshipRequest()
             {
-                Status = FriendRequestStatus.Pending,
-                Sender = me,
-                Recipient = otherUser
+                Sender = currentUser,
+                Recipient = targetUser,
+                Status = FriendRequestStatus.Pending
             };
 
-            this.Data.FriendshipRequests.Add(request);
-
-            me.Requests.Add(request);
-            this.Data.SaveChanges();
-            otherUser.Requests.Add(request);
+            targetUser.Requests.Add(request);
             this.Data.SaveChanges();
 
-            return this.Ok(new FriendshipRequestViewModel(request));
+            return await this.Ok("Friend request sent.").ExecuteAsync(new CancellationToken());
         }
 
         [HttpPut]
-        [EnableQuery]
         [Route("requests/{id}")]
-        public IHttpActionResult ApproveFrindRequest(int id, [FromUri]string status)
+        public async Task<HttpResponseMessage> ProcessFriendRequest([FromUri] int id, [FromUri] string status)
         {
-            var me = GetCurrentUser();
-            if (me == null)
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
             {
-                return this.BadRequest("Invalid user token! Please login again!");
+                return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
             }
 
-            var request = me.Requests.AsQueryable().FirstOrDefault(r => r.Id == id);
+            var request = currentUser.Requests.FirstOrDefault(r => r.Id == id);
+
             if (request == null)
             {
-                return this.BadRequest("Friendship request with Id = " + id + " does not exist in Database records and/or in Frindehip requests for the current user.");
+                return await this.NotFound().ExecuteAsync(new CancellationToken());
             }
 
-            switch (status.ToLower())
+            if (request.Status == FriendRequestStatus.Approved)
+            {
+                return await this.BadRequest("Request has already been approved.").ExecuteAsync(new CancellationToken());
+            }
+            else if (request.Status == FriendRequestStatus.Rejected)
+            {
+                return await this.BadRequest("Request has already been rejected.").ExecuteAsync(new CancellationToken());
+            }
+
+            switch (status)
             {
                 case "approved":
-                    {
-                        var message = ProcessCommand(true, request, me);
-                        return this.Ok(message);
-                    }
+                    request.Status = FriendRequestStatus.Approved;
+                    currentUser.Friends.Add(request.Sender);
+                    request.Sender.Friends.Add(currentUser);
+                    this.Data.SaveChanges();
+                    return await this.Ok("Friend request approved.").ExecuteAsync(new CancellationToken());
                 case "delete":
-                    {
-                        var message = ProcessCommand(false, request, me);
-                        return this.Ok(message);
-                    }
-                default: return this.BadRequest("Invalid action against Friendship request.");
+                    request.Status = FriendRequestStatus.Rejected;
+                    this.Data.SaveChanges();
+                    return await this.Ok("Friend request approved.").ExecuteAsync(new CancellationToken());
+                default:
+                    return await this.BadRequest("Unkown status.").ExecuteAsync(new CancellationToken());
             }
         }
 

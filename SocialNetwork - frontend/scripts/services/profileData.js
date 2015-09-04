@@ -1,38 +1,38 @@
 'use strict';
 
-socialNetwork.factory('profileData', function profileData($http, requester, authentication , baseServiceUrl) {
+socialNetwork.factory('profileData', function profileData($http, requester, authentication, baseServiceUrl) {
     var service = {},
         serviceUrl = baseServiceUrl + 'me';
 
-    service.getDataAboutMe = function () {
+    service.getDataAboutMe = function() {
         return requester('GET', serviceUrl, authentication.getHeaders());
     };
 
-    service.getOwnFriends = function () {
+    service.getOwnFriends = function() {
         return requester('GET', serviceUrl + '/friends', authentication.getHeaders());
     };
 
-    service.getFriendRequests = function () {
+    service.getFriendRequests = function() {
         return requester('GET', serviceUrl + '/requests', authentication.getHeaders());
     };
 
-    service.sendFriendRequest = function (username) {
+    service.sendFriendRequest = function(username) {
         return requester('POST', serviceUrl + '/requests/' + username, authentication.getHeaders());
     };
 
-    service.approveFriendRequest = function (requestId) {
+    service.approveFriendRequest = function(requestId) {
         return requester('PUT', serviceUrl + '/requests/' + requestId + '?status=approved', authentication.getHeaders());
     };
 
-    service.rejectFriendRequest = function (requestId) {
-        return requester('PUT', serviceUrl + '/requests/' + requestId + '?status=rejected', authentication.getHeaders());
+    service.rejectFriendRequest = function(requestId) {
+        return requester('PUT', serviceUrl + '/requests/' + requestId + '?status=delete', authentication.getHeaders());
     };
 
-    service.getNewsFeedPages = function (StartPostId) {
+    service.getNewsFeedPages = function(StartPostId) {
         return requester('GET', serviceUrl + '/feed?StartPostId=' + StartPostId + '&PageSize=5', authentication.getHeaders());
     };
 
-    service.changePassword = function (passwordData) {
+    service.changePassword = function(passwordData) {
         return requester('PUT', baseServiceUrl + 'users/changepassword', authentication.getHeaders(), passwordData);
     };
 

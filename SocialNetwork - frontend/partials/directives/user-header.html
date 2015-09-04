@@ -25,7 +25,7 @@
                             <table>
                                 <tr ng-repeat="request in requests">
                                     <td>
-                                        <img class="img-thumbnail img-thumbnail-small" ng-src="{{request.user.profileImageData || 'img/noavatar.jpg'}}"/>
+                                        <img class="img-thumbnail img-thumbnail-small" ng-src="{{request.user.image || 'img/noavatar.jpg'}}"/>
                                     </td>
                                     <td>
                                         <h6>{{request.user.name}}</h6>
@@ -44,7 +44,7 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search" ng-model="keyword" ng-change="showSearchResults($event, keyword)" ng-focus="setCoordinates($event)">
+                            <input type="text" class="form-control" placeholder="Find people..." ng-model="keyword" ng-change="showSearchResults($event, keyword)" ng-focus="setCoordinates($event)">
                         </div>
                     </form>
 
@@ -56,7 +56,7 @@
                                     <img class="img-thumbnail img-thumbnail-small" ng-src="{{man.profileImageData || 'img/noavatar.jpg'}}"/>
                                 </td>
                                 <td>
-                                    <h6><a href="#/users/{{man.username}}">{{man.name}}</a></h6>
+                                    <h6><a href="#/users/{{man.userName}}">{{man.name}}</a></h6>
                                 </td>
                             </tr>
                             <tr>{{peopleCount}} people found</tr>
