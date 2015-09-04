@@ -3,12 +3,12 @@ socialNetwork.controller('UserFriendsController',
 
         usersData.getFriendsFriendsPreview($scope.test)
             .then(
-            function successHandler(data) {
-                $scope.friends = data.friends;
-                $scope.friendsCount = data.totalCount;
-            },
-            function errorHandler(error) {
-                console.log(error);
-            }
-        );
+                function successHandler(data) {
+                    $scope.friends = data.friends;
+                    $scope.friendsCount = data.totalCount;
+                },
+                function errorHandler(error) {
+                    console.log(error);
+                }
+            );
     });

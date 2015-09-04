@@ -8,7 +8,7 @@
         <tbody>
         <tr ng-repeat="friend in friends | limitTo: 5">
             <td>
-                <img ng-src="{{friend.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+                <img ng-src="{{friend.image || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
             </td>
             <td>
                 <a href="#/users/{{friend.username}}">{{friend.name}}</a>
