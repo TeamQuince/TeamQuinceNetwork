@@ -5,9 +5,9 @@ socialNetwork.controller('PostController',
 
         $scope.isUserPreviewVisible = false;
         $scope.showComments = false;
-        $scope.isMe = authentication.getUserName() === $scope.post.author.username ? true : false;
+        $scope.isMe = authentication.getUserName() === $scope.post.authorUsername ? true : false;
 
-        commentsData.getPostComments($scope.post.Id)
+        commentsData.getPostComments($scope.post.id)
             .then(
                 function successHandler(data) {
                     $scope.post.comments = data;
@@ -17,10 +17,13 @@ socialNetwork.controller('PostController',
                 }
             );
 
-        usersData.getUserPreviewData($scope.post.AuthorUsername)
+        usersData.getUserPreviewData($scope.post.authorUsername)
             .then(
                 function successHandler(data) {
                     $scope.posterData = data;
+
+                    console.log(data);
+
                 },
                 function errorHandler(error) {
                     console.log(error);

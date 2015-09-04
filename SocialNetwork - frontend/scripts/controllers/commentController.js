@@ -11,7 +11,7 @@ socialNetwork.controller('CommentController',
             $scope.replyFormVisible = !$scope.replyFormVisible;
         };
 
-        usersData.getUserPreviewData($scope.comment.AuthorUsername)
+        usersData.getUserPreviewData($scope.comment.authorUsername)
             .then(
                 function successHandler(data) {
                     $scope.commenterData = data;
@@ -22,12 +22,6 @@ socialNetwork.controller('CommentController',
             );
 
         $scope.addComment = function() {
-
-            if (!verifyCommentOperation()) {
-                notify.error("You can only comment on posts of your friends or posts on their walls.");
-                return;
-            }
-
             commentsData.addCommentToPost($scope.post.id, $scope.replyContent)
                 .then(
                     function successHandler(data) {
@@ -37,18 +31,12 @@ socialNetwork.controller('CommentController',
                         $scope.post.comments.push(data);
                     },
                     function errorHandler(error) {
-                        notify.error("Comment failed.");
+                        notify.error(error.message);
                     }
                 );
         };
 
         $scope.likeComment = function(commentObject) {
-
-            if (!verifyCommentOperation()) {
-                notify.error("You can only like comments of your friends or comments on friends' walls.");
-                return;
-            }
-
             commentsData.likeComment($scope.post.id, commentObject.id)
                 .then(
                     function successHandler(data) {
@@ -62,7 +50,7 @@ socialNetwork.controller('CommentController',
                             );
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
@@ -81,7 +69,7 @@ socialNetwork.controller('CommentController',
                             );
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
@@ -91,25 +79,19 @@ socialNetwork.controller('CommentController',
         };
 
         $scope.inviteFriend = function() {
-            profileData.sendFriendRequest($scope.comment.author.username)
+            profileData.sendFriendRequest($scope.comment.authorUsername)
                 .then(
                     function successHandler(data) {
                         notify.info("Invitation sent.");
                         $scope.commenterData.hasPendingRequest = true;
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
 
         $scope.deleteComment = function() {
-
-            if (!verifyDeleteOperation($scope.comment)) {
-                notify.error("Delete allowed for own comments.");
-                return;
-            }
-
             commentsData.deletePostComment($scope.post.id, $scope.comment.id)
                 .then(
                     function successHandler(data) {
@@ -119,7 +101,7 @@ socialNetwork.controller('CommentController',
 
                     },
                     function errorHandler(error) {
-                        console.log(error);
+                        notify.error(error.message);
                     }
                 );
         };
@@ -192,7 +174,7 @@ socialNetwork.controller('CommentController',
         function verifyEditOperation(posting) {
             var currentUser = authentication.getUserName();
 
-            if (currentUser === posting.author.username) {
+            if (currentUser === posting.authorUsername) {
                 return true;
             }
 

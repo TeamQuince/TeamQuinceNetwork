@@ -39,7 +39,7 @@
             }
 
             var commentsPreviews = post.Comments
-                .OrderByDescending(c => c.PostedOn)
+                .OrderBy(c => c.PostedOn)
                 .AsQueryable()
                 .Select(p => CommentViewModel.CreatePreview(currentUser, p))
                 .ToList();
@@ -72,7 +72,7 @@
 
             var newCommentToAdd = new Comment()
             {
-                Author = this.Data.Users.Find(currentUser),
+                Author = currentUser,
                 Post = post,
                 PostedOn = DateTime.Now,
                 Content = model.CommentContent
@@ -81,9 +81,10 @@
             post.Comments.Add(newCommentToAdd);
             this.Data.SaveChanges();
 
-            // NEW COMMENT VIEW MODEL
-            var newCommentViewModel = this.Data.Comments.Where(c => c.Id == newCommentToAdd.Id)
-                .Select(CommentViewModel.Create);
+            var newCommentViewModel = this.Data.Comments
+                .Where(c => c.Id == newCommentToAdd.Id)
+                .Select(CommentViewModel.Create)
+                .FirstOrDefault();
 
             return this.Ok(newCommentViewModel);
         }

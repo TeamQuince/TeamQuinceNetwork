@@ -1,8 +1,8 @@
-<table class="table posts-table" post-id="{{post.Id}}">
+<table class="table posts-table" post-id="{{post.id}}">
     <thead>
     <tr>
         <th>
-            <img ng-src="{{post.AuthorProfileImage || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail"/>
+            <img ng-src="{{post.authorProfileImage || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail"/>
         </th>
         <th>
             <!-- Post actions menu-->
@@ -17,8 +17,8 @@
             </div>
             <!-- End of Posts actions menu-->
 
-            <a href="#/users/{{post.AuthorUsername}}" ng-mouseover="previewUser()"
-               click-anywhere="isUserPreviewVisible=false">{{post.AuthorUsername}}</a>
+            <a href="#/users/{{post.authorUsername}}" ng-mouseover="previewUser()"
+               click-anywhere="isUserPreviewVisible=false">{{post.authorUsername}}</a>
 
             <!-- User preview element-->
             <div class="user-preview-container" ng-show="isUserPreviewVisible">
@@ -32,21 +32,21 @@
                 </div>
             <!-- End User preview element-->
             <br/>
-            <span>{{post.Date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span>
+            <span>{{post.date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span>
         </th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td colspan="2">{{post.PostContent}}</td>
+        <td colspan="2">{{post.postContent}}</td>
     </tr>
     <tr>
         <td colspan="2">
-            <a href=""> {{post.LikesCount}} people liked this</a> -
+            <a href=""> {{post.likesCount}} people liked this</a> -
             <a href="" ng-hide="post.liked" ng-click="likePost()">Like</a>
             <a href="" ng-show="post.liked" ng-click="unlikePost()">Unlike</a>
             <span class="pull-right">
-                <a href="" ng-click="toggleComments()">{{post.Comments.length}} comment(s)</a>&nbsp;
+                <a href="" ng-click="toggleComments()">{{post.comments.length}} comment(s)</a>&nbsp;
                 <a href="" ng-click="showCommentForm()">Comment</a>
             </span>
         </td>
@@ -70,7 +70,7 @@
     <!-- End of comment form-->
 
     <!-- Comments part-->
-    <tr class="comment" ng-repeat="comment in post.Comments | orderBy: 'date'" ng-cloak ng-show="showComments"></tr>
+    <tr class="comment" ng-repeat="comment in post.comments | orderBy: 'date'" ng-cloak ng-show="showComments"></tr>
     <!-- End of comments part-->
     </tbody>
 </table>

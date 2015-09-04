@@ -1,5 +1,5 @@
 <td>
-    <img class="img-thumbnail" ng-src="{{comment.AuthorProfileImage || 'img/noavatar.jpg'}}" alt=""/>
+    <img class="img-thumbnail" ng-src="{{comment.authorProfileImage || 'img/noavatar.jpg'}}" alt=""/>
 </td>
 <td>
 
@@ -15,8 +15,8 @@
     </div>
     <!-- End of Comment actions menu-->
 
-    <a href="#/users/{{comment.AuthorUsername}}" ng-mouseover="isUserPreviewVisible=true"
-       click-anywhere="isUserPreviewVisible=false">{{comment.AuthorUsername}}</a>
+    <a href="#/users/{{comment.authorUsername}}" ng-mouseover="isUserPreviewVisible=true"
+       click-anywhere="isUserPreviewVisible=false">{{comment.authorUsername}}</a>
 
     <!-- User preview element-->
     <div class="user-preview-container" ng-show="isUserPreviewVisible">
@@ -35,12 +35,12 @@
     <!-- End User preview element-->
     <br/>
 
-    <p>{{comment.Date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span></p>
+    <p>{{comment.date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span></p>
 
-    <p>{{comment.CommentContent}}</p>
+    <p>{{comment.commentContent}}</p>
 
     <p>
-        <span><a href="">{{comment.LikesCount}} people liked this</a></span> -
+        <span><a href="">{{comment.likesCount}} people liked this</a></span> -
         <span><a href="" ng-hide="comment.liked" ng-click="likeComment(comment)">Like</a></span>
         <span><a href="" ng-show="comment.liked" ng-click="unlikeComment(comment)">Unlike</a></span>
         <span class="pull-right"><a href="" ng-click="showReplyForm()">Reply</a></span>
