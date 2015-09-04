@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.Services.Models.ViewModels.Comment
+﻿namespace SocialNetwork.Services.Models.ViewModels.CommentViewModels
 {
     using System;
     using System.Linq.Expressions;

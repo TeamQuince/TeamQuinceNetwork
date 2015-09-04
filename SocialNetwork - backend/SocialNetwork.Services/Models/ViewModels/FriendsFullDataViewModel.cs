@@ -9,9 +9,9 @@
 
     public class FriendsFullDataViewModel
     {
-        public int totalCount { get; set; }
+        public int TotalCount { get; set; }
 
-        public IEnumerable<PreviewUserDataViewModel> friends { get; set; }
+        public IEnumerable<PreviewUserDataViewModel> Friends { get; set; }
 
         public static object Create(ApplicationUser user)
         {
@@ -20,10 +20,10 @@
                 totalCount = user.Friends.Count,
                 friends = user.Friends.Select(u => new
                     {
-                        id = u.Id,
-                        userName = u.UserName,
-                        name = u.Name,
-                        image = u.ProfilePicture
+                        Id = u.Id,
+                        UserName = u.UserName,
+                        Name = u.Name,
+                        Image = u.ProfilePicture
                     })
             };
         }

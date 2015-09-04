@@ -3,10 +3,11 @@
     using System;
     public class MessageViewModel
     {
-        public string message { get; set; }
+        public string Message { get; set; }
+
         public MessageViewModel(string message)
         {
-            this.message = message;
+            this.Message = message;
         }
     }
 }

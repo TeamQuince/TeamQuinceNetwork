@@ -8,19 +8,19 @@
 
     public class DataAboutMeViewModel
     {
-        public string userName { get; set; }
+        public string UserName { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public int gender { get; set; }
+        public int Gender { get; set; }
 
-        public string email { get; set; }
+        public string Email { get; set; }
 
-        public string profileImageData { get; set; }
+        public string ProfileImageData { get; set; }
 
-        public string coverImageData { get; set; }
+        public string CoverImageData { get; set; }
 
-        public int friendsCount { get; set; }
+        public int FriendsCount { get; set; }
 
         public static Expression<Func<ApplicationUser, DataAboutMeViewModel>> Create
         {
@@ -28,13 +28,13 @@
             {
                 return user => new DataAboutMeViewModel()
                 {
-                    userName = user.UserName,
-                    name = user.Name,
-                    gender = (int)user.Gender,
-                    email = user.Email,
-                    profileImageData = user.ProfilePicture,
-                    coverImageData = user.WallPicture,
-                    friendsCount = user.Friends.Count
+                    UserName = user.UserName,
+                    Name = user.Name,
+                    Gender = (int)user.Gender,
+                    Email = user.Email,
+                    ProfileImageData = user.ProfilePicture,
+                    CoverImageData = user.WallPicture,
+                    FriendsCount = user.Friends.Count
                 };
             }
         }

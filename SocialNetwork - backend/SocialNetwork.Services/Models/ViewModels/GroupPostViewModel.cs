@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using Comment;
+
     using SocialNetwork.Models;
 
     public class GroupPostViewModel

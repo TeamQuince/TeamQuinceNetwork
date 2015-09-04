@@ -1,7 +1,4 @@
-﻿/*
- *  Created on September 2, 2015 by Idmitrov
- */
-namespace SocialNetwork.Services.Controllers
+﻿namespace SocialNetwork.Services.Controllers
 {
     using System;
     using System.Linq;
@@ -10,61 +7,77 @@ namespace SocialNetwork.Services.Controllers
 
     using Microsoft.AspNet.Identity;
 
-    using SocialNetwork.Models;
     using Models.BindingModels;
-    using Models.ViewModels;
-    using Filters;
     using Models.BindingModels.Comment;
-    using Models.ViewModels.Comment;
+    using Models.ViewModels;
+    using Models.ViewModels.CommentViewModels;
+    using SocialNetwork.Models;
+    using Filters;
 
+    /// <summary>
+    /// Created on September 2, 2015 by Idmitrov
+    /// </summary>
     [Route("api/posts/{id}/comments")]
     [Authorize]
     public class CommentsController : BaseApiController
     {
-        // GET COMMENTS => GET => api/posts/id/comments
         [HttpGet]
         public IHttpActionResult GetComments([FromUri]int id)
         {
-            // POST
             var post = this.Data.Posts.Find(id);
 
-            // POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", id));
+            if (post == null) 
+            {
+                return this.NotFound();
+            }
 
-            // COMMENTS
-            var postComments = this.Data.Comments.Where(c => c.Post.Id == post.Id)
-                .Select(CommentViewModel.Create);
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
-            // NO COMMENTS
-            if (!postComments.Any()) return this.StatusCode(HttpStatusCode.NoContent);
+            var commentsPreviews = post.Comments
+                .OrderByDescending(c => c.PostedOn)
+                .AsQueryable()
+                .Select(p => CommentViewModel.CreatePreview(currentUser, p))
+                .ToList();
 
-            return this.Ok(postComments);
+            if (!commentsPreviews.Any())
+            {
+                return this.StatusCode(HttpStatusCode.NoContent);
+            }
+
+            return this.Ok(commentsPreviews);
         }
 
-        // ADD COMMENT => POST => api/posts/id/comments
         [ValidateModel]
         [HttpPost]
         public IHttpActionResult AddComment([FromUri] int id, [FromBody] AddCommentBindingModel model)
         {
-            // POST
             var post = this.Data.Posts.Find(id);
 
-            // POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", id));
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // LOGGED USER
-            var loggedUser = this.User.Identity.GetUserId();
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
-            // NEW COMMENT TO ADD
             var newCommentToAdd = new Comment()
             {
-                Author = this.Data.Users.Find(loggedUser),
+                Author = this.Data.Users.Find(currentUser),
                 Post = post,
                 PostedOn = DateTime.Now,
                 Content = model.CommentContent
             };
 
-            // ADD COMMENT AND SAVE
             post.Comments.Add(newCommentToAdd);
             this.Data.SaveChanges();
 
@@ -75,210 +88,230 @@ namespace SocialNetwork.Services.Controllers
             return this.Ok(newCommentViewModel);
         }
 
-        // EDIT COMMENT => PUT => api/posts/id/comments/id
         [Route("api/posts/{postId}/comments/{commentId}")]
         [ValidateModel]
         [HttpPut]
-        public IHttpActionResult EditComment(
-            [FromUri] int postId, int commentId, [FromBody] AddCommentBindingModel model)
+        public IHttpActionResult EditComment([FromUri] int postId, int commentId, [FromBody] AddCommentBindingModel model)
         {
-            // POST
             var post = this.Data.Posts.Find(postId);
 
-            // IF POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", postId));
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // COMMENT
             var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (postComment == null)
+            {
+                return this.NotFound();
+            }
 
-            // IF COMMENT DOES NOT EXIST
-            if (postComment == null) return this.BadRequest(InvalidEntity("comment", commentId));
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
-            // LOGGED USER
-            var loggedUser = this.User.Identity.GetUserId();
+            if (postComment.Author.Id != currentUserId)
+            {
+                return this.BadRequest("Not allowed. User must be author of comment.");
+            }
 
-            // IF LOGGED USER IS NOT COMMENT AUTHOR
-            if (postComment.Author.Id != loggedUser) return this.Unauthorized();
-
-            // CHANGE CONTENT AND SAVE
             postComment.Content = model.CommentContent;
             this.Data.SaveChanges();
 
-            // COMMENT VIEW MODEL
             var postCommentViewModel = this.Data.Comments.Where(c => c.Id == postComment.Id)
-                .Select(CommentViewModel.Create);
+                .Select(CommentViewModel.Create)
+                .FirstOrDefault();
+            postCommentViewModel.PostId = post.Id;
 
             return this.Ok(postCommentViewModel);
         }
 
-        // DELETE COMMENT => DELETE => api/posts/id/comments/id
         [Route("api/posts/{postId}/comments/{commentId}")]
         [HttpDelete]
         public IHttpActionResult DeleteComment([FromUri] int postId, [FromUri] int commentId)
         {
-            // POST
             var post = this.Data.Posts.Find(postId);
 
-            // IF POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", postId));
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // COMMENT
             var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (postComment == null)
+            {
+                return this.NotFound();
+            }
 
-            // IF COMMENT DOES NOT EXIST
-            if (postComment == null) return this.BadRequest(InvalidEntity("comment", commentId));
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
-            // LOGGED USER
-            var loggedUser = this.User.Identity.GetUserId();
+            if (postComment.Author.Id != currentUserId)
+            {
+                return this.BadRequest("Not allowed. User must be author of comment or wall-owner.");
+            }
 
-            // IF LOGGED USER IS COMMENT AUTHOR
-            if (postComment.Author.Id != loggedUser) return this.Unauthorized();
+            var likes = postComment.Likes.ToList();
+            foreach (var like in likes)
+            {
+                this.Data.CommentLikes.Remove(like);
+            }
 
-            // DELETE COMMENT AND SAVE
+            postComment.Likes.Clear();
+            post.Comments.Remove(postComment);
             this.Data.Comments.Remove(postComment);
             this.Data.SaveChanges();
 
-            return this.Ok("Comment successfully deleted.");
+            return this.Ok("Comment deleted.");
         }
 
-        // LIKE COMMENT => POST => api/posts/id/comments/id/likes
         [Route("api/posts/{postId}/comments/{commentId}/likes")]
         [HttpPost]
         public IHttpActionResult LikeComment([FromUri] int postId, [FromUri] int commentId)
         {
-            // POST
             var post = this.Data.Posts.Find(postId);
 
-            // IF POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", postId));
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // COMMENT
             var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (postComment == null)
+            {
+                return this.NotFound();
+            }
 
-            // IF COMMENT DOES NOT EXIST
-            if (postComment == null) return this.BadRequest(InvalidEntity("comment", commentId));
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
-            // LOGGED USER
-            var loggedUser = this.User.Identity.GetUserId();
+            var postCommentLikes = this.Data.CommentLikes
+                .Where(cl => cl.Comment.Id == postComment.Id);
 
-            // COMMET LIKES
-            var postCommentLikes = this.Data.CommentLikes.Where(cl => cl.Comment.Id == postComment.Id);
+            if (!postComment.Author.Friends.Contains(currentUser) && !post.Owner.Friends.Contains(currentUser))
+            {
+                return this.BadRequest("Not allowed. Either wall-owner or author must be friends.");
+            }
 
-            // IF COMMENT LIKES CONTAINS AUTHOR AS LOGGED USER => COMMENT IS ALREADY LIKED
-            if (postCommentLikes.Any(l => l.Author.Id == loggedUser)) return this.BadRequest("Comment is already liked");
+            if (postCommentLikes.Any(l => l.Author.Id == currentUserId))
+            {
+                return this.BadRequest("Comment is already liked.");
+            }
 
-            // NEW LIKE TO ADD
             var newLikeToAdd = new CommentLike()
             {
-                Author = this.Data.Users.FirstOrDefault(u => u.Id == loggedUser),
-                Comment = postComment
+                Author = currentUser
             };
 
-            // COMMENT LIKES ADD NEW LIKE AND SAVE
-            this.Data.CommentLikes.Add(newLikeToAdd);
+            postComment.Likes.Add(newLikeToAdd);
             this.Data.SaveChanges();
 
-            // LIKES VIEW MODEL
             var commentLikeViewModel = this.Data.Comments.Where(c => c.Id == commentId)
                 .Select(LikedCommentViewModel.Create);
 
             return this.Ok(commentLikeViewModel);
         }
 
-        // UNLIKE COMMENT => DELETE => api/posts/id/comments/id/likes
         [Route("api/posts/{postId}/comments/{commentId}/likes")]
         [HttpDelete]
         public IHttpActionResult UnlikeComment([FromUri] int postId, [FromUri] int commentId)
         {
-            // POST
             var post = this.Data.Posts.Find(postId);
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", postId));
+            var comment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
+            {
+                return this.NotFound();
+            }
 
-            // COMMENT
-            var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
-            // COMMENT DOES NOT EXIST
-            if (postComment == null) return this.BadRequest(InvalidEntity("comment", commentId));
+            var likes = this.Data.CommentLikes.Where(cl => cl.Comment.Id == commentId);
 
-            // LOGGED USER
-            var loggedUser = this.User.Identity.GetUserId();
+            var likeToRemove = likes.FirstOrDefault(l => l.Author.Id == currentUserId);
+            if (likeToRemove == null)
+            {
+                return this.BadRequest("Comment is not liked.");
+            }
 
-            // LIKES
-            var postCommentLikes = this.Data.CommentLikes.Where(cl => cl.Comment.Id == commentId);
-
-            // LIKE TO REMOVE
-            var likeToRemove = postCommentLikes.FirstOrDefault(l => l.Author.Id == loggedUser);
-
-            // IF LIKE DOES NOT EXIST
-            if (likeToRemove == null) return this.BadRequest("Comment is not liked.");
-
-            // REMOVE LIKE AND SAVE
+            comment.Likes.Remove(likeToRemove);
             this.Data.CommentLikes.Remove(likeToRemove);
             this.Data.SaveChanges();
 
-            // COMMENT UNLIKE VOEW MODEL
             var likesViewModel = this.Data.Comments.Where(c => c.Id == commentId)
                 .Select(UnlikedCommendViewModel.Create);
 
             return this.Ok(likesViewModel);
         }
 
-        // COMMENT DETAILED LIKES
         [Route("api/posts/{postId}/comments/{commentId}/likes")]
         [HttpGet]
         public IHttpActionResult CommentLikesDetailed([FromUri] int postId, [FromUri] int commentId)
         {
-            // POST
             var post = this.Data.Posts.Find(postId);
 
-            // POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", postId));
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // COMMENT
-            var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            var comment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
+            {
+                return this.NotFound();
+            }
 
-            // IF COMMENT DOES NOT EXIST
-            if (postComment == null) return this.BadRequest(InvalidEntity("comment", postId));
-
-            // COMMENT LIKES
             var postCommentlikes = this.Data.CommentLikes.Where(cl => cl.Comment.Id == commentId)
-                .Select(Models.ViewModels.Comment.CommentLikeViewModel.Create);
+                .Select(Models.ViewModels.CommentViewModels.CommentLikeViewModel.Create)
+                .ToList(); ;
 
             return this.Ok(postCommentlikes);
         }
 
-        // COMMENT PREVIEW LIKES
         [Route("api/posts/{postId}/comments/{commentId}/likes/preview")]
         [HttpGet]
         public IHttpActionResult CommentLikesPreview([FromUri] int postId, [FromUri] int commentId)
         {
-            // POST
             var post = this.Data.Posts.Find(postId);
 
-            // POST DOES NOT EXIST
-            if (post == null) return this.BadRequest(InvalidEntity("post", postId));
+            if (post == null)
+            {
+                return this.NotFound();
+            }
 
-            // COMMENT
-            var postComment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            var comment = post.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
+            {
+                return this.NotFound();
+            }
 
-            // IF COMMENT DOES NOT EXIST
-            if (postComment == null) return this.BadRequest(InvalidEntity("comment", postId));
-
-            // COMMENT LIKES
-            var postCommentLikesPreview = this.Data.Comments.Where(c => c.Id == commentId)
-                .Take(10).Select(CommentLikePreviewViewModel.Create);
+            var postCommentLikesPreview = this.Data.Comments
+                .Where(c => c.Id == commentId)
+                .Take(10)
+                .Select(CommentLikePreviewViewModel.Create)
+                .ToList();
 
             return this.Ok(postCommentLikesPreview);
-        }
-
-        // POST/COMMENT DOES NOT EXIST MESSAGE
-        private static string InvalidEntity(string entityName, int entityId)
-        {
-            var response = string.Format("{0} with id: {1} does not exist", entityName, entityId);
-
-            return response;
         }
     }
 }

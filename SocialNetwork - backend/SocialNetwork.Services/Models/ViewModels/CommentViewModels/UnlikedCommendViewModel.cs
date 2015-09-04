@@ -1,31 +1,26 @@
-﻿namespace SocialNetwork.Services.Models.ViewModels.Comment
+﻿namespace SocialNetwork.Services.Models.ViewModels.CommentViewModels
 {
     using System;
     using System.Linq.Expressions;
-
     using SocialNetwork.Models;
 
-    public class LikedCommentViewModel
+    public class UnlikedCommendViewModel
     {
-        // COMMENT ID
         public int CommentId { get; set; }
 
-        // LIKES COUNT
         public int LikesCount { get; set; }
 
-        // LIKED
         public bool Liked { get; set; }
 
-        // CREATE
-        public static Expression<Func<Comment, LikedCommentViewModel>> Create
+        public static Expression<Func<Comment, UnlikedCommendViewModel>> Create
         {
             get
             {
-                return comment => new LikedCommentViewModel
+                return comment => new UnlikedCommendViewModel
                 {
                     CommentId = comment.Id,
                     LikesCount = comment.Likes.Count,
-                    Liked = true
+                    Liked = false
                 };
             }
         }

@@ -7,28 +7,28 @@
 
     public class PreviewUserDataViewModel
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string userName { get; set; }
+        public string UserName { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string profileImageData { get; set; }
+        public string ProfileImageData { get; set; }
 
         public string IsFriend { get; set; }
 
-        public string hasPendingRequest { get; set; }
+        public string HasPendingRequest { get; set; }
 
         public static PreviewUserDataViewModel GetPreviewUserData(ApplicationUser user, ApplicationUser currentUser)
         {
             return new PreviewUserDataViewModel()
             {
-                id = user.Id,
-                userName = user.UserName,
-                name = user.Name,
+                Id = user.Id,
+                UserName = user.UserName,
+                Name = user.Name,
                 IsFriend = user.Friends.Contains(currentUser).ToString(),
-                profileImageData = user.ProfilePicture,
-                hasPendingRequest = user.Requests
+                ProfileImageData = user.ProfilePicture,
+                HasPendingRequest = user.Requests
                     .Any(r => r.Sender == currentUser && r.Status == FriendRequestStatus.Pending)
                     .ToString()
             };

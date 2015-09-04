@@ -1,4 +1,4 @@
-﻿namespace SocialNetwork.Services.Models.ViewModels.Comment
+﻿namespace SocialNetwork.Services.Models.ViewModels.CommentViewModels
 {
     using System;
     using System.Collections;
@@ -21,8 +21,8 @@
                     TotalLikesCount = comment.Likes.Count,
                     CommentLikes = comment.Likes.Select(l => new
                     {
-                        userId = comment.Author.Id,
-                        commentId = comment.Id
+                        UserId = comment.Author.Id,
+                        CommentId = comment.Id
                     })
                 };
             }

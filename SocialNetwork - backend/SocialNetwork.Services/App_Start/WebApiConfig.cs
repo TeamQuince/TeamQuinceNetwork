@@ -27,8 +27,8 @@ namespace SocialNetwork.Services
             //    defaults: new { id = RouteParameter.Optional }
             //);
 
-            //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
-            //    new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
 
             var corsAttr = new EnableCorsAttribute("http://localhost:63342", "*", "*");
             config.EnableCors(corsAttr);

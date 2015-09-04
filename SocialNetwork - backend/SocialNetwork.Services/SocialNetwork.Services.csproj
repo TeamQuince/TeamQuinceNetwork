@@ -235,6 +235,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\GroupCommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthorizationController.cs" />
     <Compile Include="Controllers\GroupPostsController.cs" />
@@ -263,12 +264,11 @@
     <Compile Include="Models\BindingModels\WallBindingModel.cs" />
     <Compile Include="Models\ViewModels\AddCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\CommentLikeViewModel.cs" />
-    <Compile Include="Models\ViewModels\CommentViewModel.cs" />
-    <Compile Include="Models\ViewModels\Comment\CommentLikeViewModel.cs" />
-    <Compile Include="Models\ViewModels\Comment\CommentLikePreviewViewModel.cs" />
-    <Compile Include="Models\ViewModels\Comment\UnlikedCommendViewModel.cs" />
-    <Compile Include="Models\ViewModels\Comment\LikedCommentViewModel.cs" />
-    <Compile Include="Models\ViewModels\Comment\CommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\CommentViewModels\CommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\CommentViewModels\CommentLikeViewModel.cs" />
+    <Compile Include="Models\ViewModels\CommentViewModels\CommentLikePreviewViewModel.cs" />
+    <Compile Include="Models\ViewModels\CommentViewModels\UnlikedCommendViewModel.cs" />
+    <Compile Include="Models\ViewModels\CommentViewModels\LikedCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\DataAboutMeViewModel.cs" />
     <Compile Include="Models\ViewModels\FriendsFullDataViewModel.cs" />
     <Compile Include="Models\ViewModels\FriendshipRequestViewModel.cs" />

@@ -7,31 +7,31 @@
 
     public class FullUserDataViewModel
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string userName { get; set; }
+        public string UserName { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string profileImageData { get; set; }
+        public string ProfileImageData { get; set; }
 
-        public string coverImageData { get; set; }
+        public string CoverImageData { get; set; }
 
         public string IsFriend { get; set; }
 
-        public string hasPendingRequest { get; set; }
+        public string HasPendingRequest { get; set; }
 
         public static FullUserDataViewModel GetFullUserData(ApplicationUser user, ApplicationUser currentUser)
         {
             return new FullUserDataViewModel()
             {
-                id = user.Id,
-                userName = user.UserName,
-                name = user.Name,
-                profileImageData = user.ProfilePicture,
-                coverImageData = user.WallPicture,
+                Id = user.Id,
+                UserName = user.UserName,
+                Name = user.Name,
+                ProfileImageData = user.ProfilePicture,
+                CoverImageData = user.WallPicture,
                 IsFriend = user.Friends.Contains(currentUser).ToString(),
-                hasPendingRequest = user.Requests
+                HasPendingRequest = user.Requests
                     .Any(r => r.Sender == currentUser && r.Status == FriendRequestStatus.Pending)
                     .ToString()
             };
