@@ -276,7 +276,6 @@
     <Compile Include="Models\ViewModels\FriendshipRequestViewModel.cs" />
     <Compile Include="Models\ViewModels\FriendViewModel.cs" />
     <Compile Include="Models\ViewModels\GroupPostViewModel.cs" />
-    <Compile Include="Models\ViewModels\GroupUserViewModel.cs" />
     <Compile Include="Models\ViewModels\GroupViewModel.cs" />
     <Compile Include="Models\ViewModels\LikeViewModel.cs" />
     <Compile Include="Models\ViewModels\MessageViewModel.cs" />

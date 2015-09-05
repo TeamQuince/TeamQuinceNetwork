@@ -63,5 +63,49 @@
 
             return this.Ok(group);
         }
+
+        public IHttpActionResult AddPost(int groupId, AddGroupPostBindingModel post)
+        {
+            var group = this.Data.Groups.SingleOrDefault(g => g.Id == groupId);
+            if (group == null)
+            {
+                return this.BadRequest("Invalid group id");
+            }
+
+            if (post == null)
+            {
+                return this.BadRequest("Post model cannot be null");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            var postOwnerId = this.User.Identity.GetUserId();
+            var postOwner = this.Data.Users.FirstOrDefault(u => u.Id == postOwnerId);
+
+            if (!group.Members.Any(m => m.Id == postOwnerId))
+            {
+                return this.BadRequest("You are not a member of the group");
+            }
+
+            var postObj = new GroupPost()
+            {
+                Content = post.postContent,
+                PostedOn = DateTime.Now,
+                Author = postOwner,
+                Owner = group
+            };
+
+            group.Posts.Add(postObj);
+            this.Data.SaveChanges();
+
+            var viewModel = this.Data.GroupPosts
+                .Where(p => p.Id == postObj.Id)
+                .Select(GroupPostViewModel.Create);
+            
+            return this.Ok(viewModel);
+        }
     }
 }
