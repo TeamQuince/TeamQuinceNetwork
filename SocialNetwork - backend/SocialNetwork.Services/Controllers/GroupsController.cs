@@ -132,5 +132,29 @@
 
             return this.Ok(string.Format("You have successfuly joined group {0}.", group.Name));
         }
+
+        [HttpPut]
+        public IHttpActionResult Leave(int groupId)
+        {
+            var group = this.Data.Groups.FirstOrDefault(g => g.Id == groupId);
+            var currentUserId = this.User.Identity.GetUserId();
+
+            if (group == null)
+            {
+                return this.BadRequest("Invalid group id!");
+            }
+
+            var member = group.Members.SingleOrDefault(m => m.Id == currentUserId);
+
+            if (member == null)
+            {
+                return this.BadRequest("You are not a member of this group!");
+            }
+
+            group.Members.Remove(member);
+            this.Data.SaveChanges();
+
+            return this.Ok(string.Format("You have successfuly left group {0}.", group.Name));
+        }
     }
 }
