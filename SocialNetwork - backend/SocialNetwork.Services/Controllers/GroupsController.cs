@@ -1,18 +1,13 @@
 ﻿namespace SocialNetwork.Services.Controllers
 {
     using System;
-    using System.Linq;
-    using System.Net;
-    using System.Web.Http;
-
-    using Microsoft.AspNet.Identity;
-
-    using Models.BindingModels;
-    using Models.ViewModels;
-    using SocialNetwork.Models;
-    using Filters;
     using System.Collections.Generic;
-
+    using System.Linq;
+    using System.Web.Http;
+    using Microsoft.AspNet.Identity;
+    using SocialNetwork.Models;
+    using SocialNetwork.Services.Models.BindingModels;
+    using SocialNetwork.Services.Models.ViewModels;
 
     [Authorize]
     public class GroupsController : BaseApiController
@@ -54,6 +49,19 @@
             };
 
             return this.Ok(viewModel);
+        }
+
+        [HttpGet]
+        public IHttpActionResult FindGroupById(int id)
+        {
+            var group = this.Data.Groups.SingleOrDefault(g => g.Id == id);
+
+            if (group == null)
+            {
+                return this.BadRequest("Invalid group id!");
+            }
+
+            return this.Ok(group);
         }
     }
 }
