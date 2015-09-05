@@ -107,5 +107,30 @@
             
             return this.Ok(viewModel);
         }
+
+        [HttpPost]
+        public IHttpActionResult Join(int groupId)
+        {
+            var group = this.Data.Groups.SingleOrDefault(g => g.Id == groupId);
+            
+            if (group == null)
+            {
+                return this.BadRequest("Invalid group id!");
+            }
+
+            var currentUserId = this.User.Identity.GetUserId();
+
+            if (group.Members.Any(m => m.Id == currentUserId))
+            {
+                return this.BadRequest("You have already joined this group!");
+            }
+
+            var currentUser = this.Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+
+            group.Members.Add(currentUser);
+            this.Data.SaveChanges();
+
+            return this.Ok(string.Format("You have successfuly joined group {0}.", group.Name));
+        }
     }
 }
