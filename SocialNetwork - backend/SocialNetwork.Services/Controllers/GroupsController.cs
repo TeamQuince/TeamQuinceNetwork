@@ -4,20 +4,24 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
+
     using Microsoft.AspNet.Identity;
+
     using SocialNetwork.Models;
     using SocialNetwork.Services.Models.BindingModels;
     using SocialNetwork.Services.Models.ViewModels;
 
     [Authorize]
+    [RoutePrefix("api/groups")]
     public class GroupsController : BaseApiController
     {
         [HttpPost]
-        public IHttpActionResult CreateGroup(CreateGroupBindingModel group)
+        [Route("")]
+        public IHttpActionResult CreateGroup(CreateGroupBindingModel model)
         {
-            if (group == null)
+            if (model == null)
             {
-                return this.BadRequest("Group model cannot be null");
+                return this.BadRequest("Missing data about group.");
             }
 
             if (!this.ModelState.IsValid)
@@ -25,136 +29,189 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            if (this.Data.Groups.Any(g => g.Name == group.Name))
+            if (this.Data.Groups.Any(g => g.Name == model.Name))
             {
-                return this.BadRequest("The group name already exists");
+                return this.BadRequest("The group already exists.");
             }
 
             var currentUserId = this.User.Identity.GetUserId();
             var currentUser = this.Data.Users.FirstOrDefault(u => u.Id == currentUserId);
-            this.Data.Groups.Add(new Group()
+            if (currentUser == null)
             {
-                Name = group.Name,
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            var group = new Group()
+            {
+                Name = model.Name,
+                Description = model.Description,
                 CreatedOn = DateTime.Now,
-                Members = new List<ApplicationUser>()
-                {
-                    currentUser
-                }
-            });
+                WallPicture = model.WallPicture,
+                Owner = currentUser
+            };
+
+            this.Data.Groups.Add(group);
             this.Data.SaveChanges();
 
-            var viewModel = new CreateGroupViewModel()
-            {
-                Name = group.Name
-            };
+            var viewModel = CreateGroupViewModel.CreateGroupPreview(currentUser, group);
 
             return this.Ok(viewModel);
         }
 
         [HttpGet]
-        public IHttpActionResult FindGroupById(int id)
+        [Route("{id}")]
+        public IHttpActionResult GetGroupById([FromUri] int id)
         {
-            var group = this.Data.Groups.SingleOrDefault(g => g.Id == id);
+            var group = this.Data.Groups.Find(id);
 
             if (group == null)
             {
-                return this.BadRequest("Invalid group id!");
-            }
-
-            return this.Ok(group);
-        }
-
-        public IHttpActionResult AddPost(int groupId, AddGroupPostBindingModel post)
-        {
-            var group = this.Data.Groups.SingleOrDefault(g => g.Id == groupId);
-            if (group == null)
-            {
-                return this.BadRequest("Invalid group id");
-            }
-
-            if (post == null)
-            {
-                return this.BadRequest("Post model cannot be null");
-            }
-
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            var postOwnerId = this.User.Identity.GetUserId();
-            var postOwner = this.Data.Users.FirstOrDefault(u => u.Id == postOwnerId);
-
-            if (!group.Members.Any(m => m.Id == postOwnerId))
-            {
-                return this.BadRequest("You are not a member of the group");
-            }
-
-            var postObj = new GroupPost()
-            {
-                Content = post.postContent,
-                PostedOn = DateTime.Now,
-                Author = postOwner,
-                Owner = group
-            };
-
-            group.Posts.Add(postObj);
-            this.Data.SaveChanges();
-
-            var viewModel = this.Data.GroupPosts
-                .Where(p => p.Id == postObj.Id)
-                .Select(GroupPostViewModel.Create);
-            
-            return this.Ok(viewModel);
-        }
-
-        [HttpPost]
-        public IHttpActionResult Join(int groupId)
-        {
-            var group = this.Data.Groups.SingleOrDefault(g => g.Id == groupId);
-            
-            if (group == null)
-            {
-                return this.BadRequest("Invalid group id!");
+                return this.NotFound();
             }
 
             var currentUserId = this.User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            return this.Ok(CreateGroupViewModel.CreateGroupPreview(currentUser, group));
+        }
+
+        [HttpPost]
+        [Route("{groupId}/join")]
+        public IHttpActionResult Join([FromUri] int groupId)
+        {
+            var group = this.Data.Groups.Find(groupId);
+
+            if (group == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUserId = this.User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
             if (group.Members.Any(m => m.Id == currentUserId))
             {
-                return this.BadRequest("You have already joined this group!");
+                return this.BadRequest("You are already a member of this group.");
             }
-
-            var currentUser = this.Data.Users.FirstOrDefault(u => u.Id == currentUserId);
 
             group.Members.Add(currentUser);
             this.Data.SaveChanges();
 
-            return this.Ok(string.Format("You have successfuly joined group {0}.", group.Name));
+            return this.Ok(CreateGroupViewModel.CreateGroupPreview(currentUser, group));
         }
 
-        [HttpPut]
+        [HttpPost]
+        [Route("{groupId}/leave")]
         public IHttpActionResult Leave(int groupId)
         {
-            var group = this.Data.Groups.FirstOrDefault(g => g.Id == groupId);
+            var group = this.Data.Groups.Find(groupId);
+
             var currentUserId = this.User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(u => u.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
 
             if (group == null)
             {
-                return this.BadRequest("Invalid group id!");
+                return this.NotFound();
             }
 
-            var member = group.Members.SingleOrDefault(m => m.Id == currentUserId);
+            var member = group.Members.FirstOrDefault(m => m.Id == currentUserId);
 
             if (member == null)
             {
-                return this.BadRequest("You are not a member of this group!");
+                return this.BadRequest("You are not a member of this group.");
             }
 
             group.Members.Remove(member);
             this.Data.SaveChanges();
 
-            return this.Ok(string.Format("You have successfuly left group {0}.", group.Name));
+            return this.Ok(CreateGroupViewModel.CreateGroupPreview(currentUser, group));
+        }
+
+        [HttpPut]
+        [Route("{groupId}")]
+        public IHttpActionResult EditGroupById([FromUri] int groupId, [FromBody] EditGroupBindingModel model)
+        {
+            var group = this.Data.Groups.Find(groupId);
+            if (group == null)
+            {
+                return this.NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            if (currentUser != group.Owner)
+            {
+                return this.BadRequest("Not allowed. User must be owner of group.");
+            }
+
+            group.Name = model.Name;
+            group.Description = model.Description;
+            group.WallPicture = model.WallPicture;
+            this.Data.SaveChanges();
+
+            var dbGroup = this.Data.Groups.Find(group.Id);
+
+            return this.Ok(CreateGroupViewModel.CreateGroupPreview(currentUser, dbGroup));
+        }
+
+        [HttpGet]
+        [Route("{groupId}/members")]
+        public IHttpActionResult GetGroupMembersPreview([FromUri] int groupId)
+        {
+            var group = this.Data.Groups.Find(groupId);
+            if (group == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            var friendsPreview = new
+            {
+                Owner = new
+                {
+                    Name = group.Owner.Name,
+                    UserName = group.Owner.UserName,
+                    Id = group.Owner.Id,
+                    ProfileImageData = group.Owner.ProfilePicture
+                },
+                Members = group.Members.Select(m => new
+                {
+                    Name = group.Owner.Name,
+                    UserName = group.Owner.UserName,
+                    Id = group.Owner.Id,
+                    ProfileImageData = m.ProfilePicture
+                })
+            };
+
+            return this.Ok(friendsPreview);
         }
     }
 }
