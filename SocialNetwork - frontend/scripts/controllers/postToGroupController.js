@@ -1,9 +1,9 @@
-socialNetwork.controller('PostToUserController',
-    function PostToUserController($scope, postsData, profileData, notify) {
+socialNetwork.controller('PostToGroupController',
+    function PostToGroupController($scope, groupPostsData, profileData, notify) {
 
         $scope.addNewPost = function() {
 
-            postsData.addPost($scope.postContent, $scope.test2)
+            groupPostsData.addPost($scope.postContent, $scope.test2)
                 .then(
                     function successHandler(data) {
                         notify.info("Post successful.");
@@ -15,13 +15,4 @@ socialNetwork.controller('PostToUserController',
                     }
                 );
         };
-
-        function verifyPostOperation() {
-            if ($scope.friend === "true") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
     });

@@ -62,7 +62,37 @@
                             <tr>{{peopleCount}} people found</tr>
                         </table>
                     </div>
-                    <!-- End of Friend requests element-->
+                    <!-- End of People search element-->
+
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/groups/create"><span>Create Group</span></a></li>
+                    </ul>
+
+
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Find groups..." ng-model="groupskeyword" ng-change="showGroupSearchResults($event, groupskeyword)" ng-focus="setCoordinates($event)">
+                        </div>
+                    </form>
+
+                    <!-- Group search element-->
+                    <div class="friend-requests-container" id="groupSearchContainer" ng-show="areGroupSearchResultsVisible" click-anywhere="areGroupSearchResultsVisible=false">
+                        <table>
+                            <tr ng-repeat="group in groups">
+                                <td>
+                                    <img class="img-thumbnail img-thumbnail-small" ng-src="{{group.wallPicture || 'img/noavatar.jpg'}}"/>
+                                </td>
+                                <td>
+                                    <h6><a href="#/groups/{{group.id}}">{{group.name}}</a></h6>
+                                    <button class="btn btn-success btn-sm" ng-click="joinGroup(group)" ng-show="!group.isMember && !group.isOwner">Join</button>
+                                    <button class="btn btn-warning btn-sm" ng-click="leaveGroup(group)" ng-show="group.isMember">Leave</button>
+                                    <button class="btn btn-danger btn-sm" ng-click="deleteGroup(group)" ng-show="group.isOwner">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>Found {{groupsCount}} group(s) in total</tr>
+                        </table>
+                    </div>
+                    <!-- End of Group search element-->
 
                 </div>
             </div>

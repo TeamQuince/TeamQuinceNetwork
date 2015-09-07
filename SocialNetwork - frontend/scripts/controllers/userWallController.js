@@ -40,7 +40,7 @@ socialNetwork.controller('UserWallController',
                         );
                 },
                 function errorHandler(error) {
-                    notify.error("Loading user's wall failed.");
+                    notify.error(error.message);
                     $location.path("/users/me");
                 }
             );

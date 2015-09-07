@@ -34,9 +34,12 @@
         <!-- Friends aside-->
         <div class="col-md-4 col-sm-5">
             <div class="row">
-                <div ng-if="user.isFriend" post-to-user test2="{{friendUserName}}" friend="{{friend}}"></div>
+                <div ng-if="user.isFriend || isMe" post-to-user test2="{{friendUserName}}" friend="{{friend}}"></div>
             </div>
-            <div ng-if="user.isFriend" class="row" user-friends-sidebar test="{{friendUserName}}"></div>
+            <div ng-if="user.isFriend || isMe" class="row" user-friends-sidebar test="{{friendUserName}}"></div>
+
+            <div ng-if="user.isFriend || isMe" class="row" user-groups-sidebar test="{{friendUserName}}"></div>
+
             <!-- <friends-sidebar ng-if="isMe"></friends-sidebar> -->
         </div>
         <!-- End of friends-->

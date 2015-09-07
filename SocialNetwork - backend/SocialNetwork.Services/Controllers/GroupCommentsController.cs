@@ -47,7 +47,7 @@
                     .ExecuteAsync(new CancellationToken());
             }
 
-            if (!post.Owner.Members.Contains(currentUser))
+            if (!post.Owner.Members.Contains(currentUser) && currentUser != post.Owner.Owner)
             {
                 return await this.BadRequest("Not allowed. You must be a member of the group.")
                     .ExecuteAsync(new CancellationToken());
@@ -67,7 +67,7 @@
                 .Where(p => p.Id == newComment.Id)
                 .Select(AddCommentViewModel.Create)
                 .FirstOrDefault();
-            commentPreview.postId = post.Id;
+            commentPreview.PostId = post.Id;
 
             return await this.Ok(commentPreview).ExecuteAsync(new CancellationToken());
         }
@@ -118,7 +118,7 @@
                 .Where(p => p.Id == comment.Id)
                 .Select(AddCommentViewModel.Create)
                 .FirstOrDefault();
-            commentPreview.postId = post.Id;
+            commentPreview.PostId = post.Id;
 
             return await this.Ok(commentPreview).ExecuteAsync(new CancellationToken());
         }
@@ -232,7 +232,7 @@
                     .ExecuteAsync(new CancellationToken());
             }
 
-            if (!post.Owner.Members.Contains(currentUser))
+            if (!post.Owner.Members.Contains(currentUser) && currentUser != post.Owner.Owner)
             {
                 return await this.BadRequest("Not allowed. You must be member of the group.")
                     .ExecuteAsync(new CancellationToken());

@@ -1,5 +1,5 @@
-socialNetwork.controller('CommentController',
-    function CommentController($scope, $modal, authentication, commentsData, usersData, profileData, notify) {
+socialNetwork.controller('GroupCommentController',
+    function GroupCommentController($scope, $modal, authentication, groupCommentsData, usersData, profileData, notify) {
 
         toLocalTimeZone($scope.comment);
 
@@ -15,12 +15,12 @@ socialNetwork.controller('CommentController',
                     $scope.commenterData = data;
                 },
                 function errorHandler(error) {
-                    console.log(error);
+                    notify.error(error.message);
                 }
             );
 
         $scope.addComment = function() {
-            commentsData.addCommentToPost($scope.post.id, $scope.replyContent)
+            groupCommentsData.addCommentToPost($scope.post.id, $scope.replyContent)
                 .then(
                     function successHandler(data) {
                         notify.info("Commented successfully.");
@@ -35,15 +35,15 @@ socialNetwork.controller('CommentController',
         };
 
         $scope.likeComment = function(commentObject) {
-            commentsData.likeComment($scope.post.id, commentObject.id)
+            groupCommentsData.likeComment($scope.post.id, commentObject.id)
                 .then(
                     function successHandler(data) {
                         notify.info('Comment liked.');
                         $scope.comment.liked = true;
-                        commentsData.getCommentPreviewLikes($scope.post.id, commentObject.id)
+                        groupCommentsData.getCommentPreviewLikes($scope.post.id, commentObject.id)
                             .then(
                                 function successHandler(likesData) {
-                                    $scope.comment.likesCount = likesData[0].totalLikesCount;
+                                    $scope.comment.likesCount = likesData.totalLikeCount;
                                 }
                             );
                     },
@@ -54,15 +54,15 @@ socialNetwork.controller('CommentController',
         };
 
         $scope.unlikeComment = function(commentObject) {
-            commentsData.unlikeComment($scope.post.id, commentObject.id)
+            groupCommentsData.unlikeComment($scope.post.id, commentObject.id)
                 .then(
                     function successHandler(data) {
                         notify.info('Comment unliked');
                         $scope.comment.liked = false;
-                        commentsData.getCommentPreviewLikes($scope.post.id, commentObject.id)
+                        groupCommentsData.getCommentPreviewLikes($scope.post.id, commentObject.id)
                             .then(
                                 function successHandler(likesData) {
-                                    $scope.comment.likesCount = likesData[0].totalLikesCount;
+                                    $scope.comment.likesCount = likesData.totalLikeCount;
                                 }
                             );
                     },
@@ -90,7 +90,7 @@ socialNetwork.controller('CommentController',
         };
 
         $scope.deleteComment = function() {
-            commentsData.deletePostComment($scope.post.id, $scope.comment.id)
+            groupCommentsData.deletePostComment($scope.post.id, $scope.comment.id)
                 .then(
                     function successHandler(data) {
                         notify.info("Comment deleted.");
@@ -123,7 +123,7 @@ socialNetwork.controller('CommentController',
 
             modalInstance.result.then(
                 function edit(response) {
-                    commentsData.editPostComment($scope.post.id, $scope.comment.id, response)
+                    groupCommentsData.editPostComment($scope.post.id, $scope.comment.id, response)
                         .then(
                             function successHandler(data) {
                                 $scope.comment.commentContent = response;
@@ -138,36 +138,6 @@ socialNetwork.controller('CommentController',
                     console.log('Modal dismissed at: ' + new Date());
                 });
         };
-
-        function verifyCommentOperation() {
-            if ($scope.post.author.isFriend) {
-                return true;
-            }
-
-            if ($scope.post.wallOwner.isFriend) {
-                return true;
-            }
-
-            if ($scope.post.author.username === authentication.getUserName()) {
-                return true;
-            }
-
-            return false;
-        }
-
-        function verifyDeleteOperation(posting) {
-            var currentUser = authentication.getUserName();
-
-            if (currentUser === posting.author.username) {
-                return true;
-            }
-
-            if (currentUser === $scope.post.author.username) {
-                return true;
-            }
-
-            return false;
-        }
 
         function verifyEditOperation(posting) {
             var currentUser = authentication.getUserName();

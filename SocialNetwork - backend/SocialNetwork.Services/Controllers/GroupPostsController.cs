@@ -40,7 +40,7 @@
                 return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
             }
 
-            if (!group.Members.Contains(currentUser))
+            if (!group.Members.Contains(currentUser) && group.Owner != currentUser)
             {
                 return await this.BadRequest("Not allowed. User is not member of group.")
                     .ExecuteAsync(new CancellationToken());
@@ -62,6 +62,7 @@
                 Id = dbPost.Id,
                 AuthorId = dbPost.Author.Id,
                 AuthorUsername = dbPost.Author.UserName,
+                AuthorProfileImage = dbPost.Author.ProfilePicture,
                 GroupId = group.Id,
                 PostContent = dbPost.Content,
                 Date = dbPost.PostedOn,
@@ -71,11 +72,7 @@
                 Comments = new List<CommentViewModel>()
             };
 
-            return await this.Ok(new
-            {
-                message = "Post successfully added.",
-                post = postReturnView
-            }).ExecuteAsync(new CancellationToken());
+            return await this.Ok(postReturnView).ExecuteAsync(new CancellationToken());
         }
 
         [HttpGet]

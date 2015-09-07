@@ -1,25 +1,17 @@
-socialNetwork.controller('PostController',
-    function PostController($scope, $document, $modal, authentication, postsData, commentsData, usersData, profileData, notify) {
-
-        toLocalTimeZone($scope.post);
+socialNetwork.controller('GroupPostController',
+    function GroupPostController($scope, $document, $modal, authentication, groupPostsData, groupCommentsData, usersData, profileData, notify) {
 
         $scope.isUserPreviewVisible = false;
         $scope.showComments = false;
-        $scope.isMe = authentication.getUserName() === $scope.post.authorUsername ? true : false;
 
-        commentsData.getPostComments($scope.post.id)
-            .then(
-                function successHandler(data) {
-                    $scope.post.comments = data;
-                },
-                function errorHandler(error) {
-                    console.log(error);
-                }
-            );
+        $scope.showCommentForm = function() {
+            $scope.commentFormVisible = !$scope.commentFormVisible;
+        };
 
         usersData.getUserPreviewData($scope.post.authorUsername)
             .then(
                 function successHandler(data) {
+
                     $scope.posterData = data;
                 },
                 function errorHandler(error) {
@@ -27,12 +19,8 @@ socialNetwork.controller('PostController',
                 }
             );
 
-        $scope.showCommentForm = function() {
-            $scope.commentFormVisible = !$scope.commentFormVisible;
-        };
-
         $scope.addComment = function() {
-            commentsData.addCommentToPost($scope.post.id, $scope.commentContent)
+            groupCommentsData.addCommentToPost($scope.post.id, $scope.commentContent)
                 .then(
                     function successHandler(data) {
                         notify.info("Commented successfully.");
@@ -47,12 +35,12 @@ socialNetwork.controller('PostController',
         };
 
         $scope.likePost = function() {
-            postsData.likePostById($scope.post.id)
+            groupPostsData.likePostById($scope.post.id)
                 .then(
                     function successHandler(data) {
                         notify.info('Post liked.');
                         $scope.post.liked = true;
-                        postsData.getPostPreviewLikes($scope.post.id)
+                        groupPostsData.getPostPreviewLikes($scope.post.id)
                             .then(
                                 function successHandler(likesData) {
                                     $scope.post.likesCount = likesData.totalLikeCount;
@@ -66,12 +54,12 @@ socialNetwork.controller('PostController',
         };
 
         $scope.unlikePost = function() {
-            postsData.unlikePostById($scope.post.id)
+            groupPostsData.unlikePostById($scope.post.id)
                 .then(
                     function successHandler(data) {
                         notify.info('Post unliked');
                         $scope.post.liked = false;
-                        postsData.getPostPreviewLikes($scope.post.id)
+                        groupPostsData.getPostPreviewLikes($scope.post.id)
                             .then(
                                 function successHandler(likesData) {
                                     $scope.post.likesCount = likesData.totalLikeCount;
@@ -84,22 +72,21 @@ socialNetwork.controller('PostController',
                 );
         };
 
-        $scope.previewUser = function() {
-            $scope.isUserPreviewVisible = true;
-            $scope.isMe = $scope.post.author.username === authentication.getUserName() ? true : false;
-        };
-
         $scope.inviteFriend = function() {
             profileData.sendFriendRequest($scope.post.authorUsername)
                 .then(
                     function successHandler(data) {
-                        $scope.posterData.hasPendingRequest = true;
-                        notify.info("Invitation sent.");
+                        notify.info("Invitation sent.")
                     },
                     function errorHandler(error) {
                         notify.error(error.message);
                     }
                 );
+        };
+
+        $scope.previewUser = function() {
+            $scope.isUserPreviewVisible = true;
+            $scope.isMe = $scope.post.AuthorUsername === authentication.getUserName() ? true : false;
         };
 
         $scope.toggleComments = function() {
@@ -107,18 +94,17 @@ socialNetwork.controller('PostController',
         };
 
         $scope.deletePost = function() {
-            postsData.deletePostById($scope.post.id)
+            groupPostsData.deletePostById($scope.post.id)
                 .then(
                     function successHandler(data) {
                         notify.info("Post deleted.");
                         $scope.$emit('deletePost', $scope.post);
                     },
                     function errorHandler(error) {
-                        notify.error(error.message);
+                        notify.error(error.Message);
                     }
                 );
         };
-
 
         $scope.open = function(modalName) {
 
@@ -139,7 +125,7 @@ socialNetwork.controller('PostController',
 
             modalInstance.result.then(
                 function edit(response) {
-                    postsData.editPostById(response, $scope.post.id)
+                    groupPostsData.editPostById(response, $scope.post.id)
                         .then(
                             function successHandler(data) {
                                 $scope.post.postContent = response;
@@ -163,23 +149,6 @@ socialNetwork.controller('PostController',
             }
         });
 
-
-        function verifyDeleteOperation(posting) {
-            var currentUser = authentication.getUserName();
-
-            //If it is an own post:
-            if (currentUser === posting.author.username) {
-                return true;
-            }
-
-            //If it is a post on the user's wall:
-            if (currentUser === posting.wallOwner.username) {
-                return true;
-            }
-
-            return false;
-        }
-
         function verifyEditOperation(posting) {
             var currentUser = authentication.getUserName();
 
@@ -190,31 +159,4 @@ socialNetwork.controller('PostController',
 
             return false;
         }
-
-        function verifyLikePostOperation(posting) {
-            var currentUser = authentication.getUserName();
-
-            if (currentUser === posting.author.username) {
-                return true;
-            }
-
-            if (currentUser === posting.wallOwner.username) {
-                return true;
-            }
-
-            if ($scope.post.author.isFriend) {
-                return true;
-            }
-
-            if ($scope.post.wallOwner.isFriend) {
-                return true;
-            }
-
-            return false;
-        }
-
-        function toLocalTimeZone(post) {
-            post.date = new Date(post.date);
-        }
-
     });

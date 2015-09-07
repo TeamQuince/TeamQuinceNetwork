@@ -11,7 +11,7 @@ socialNetwork.controller('LoginController',
                             $location.path('/users/me');
                         },
                         function errorHandler(error) {
-                            notify.error("Login failed.");
+                            notify.error(error.message);
                         }
                     )
             }

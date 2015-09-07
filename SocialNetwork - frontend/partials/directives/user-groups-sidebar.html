@@ -1,0 +1,19 @@
+<aside class="friends-aside">
+    <table class="table friends-table">
+        <thead>
+        <tr>
+            <th colspan="2"><a href="">Total groups: {{groupsCount}}</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="group in groups | limitTo: 10">
+            <td>
+                <img ng-src="{{group.wallPicture || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+            </td>
+            <td>
+                <a href="#/groups/{{group.id}}">{{group.name}}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</aside>

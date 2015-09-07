@@ -1,0 +1,28 @@
+<aside class="friends-aside">
+    <table class="table friends-table">
+        <thead>
+        <tr>
+            <th colspan="2">Total members: {{members.length}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <img ng-src="{{owner.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+            </td>
+            <td>
+                <h5><strong>Group owner:</strong></h5>
+                <a href="#/users/{{owner.userName}}">{{owner.name}}</a>
+            </td>
+        </tr>
+        <tr ng-repeat="member in members | limitTo: 10">
+            <td>
+                <img ng-src="{{member.profileImageData || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
+            </td>
+            <td>
+                <a href="#/users/{{member.userName}}">{{member.name}}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</aside>

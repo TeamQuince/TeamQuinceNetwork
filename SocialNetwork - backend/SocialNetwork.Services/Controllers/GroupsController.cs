@@ -1,7 +1,6 @@
 ﻿namespace SocialNetwork.Services.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
 
@@ -77,6 +76,33 @@
             }
 
             return this.Ok(CreateGroupViewModel.CreateGroupPreview(currentUser, group));
+        }
+
+        [HttpGet]
+        [Route("{username}/list")]
+        public IHttpActionResult GetGroupsForUser([FromUri] string username)
+        {
+            var user = this.Data.Users.FirstOrDefault(u => u.UserName == username);
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            var userId = user.Id;
+
+            var groupsWhereMember = user.Groups
+                .Select(g => CreateGroupViewModel.CreateGroupPreview(user, g))
+                .ToList();
+
+            var groupsWhereOwner = this.Data.Groups
+                .Where(g => g.Owner.Id == userId)
+                .ToList()
+                .Select(g => CreateGroupViewModel.CreateGroupPreview(user, g))
+                .ToList();
+
+            var totalGroups = groupsWhereMember.Union(groupsWhereOwner);
+
+            return this.Ok(totalGroups);
         }
 
         [HttpPost]
@@ -176,6 +202,42 @@
             return this.Ok(CreateGroupViewModel.CreateGroupPreview(currentUser, dbGroup));
         }
 
+        [HttpDelete]
+        [Route("{groupId}")]
+        public IHttpActionResult DeleteGroupById([FromUri] int groupId)
+        {
+            return this.BadRequest("The functionality is not supported at this time.");
+
+            var group = this.Data.Groups.Find(groupId);
+
+            if (group == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            if (currentUser != group.Owner)
+            {
+                return this.BadRequest("Not allowed. User must be owner of group.");
+            }
+
+            foreach (var post in group.Posts)
+            {
+                post.Comments.Clear();
+            }
+            group.Posts.Clear();
+            group.Members.Clear();
+            this.Data.Groups.Remove(group);
+            this.Data.SaveChanges();
+            return this.Ok();
+        }
+
         [HttpGet]
         [Route("{groupId}/members")]
         public IHttpActionResult GetGroupMembersPreview([FromUri] int groupId)
@@ -212,6 +274,55 @@
             };
 
             return this.Ok(friendsPreview);
+        }
+
+        [HttpGet]
+        [Route("{groupId}/wall")]
+        public IHttpActionResult GetGroupWall([FromUri] int groupId)
+        {
+            var group = this.Data.Groups.Find(groupId);
+            if (group == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            var posts = group.Posts
+                .OrderByDescending(p => p.PostedOn)
+                .AsQueryable();
+
+            var postsPreview = posts
+                .Select(p => PostViewModel.CreateGroupPostPreview(currentUser, p))
+                .ToList();
+
+            return this.Ok(postsPreview);
+        }
+
+        [HttpGet]
+        [Route("search")]
+        public IHttpActionResult SearchGroupByName([FromUri] string searchTerm)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            string searchName = searchTerm.ToUpper();
+
+            var groupsFound = this.Data.Groups
+                .Where(g => g.Name.ToUpper().Contains(searchName) || g.Description.ToUpper().Contains(searchName))
+                .ToList()
+                .Select(g => CreateGroupViewModel.CreateGroupPreview(currentUser, g));
+
+            return this.Ok(groupsFound);
         }
     }
 }

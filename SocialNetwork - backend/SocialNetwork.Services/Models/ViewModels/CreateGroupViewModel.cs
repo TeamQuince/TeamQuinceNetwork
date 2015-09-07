@@ -11,6 +11,7 @@
         {
             return new
             {
+                Id = group.Id,
                 Name = group.Name,
                 Description = group.Description,
                 WallPicture = group.WallPicture,

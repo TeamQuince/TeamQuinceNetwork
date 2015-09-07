@@ -4,15 +4,15 @@ socialNetwork.controller('RegisterController',
             if (registerForm.$valid) {
                 authentication.register(registerData)
                     .then(
-                    function successHandler(data) {
-                        authentication.setCredentials(data);
-                        notify.info("Registration successful.");
-                        $location.path('/users/me');
-                    },
-                    function errorHandler(error) {
-                        notify.error("Registration failed.");
-                    }
-                )
+                        function successHandler(data) {
+                            authentication.setCredentials(data);
+                            notify.info("Registration successful.");
+                            $location.path('/users/me');
+                        },
+                        function errorHandler(error) {
+                            notify.error(error.message);
+                        }
+                    )
             }
         };
 
@@ -25,7 +25,7 @@ socialNetwork.controller('RegisterController',
             };
         })();
 
-        $scope.cancelRegister = function () {
+        $scope.cancelRegister = function() {
             $location.path('/welcome');
         }
     });

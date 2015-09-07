@@ -1,0 +1,8 @@
+1. GroupsData service
+2. GroupPostsData service
+3. Add create group button to user header
+4. Add create group page to project
+5. Add GroupWall controller
+6. Add GroupWall partial
+7. Create group members directive
+8. Add search group by name text field in user header

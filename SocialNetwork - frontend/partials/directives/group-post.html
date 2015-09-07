@@ -1,0 +1,76 @@
+<table class="table posts-table" post-id="{{post.id}}">
+    <thead>
+    <tr>
+        <th>
+            <img ng-src="{{post.authorProfileImage || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail"/>
+        </th>
+        <th>
+            <!-- Post actions menu-->
+            <div class="btn-group btn-group-sm pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Edit <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class="menu-item" href="" ng-click="open()">Edit post</a></li>
+                    <li><a class="menu-item" href="" ng-click="deletePost()">Delete post</a></li>
+                </ul>
+            </div>
+            <!-- End of Posts actions menu-->
+
+            <a href="#/users/{{post.authorUsername}}" ng-mouseover="previewUser()"
+               click-anywhere="isUserPreviewVisible=false">{{post.authorUsername}}</a>
+
+            <!-- User preview element-->
+            <div class="user-preview-container" ng-show="isUserPreviewVisible">
+                <img ng-src="{{posterData.profileImageData || 'img/noavatar.jpg'}}" alt="{{posterData.name}}" class="friend-preview-img" />
+                <p><span>{{posterData.name}}</span><br/>
+                    <span><img ng-src="{{posterData.gender | gender}}"/></span></p>
+                <div class="row button-container"><button ng-cloak class="btn btn-success btn-sm" ng-show="posterData.isFriend">Friend</button></div>
+                <div class="row button-container"><button ng-cloak class="btn btn-danger btn-sm" ng-show="!posterData.isFriend && !posterData.hasPendingRequest && !isMe" ng-click="inviteFriend()">Invite</button></div>
+                <div class="row button-container"><button ng-cloak class="btn btn-warning btn-sm" ng-show="posterData.hasPendingRequest && !isMe">Pending</button></div>
+                <div class="row button-container"><button ng-cloak class="btn btn-info btn-sm" ng-show="isMe">Me</button></div>
+                </div>
+            <!-- End User preview element-->
+            <br/>
+            <span>{{post.date | date:"dd/MM/yyyy ' at ' hh-mm-ss a"}}</span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="2">{{post.postContent}}</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <a href=""> {{post.likesCount}} people liked this</a> -
+            <a href="" ng-hide="post.liked" ng-click="likePost()">Like</a>
+            <a href="" ng-show="post.liked" ng-click="unlikePost()">Unlike</a>
+            <span class="pull-right">
+                <a href="" ng-click="toggleComments()">{{post.comments.length}} comment(s)</a>&nbsp;
+                <a href="" ng-click="showCommentForm()">Comment</a>
+            </span>
+        </td>
+    </tr>
+
+    <!-- Comment form-->
+    <tr ng-show="commentFormVisible">
+        <td></td>
+        <td>
+            <form class="form-horizontal ">
+                <div class="form-group-sm">
+                    <label class="sr-only" for="exampleComment">Comment here</label>
+                    <input type="text" class="form-control input-sm" id="exampleComment" ng-model="commentContent">
+                </div>
+                <button type="submit" class="btn btn-default input-sm pull-right comment-button"
+                        ng-click="addComment()">Comment
+                </button>
+            </form>
+        </td>
+    </tr>
+    <!-- End of comment form-->
+
+    <!-- Comments part-->
+    <tr class="group-comment" ng-repeat="comment in post.comments | orderBy: 'date'" ng-cloak ng-show="showComments"></tr>
+    <!-- End of comments part-->
+    </tbody>
+</table>
