@@ -63,9 +63,9 @@ socialNetwork.controller('GroupWallController',
             groupsData.deleteGroup($scope.id)
                 .then(
                     function successHandler(data) {
-                        notify.info("Deleted group.");
+                        notify.info("Deleted group successfully.");
                     },
-                    function errorHandler(error) {
+                    function(error) {
                         notify.error(error.message);
                     }
                 );
@@ -97,16 +97,8 @@ socialNetwork.controller('GroupWallController',
                 );
         };
 
-        $scope.deleteCurrentGroup = function() {
-            groupsData.deleteGroup($scope.id)
-                .then(
-                    function successHandler(data) {
-                        notify.info("Deleted group successfully.");
-                    },
-                    function(error) {
-                        notify.error(error.message);
-                    }
-                );
+        $scope.editCurrentGroup = function() {
+            $location.path("/groups/" + $scope.id + "/edit");
         };
 
         $scope.$on('addedPost', function(event, data) {

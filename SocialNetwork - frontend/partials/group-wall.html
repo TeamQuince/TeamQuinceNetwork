@@ -13,12 +13,12 @@
             <div class="row">
                 <button ng-cloak class="btn btn-success btn-sm pull-left" ng-show="isOwner">Owner</button>
                 <button ng-cloak class="btn btn-warning btn-sm pull-left" ng-show="isOwner" ng-click="deleteCurrentGroup()">Delete Group</button>
-            </div>
-            <div class="row"><button ng-cloak class="btn btn-info btn-sm pull-left" ng-show="isMember">Member</button>
+                <button ng-cloak class="btn btn-info btn-sm pull-left" ng-show="isMember">Member</button>
                 <button ng-cloak class="btn btn-warning btn-sm pull-left" ng-show="!isMember && !isOwner" ng-click="joinCurrentGroup()">Join Group</button>
                 <button ng-cloak class="btn btn-error btn-sm pull-left" ng-show="isMember && !isOwner" ng-click="leaveCurrentGroup()">Leave Group</button>
+                <button ng-cloak class="btn btn-error btn-sm pull-left" ng-show="isOwner" ng-click="editCurrentGroup()">Edit Group</button>
             </div>
-            </div>
+        </div>
     </div>
     <!-- End of group header-->
     </div>

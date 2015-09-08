@@ -2,7 +2,7 @@
     <table class="table friends-table">
         <thead>
         <tr>
-            <th colspan="2"><a href="">Total groups: {{groupsCount}}</a></th>
+            <th colspan="2"><a href="">Participation in groups: {{groupsCount}}</a></th>
         </tr>
         </thead>
         <tbody>
@@ -11,7 +11,7 @@
                 <img ng-src="{{group.wallPicture || 'img/noavatar.jpg'}}" class="img-rounded img-thumbnail friend-preview-img"/>
             </td>
             <td>
-                <a href="#/groups/{{group.id}}">{{group.name}}</a>
+                <a href="#/groups/{{group.id}}">{{group.name}} <span ng-show="group.isOwner">(Owner)</span><span ng-show="group.isMember">(Member)</span></a>
             </td>
         </tr>
         </tbody>

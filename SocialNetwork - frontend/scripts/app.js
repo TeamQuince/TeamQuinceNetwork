@@ -58,6 +58,11 @@ socialNetwork.config(['$routeProvider',
             controller: 'GroupWallController'
         });
         $routeProvider.
+        when('/groups/:id/edit', {
+            templateUrl: 'partials/edit-group.html',
+            controller: 'EditGroupController'
+        });
+        $routeProvider.
         otherwise({
             redirectTo: '/welcome'
         });
