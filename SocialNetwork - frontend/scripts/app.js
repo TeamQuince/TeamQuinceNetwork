@@ -68,4 +68,5 @@ socialNetwork.config(['$routeProvider',
         });
     }]);
 
-socialNetwork.constant('baseServiceUrl', 'http://quince-network.azurewebsites.net/api/');
+socialNetwork.constant('baseServiceUrl', 'http://localhost:51477/api/');
+// socialNetwork.constant('baseServiceUrl', 'http://quince-network.azurewebsites.net/api/');

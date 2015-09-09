@@ -266,9 +266,9 @@
                 },
                 Members = group.Members.Select(m => new
                 {
-                    Name = group.Owner.Name,
-                    UserName = group.Owner.UserName,
-                    Id = group.Owner.Id,
+                    Name = m.Name,
+                    UserName = m.UserName,
+                    Id = m.Id,
                     ProfileImageData = m.ProfilePicture
                 })
             };

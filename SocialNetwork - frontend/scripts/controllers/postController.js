@@ -20,7 +20,9 @@ socialNetwork.controller('PostController',
         usersData.getUserPreviewData($scope.post.authorUsername)
             .then(
                 function successHandler(data) {
-                    $scope.posterData = data;
+                    data.hasPendingRequest = data.hasPendingRequest == 'true' ? true : false;
+                    data.isFriend = data.isFriend == 'true' ? true : false;
+        $scope.posterData = data;
                 },
                 function errorHandler(error) {
                     notify.error(error.message);

@@ -26,11 +26,11 @@
                 Id = user.Id,
                 UserName = user.UserName,
                 Name = user.Name,
-                IsFriend = user.Friends.Contains(currentUser).ToString(),
+                IsFriend = user.Friends.Contains(currentUser).ToString().ToLower(),
                 ProfileImageData = user.ProfilePicture,
                 HasPendingRequest = user.Requests
                     .Any(r => r.Sender == currentUser && r.Status == FriendRequestStatus.Pending)
-                    .ToString()
+                    .ToString().ToLower()
             };
         }
     }

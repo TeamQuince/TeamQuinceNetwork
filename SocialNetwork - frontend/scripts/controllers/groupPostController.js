@@ -11,7 +11,8 @@ socialNetwork.controller('GroupPostController',
         usersData.getUserPreviewData($scope.post.authorUsername)
             .then(
                 function successHandler(data) {
-
+                    data.hasPendingRequest = data.hasPendingRequest == 'true' ? true : false;
+                    data.isFriend = data.isFriend == 'true' ? true : false;
                     $scope.posterData = data;
                 },
                 function errorHandler(error) {
@@ -76,6 +77,7 @@ socialNetwork.controller('GroupPostController',
             profileData.sendFriendRequest($scope.post.authorUsername)
                 .then(
                     function successHandler(data) {
+                        $scope.posterData.hasPendingRequest = true;
                         notify.info("Invitation sent.")
                     },
                     function errorHandler(error) {
