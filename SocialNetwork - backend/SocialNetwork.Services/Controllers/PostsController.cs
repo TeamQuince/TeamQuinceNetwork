@@ -44,10 +44,10 @@
                 return await this.BadRequest("Invalid user token! Please login again!").ExecuteAsync(new CancellationToken());
             }
 
-            //if (!user.Friends.Contains(currentUser))
-            //{
-            //    return await this.BadRequest("Not allowed. Wall-owner must be a friend or user.").ExecuteAsync(new CancellationToken());
-            //}
+            if (!user.Friends.Contains(currentUser))
+            {
+                return await this.BadRequest("Not allowed. Wall-owner must be a friend or user.").ExecuteAsync(new CancellationToken());
+            }
 
             var newPost = new Post()
             {
