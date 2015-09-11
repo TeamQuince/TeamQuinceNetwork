@@ -3,4 +3,6 @@ Backend is developed using Microsoft technologies such as Entity Framework, MS S
 
 The web services part of the application is deployed at Microsoft Azure and can be reched at: http://quince-network.azurewebsites.net/api/.
 
+The frontend application can be reached at: http://quince-network.dimitrov-bg.info/#/welcome.
+
 Sofia, August 2015
